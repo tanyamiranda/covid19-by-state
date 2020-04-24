@@ -1,4 +1,4 @@
-This project takes data from the Covide Tracking site and charts it out using Chart.js. Info is provided by state, and in 30 day queries.
+This project takes data from the Covide Tracking site and charts it out using Chart.js.
 
 ## Resources:
 
@@ -10,3 +10,7 @@ https://www.chartjs.org/docs/latest/
 
 How to get started using Chart.js in react:<br/>
 https://blog.bitsrc.io/customizing-chart-js-in-react-2199fa81530a
+
+NPM & Yarn:<br/> 
+https://www.npmjs.com/package/chart.js
+https://classic.yarnpkg.com/en/package/chart.js
