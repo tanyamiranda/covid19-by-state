@@ -2,12 +2,23 @@ import STATE_HISTORY_DATA from './state-history-data.json';
 
 import {DATA_FIELD_COLORS} from './data-fields';
 
-export const stateHistoryData = {
+const stateHistoryData = {
     lastUpdated: null,
-    data: []
+    data: [],
+    statesList: []
 };
 
-const getFreshData = () => {
+export const getStateHistoryData = () => {
+
+    if (!stateHistoryData.lastUpdated) {
+        refreshData();
+    }
+
+    return stateHistoryData;
+
+}
+
+export const refreshData = () => {
 
     // Fetch live json file from:
     //https://covidtracking.com/api
@@ -15,16 +26,38 @@ const getFreshData = () => {
 
     stateHistoryData.data = STATE_HISTORY_DATA;
     stateHistoryData.lastUpdated = new Date();
+
+    stateHistoryData.statesList = stateHistoryData.data.map(item => item.state)
+        .filter((value, index, self) => self.indexOf(value) === index);
     
+    console.log('getFreshData() stateHistoryData=',stateHistoryData);
+
     return stateHistoryData;
 
 }
 
+export const getDatesFromData = (stateData) => {
+
+    return stateData.map(item => item.date)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+}
+
+export const setStatesList = () => {
+
+    if (!stateHistoryData.lastUpdated) {
+        refreshData();
+    }
+
+    return stateHistoryData.map(item => item.state)
+        .filter((value, index, self) => self.indexOf(value) === index);
+
+}
 
 export const getHistoryByState = (state, startFromDate) => {
 
     if (!stateHistoryData.lastUpdated) {
-        getFreshData();
+        refreshData();
     }
 
     return stateHistoryData.data
@@ -106,7 +139,7 @@ export const getChartDataset = (stateData, fieldNames) => {
             fieldData.data.push(!dayRecord[fieldName] ? 0 : dayRecord[fieldName]);
         })
     });
-    
+
     return fieldDatasets;
 }
 

@@ -39,4 +39,27 @@ export const DATA_FIELD_COLORS = [
     '#44A4AD',
     '#28FD7E',
     '#387862'
-]
+];
+
+export const CHART_OPTIONS = {
+    responsive: true,
+    title: { display: false},
+    tooltips: {mode: 'index', intersect: false},
+    hover: {mode: 'nearest', intersect: true},
+    scales: {
+        xAxes: [{
+            display: true,
+            scaleLabel: {
+                display: true,
+                labelString: 'Day'
+            }
+        }],
+        yAxes: [{
+            display: true,
+            scaleLabel: {
+                display: true,
+                labelString: 'Value'
+            }
+        }]
+    }
+}
