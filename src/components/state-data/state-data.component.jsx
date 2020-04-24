@@ -2,15 +2,17 @@ import React from 'react';
 import Chart from 'chart.js';
 import "./state-data.css";
 
-import {DATA_FIELDS, CHART_OPTIONS} from '../utilities/data-fields';
+import {CHART_OPTIONS, DATA_FIELD_VALUES} from '../utilities/data-fields';
 
 import {
     getHistoryByState, 
     getChartDataset, 
-//    getDatesFromData,  
+    getDatesFromData,  
     getStateHistoryData
 } from '../utilities/data-processing';
 
+// Necessary to be able to refresh charts
+// based on user input.
 let currentLineChart;
 
 class StateData extends React.Component {  
@@ -18,41 +20,55 @@ class StateData extends React.Component {
     chartRef = React.createRef();
 
     constructor() {
-    
         super();
 
+        const defaultFields = [];
+        defaultFields[DATA_FIELD_VALUES[0]] = true;
+        defaultFields[DATA_FIELD_VALUES[1]] = true;
+        defaultFields[DATA_FIELD_VALUES[2]] = true;
+        
         this.state = {
             selectedState:"",
-            selectedFields: [],
+            selectedDateRange:"15",
+            selectedFields: defaultFields,
             statesHistorydata:  getStateHistoryData()
         }
     }
+
+    formatDate(date) {
+        var d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        let year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+        return year + month + day;
+    }
     
     loadChart() {
+
         console.log("loadChart()...");
+
+        const {selectedState, selectedFields, selectedDateRange} = this.state;
+
+        var now = new Date();
+        now.setDate(now.getDate() - Number(selectedDateRange));
+        const dateValue = this.formatDate(now);
         
-        const {selectedState, selectedFields} = this.state;
-
-        //console.log("selectedState=",selectedState);
-        //console.log("selectedFields=",selectedFields);
-
         //Filter out only fields that the user selected
         const identifiers = Object.keys(selectedFields)
         const fields = identifiers.filter(function(id) {
             return selectedFields[id]
         })
 
-        const chartOptions = CHART_OPTIONS;
-
-        const stateData = getHistoryByState(selectedState, 20200401);
-        //console.log("stateData=",stateData);
-        
+        const stateData = getHistoryByState(selectedState, dateValue); 
         const chartDataSet = getChartDataset(stateData, fields);
-        console.log("chartDataSet=",chartDataSet);
-
-        //const dateList = getDatesFromData(stateData);
-        //console.log("dateList=", dateList);
-
+        const dateList = getDatesFromData(stateData);
+        
+        // Destroy previous chart if it exists 
         if (typeof currentLineChart !== "undefined") currentLineChart.destroy();
 
         const stateChartRef = this.chartRef.current.getContext("2d");
@@ -60,13 +76,12 @@ class StateData extends React.Component {
         currentLineChart = new Chart(stateChartRef, {
             type: "line",
             data: {
-                labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+                labels: dateList,
                 datasets: chartDataSet
             },
-            options: chartOptions
+            options: CHART_OPTIONS
         });
 
-        //console.log("stateChartRef=", stateChartRef);
     }
 
     componentDidMount() {
@@ -78,12 +93,16 @@ class StateData extends React.Component {
         this.setState({selectedState: event.target.value})
     }
 
+    handleDateRangeSelection(event) {
+        this.setState({selectedDateRange: event.target.value})
+    }
+
     handleFieldSelection(event) {
         
         const updatedSelectedFields = this.state.selectedFields;
-        const item = event.target.value;
+        const fieldName = event.target.value;
         const isChecked = event.target.checked;
-        updatedSelectedFields[item] = isChecked;
+        updatedSelectedFields[fieldName] = isChecked;
         this.setState({ selectedFields: updatedSelectedFields}); 
 
     }
@@ -93,34 +112,45 @@ class StateData extends React.Component {
     }
 
     render () {
-
-        const allFields = Object.keys(DATA_FIELDS)
-        console.log("allFields", allFields);
-
+    
         return (
             <div className="state-data-history">
-                <div><h2>Covid 19 Data by State</h2></div>
+                <div className="page-header">
+                    <div className="page-title">
+                        <h2>Covid 19 Data by State</h2>
+                    </div>
+                </div>
                 <div className="page-layout">
                     <div className="chart-configuration">
                         <form>
-                            <b>State:</b><br/>
+                            <div className="config-field">State:</div>
                             <select name="state-selection" onChange ={e => this.handleStateSelection(e)}>
                                 <option value="">...select state...</option>
                                 {
-                                    !this.state.statesHistorydata ? null : this.state.statesHistorydata.statesList.map (item => 
+                                    this.state.statesHistorydata.statesList.map (item => 
                                             <option key={item} value={item}>{item}</option>
                                     )
                                 }
-                                
                             </select>
-                        </form>
-                        <form>
-                            <b>Fields:</b>
+                            <br/><br/>
+                            <div className="config-field" >Date Range:</div>
+                            <select name="date-range-selection" onChange ={e => this.handleDateRangeSelection(e)}>
+                                <option value="15">Last 15 Days</option>
+                                <option value="30">Last 30 Days</option>
+                                <option value="45">Last 45 Days</option>
+                                <option value="60">Last 60 Days</option>
+                            </select>
+                            <br/><br/>
+                            <div className="config-field">Data Fields:</div>
                             {
-                                allFields.map( field => 
-                                    <div className="field-option">
-                                        <input onChange={e => this.handleFieldSelection(e)} type="checkbox" name="field-selection" value={DATA_FIELDS[field]} />
-                                        <label>{DATA_FIELDS[field]}</label> 
+                                DATA_FIELD_VALUES.map( field => 
+                                    <div className="field-option" key={field}>
+                                        <input type="checkbox" name="field-selection" 
+                                            onChange={e => this.handleFieldSelection(e)} 
+                                            value={field}
+                                            checked = {!this.state.selectedFields[field] ? false : true}
+                                        />
+                                        <label>{field}</label> 
                                     </div>
                                 )
                             }
@@ -130,6 +160,10 @@ class StateData extends React.Component {
                     <div className="chart-container">
                         <canvas id="myChart" ref={this.chartRef} />
                     </div>
+                </div>
+                <div className="page-footer">
+                    <p>Visual Representation of the data collection by</p>
+                    <p>Covid Tracking Data @ https://covidtracking.com/</p>
                 </div>
             </div>
         )

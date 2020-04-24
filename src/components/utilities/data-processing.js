@@ -30,7 +30,7 @@ export const refreshData = () => {
     stateHistoryData.statesList = stateHistoryData.data.map(item => item.state)
         .filter((value, index, self) => self.indexOf(value) === index);
     
-    console.log('getFreshData() stateHistoryData=',stateHistoryData);
+    console.log('getFreshData() ',stateHistoryData.lastUpdated);
 
     return stateHistoryData;
 
@@ -38,9 +38,22 @@ export const refreshData = () => {
 
 export const getDatesFromData = (stateData) => {
 
-    return stateData.map(item => item.date)
+    //Get unique set of dates in dataset
+    const datesList = stateData.map(item => item.date)
         .filter((value, index, self) => self.indexOf(value) === index);
 
+    const newDateList = [];
+
+    // Convert to nicer format for chart display
+    datesList.forEach(item => {
+        var dateString = String(item);
+        var month = Number(dateString.substring(4,6));
+        var day = Number(dateString.substring(6,8));
+
+        newDateList.push(month + "/" + day);
+    });
+
+    return newDateList;
 }
 
 export const setStatesList = () => {
@@ -68,53 +81,6 @@ export const getHistoryByState = (state, startFromDate) => {
     
 }    
 
-export const getStatePlotData = (stateData) => {
-    
-    const hospitalizedCurrently = [];
-    const inIcuCurrently = [];
-    const onVentilatorCurrently = [];
-    const death = [];
-
-    stateData.forEach(state => {
-
-        //const date = state.date;
-
-        hospitalizedCurrently.push(!state.hospitalizedCurrently? 0 : state.hospitalizedCurrently);
-        inIcuCurrently.push(!state.inIcuCurrently ? 0 : state.inIcuCurrently);
-        onVentilatorCurrently.push(!state.onVentilatorCurrently ? 0 : state.onVentilatorCurrently);
-        death.push(!state.death ? 0 : state.death);
-    })
-
-    return [
-        {
-            label: 'Currently Hospitalized',
-            fill: false,
-            backgroundColor: 'green',
-            borderColor: 'green',
-            data: hospitalizedCurrently
-        }
-        ,{
-            label: 'Currently In ICU',
-            fill: false,
-            backgroundColor: 'red',
-            borderColor: 'red',
-            data: inIcuCurrently
-        },{
-            label: 'Currently On Ventilators',
-            fill: false,
-            backgroundColor: 'yellow',
-            borderColor: 'yellow',
-            data: onVentilatorCurrently
-        },
-        {
-            label: 'Deaths',
-            fill: false,
-            backgroundColor: 'black',
-            borderColor: 'black',
-            data: death
-        }
-      ]
-}
 
 export const getChartDataset = (stateData, fieldNames) => {
 

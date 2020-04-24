@@ -1,29 +1,33 @@
-export const DATA_FIELDS = {
+export const DATA_FIELD_VALUES = [
 
-    POSITIVE: "positive",
-    NEGATIVE: "negative",
-    PENDING: "pending",
-    HOSPITALIZED_CURRENTLY : "hospitalizedCurrently",
-    HOSPITALIZED_CUMULATIVE : "hospitalizedCumulative",
-    IN_ICU_CURRENTLY: "inIcuCurrently",
-    IN_ICU_CUMULATIVE: "inIcuCumulative",
-    ON_VENTILATOR_CURRENTLY: "onVentilatorCurrently",
-    ON_VENTILATOR_CUMULATIVE: "onVentilatorCumulative",
-    RECOVERED: "recovered",
-    DEATH: "death",
-    HOSPITALIZED: "hospitalized",
-    TOTAL_TEST_RESULTS: "totalTestResults",
-    DEATH_INCREASE: "deathIncrease",
-    HOSPITALIZED_INCREASE: "hospitalizedIncrease",
-    NEGATIVE_INCREASE: "negativeIncrease",
-    POSITIVE_INCREASE: "positiveIncrease",
-    TOTAL_TEST_RESULTS_INCREASE: "totalTestResultsIncrease"
-}
+    "positive",
+    "negative",
+    "totalTestResults",
+    
+    "pending",
+
+    "hospitalizedCurrently",
+    "inIcuCurrently",
+    "onVentilatorCurrently",
+    
+    "hospitalizedCumulative",
+    "inIcuCumulative",
+    "onVentilatorCumulative",
+    
+    "recovered",
+    "death",
+    "hospitalized",
+    
+    "deathIncrease",
+    "hospitalizedIncrease",
+    "negativeIncrease",
+    "positiveIncrease",
+    "totalTestResultsIncrease"
+]
 
 export const DATA_FIELD_COLORS = [
     '#138E05',
     '#A15B81',
-    '#2E136A',
     '#2E16A6',
     '#146AD4',
     '#A9D422',
@@ -35,6 +39,7 @@ export const DATA_FIELD_COLORS = [
     '#A5CA71',
     '#983538',
     '#082BD9',
+    '#2E136A',
     '#05BB78',
     '#44A4AD',
     '#28FD7E',
