@@ -2,14 +2,29 @@
     margin: auto;
     text-align: center;
     font-family: "open sans", Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.page-layout {
+    display: flex;
+    margin: auto;
+    text-align: center;
 }
 
 .chart-container {
-    width: 100%;
+    width: 80%;
     height: auto;
     max-width: 900px;
     background: white;
-    padding: 30px 20px 10px 20px;
+    padding: 5px;
     border-radius: 10px;
-    margin: auto;
+    margin: 0 auto;
+}
+
+.chart-configuration {
+    width: 15%;
+    min-width: 170px;
+    text-align: left;
+    padding-left: 20px;
+    padding-right: 10px;
 }

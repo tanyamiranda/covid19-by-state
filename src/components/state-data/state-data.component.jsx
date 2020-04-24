@@ -23,6 +23,7 @@ class StateData extends React.Component {
 
         this.state = {
             selectedState:"",
+            selectedFields: [],
             statesHistorydata:  getStateHistoryData()
         }
     }
@@ -30,22 +31,23 @@ class StateData extends React.Component {
     loadChart() {
         console.log("loadChart()...");
         
-        const {selectedState} = this.state;
+        const {selectedState, selectedFields} = this.state;
 
-        console.log("selectedState=",selectedState);
+        //console.log("selectedState=",selectedState);
+        //console.log("selectedFields=",selectedFields);
+
+        //Filter out only fields that the user selected
+        const identifiers = Object.keys(selectedFields)
+        const fields = identifiers.filter(function(id) {
+            return selectedFields[id]
+        })
 
         const chartOptions = CHART_OPTIONS;
 
         const stateData = getHistoryByState(selectedState, 20200401);
         //console.log("stateData=",stateData);
         
-        const dataFields = [
-            DATA_FIELDS.HOSPITALIZED_CURRENTLY, 
-            DATA_FIELDS.IN_ICU_CURRENTLY, 
-            DATA_FIELDS.ON_VENTILATOR_CURRENTLY, 
-            DATA_FIELDS.DEATH
-        ];
-        const chartDataSet = getChartDataset(stateData, dataFields);
+        const chartDataSet = getChartDataset(stateData, fields);
         console.log("chartDataSet=",chartDataSet);
 
         //const dateList = getDatesFromData(stateData);
@@ -72,8 +74,18 @@ class StateData extends React.Component {
         this.loadChart();
     }
 
-    handSelection(event) {
+    handleStateSelection(event) {
         this.setState({selectedState: event.target.value})
+    }
+
+    handleFieldSelection(event) {
+        
+        const updatedSelectedFields = this.state.selectedFields;
+        const item = event.target.value;
+        const isChecked = event.target.checked;
+        updatedSelectedFields[item] = isChecked;
+        this.setState({ selectedFields: updatedSelectedFields}); 
+
     }
 
     componentDidUpdate() {
@@ -82,24 +94,42 @@ class StateData extends React.Component {
 
     render () {
 
+        const allFields = Object.keys(DATA_FIELDS)
+        console.log("allFields", allFields);
+
         return (
             <div className="state-data-history">
                 <div><h2>Covid 19 Data by State</h2></div>
-                <div className="state-form">
-                    <form>
-                        <select name="state-selection" onChange ={e => this.handSelection(e)}>
-                            <option value="">...select state...</option>
+                <div className="page-layout">
+                    <div className="chart-configuration">
+                        <form>
+                            <b>State:</b><br/>
+                            <select name="state-selection" onChange ={e => this.handleStateSelection(e)}>
+                                <option value="">...select state...</option>
+                                {
+                                    !this.state.statesHistorydata ? null : this.state.statesHistorydata.statesList.map (item => 
+                                            <option key={item} value={item}>{item}</option>
+                                    )
+                                }
+                                
+                            </select>
+                        </form>
+                        <form>
+                            <b>Fields:</b>
                             {
-                                !this.state.statesHistorydata ? null : this.state.statesHistorydata.statesList.map (item => 
-                                        <option key={item} value={item}>{item}</option>
+                                allFields.map( field => 
+                                    <div className="field-option">
+                                        <input onChange={e => this.handleFieldSelection(e)} type="checkbox" name="field-selection" value={DATA_FIELDS[field]} />
+                                        <label>{DATA_FIELDS[field]}</label> 
+                                    </div>
                                 )
                             }
                             
-                        </select>
-                    </form>
-                </div>
-                <div className="chart-container">
-                    <canvas id="myChart" ref={this.chartRef} />
+                        </form>
+                    </div>
+                    <div className="chart-container">
+                        <canvas id="myChart" ref={this.chartRef} />
+                    </div>
                 </div>
             </div>
         )
