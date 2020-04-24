@@ -1,0 +1,26 @@
+{
+    "date":20200422,
+    "state":"NJ",
+    "positive":95865,
+    "negative":95794,
+    "pending":null,
+    "hospitalizedCurrently":7210,
+    "hospitalizedCumulative":null,
+    "inIcuCurrently":1983,
+    "inIcuCumulative":null,
+    "onVentilatorCurrently":1570,
+    "onVentilatorCumulative":null,
+    "recovered":null,
+    "hash":"b551e40bb5a294b994122858cdd140c1f2b81fb1",
+    "dateChecked":"2020-04-22T20:00:00Z",
+    "death":5063,"hospitalized":null,
+    "total":191659,         <----- DEPRICATE
+    "totalTestResults":191659,
+    "posNeg":191659,        <----- DEPRICATE
+    "fips":"34",
+    "deathIncrease":310,
+    "hospitalizedIncrease":0,
+    "negativeIncrease":3355,
+    "positiveIncrease":3478,
+    "totalTestResultsIncrease":6833
+}
