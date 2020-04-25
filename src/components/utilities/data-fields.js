@@ -1,21 +1,19 @@
 export const DATA_FIELD_VALUES = [
-
+    
     "positive",
     "negative",
     "totalTestResults",
-    
     "pending",
 
     "hospitalizedCurrently",
     "inIcuCurrently",
     "onVentilatorCurrently",
+    "death",
     
     "hospitalizedCumulative",
     "inIcuCumulative",
-    "onVentilatorCumulative",
-    
+    "onVentilatorCumulative",    
     "recovered",
-    "death",
     "hospitalized",
     
     "deathIncrease",
@@ -70,16 +68,13 @@ export const CHART_OPTIONS = {
     }
 }
 
-export const getDefaultFields = () => {
+export const DEFAULTS_FIELDS = [
 
-    const defaultFields = [];
-
-    defaultFields[DATA_FIELD_VALUES[0]] = true;
-    defaultFields[DATA_FIELD_VALUES[1]] = true;
-    defaultFields[DATA_FIELD_VALUES[2]] = true;
-
-    return defaultFields;
-}
+    "hospitalizedCurrently",
+    "inIcuCurrently",
+    "onVentilatorCurrently",
+    "death"
+]
 
 export const STATES = [
     "AK",

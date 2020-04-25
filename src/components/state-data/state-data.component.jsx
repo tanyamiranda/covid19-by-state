@@ -22,15 +22,17 @@ class StateData extends React.Component {
         super();
 
         const defaultFields = [];
-        defaultFields[DATA_FIELD_VALUES[0]] = true;
-        defaultFields[DATA_FIELD_VALUES[1]] = true;
-        defaultFields[DATA_FIELD_VALUES[2]] = true;
+        defaultFields["hospitalizedCurrently"] = true;
+        defaultFields["inIcuCurrently"] = true;
+        defaultFields["onVentilatorCurrently"] = true;
+        defaultFields["death"] = true;
         
         this.state = {
-            selectedState:"",
-            selectedDateRange:"15",
+            selectedState:"NJ",
+            selectedDateRange:"30",
             selectedFields: defaultFields,
-            statesHistoryData: null
+            statesHistoryData: null,
+            dataRefreshedTimestamp: ""
         }
     }
 
@@ -86,12 +88,16 @@ class StateData extends React.Component {
 
         console.log("Fetching Data from https://covidtracking.com/api/v1/states/daily.json.");
 
+        const now = new Date();
+        const formatted_date = now.toLocaleString();
+
         try {
             const response = await fetch('https://covidtracking.com/api/v1/states/daily.json');
             if (response.ok) {
                 
                 const json = await response.json();
-                this.setState({statesHistoryData: json})
+                this.setState({statesHistoryData: json});
+                this.setState({dataRefreshedTimestamp: formatted_date});
             }
             else {
                 throw Error(response.statusText);
@@ -127,29 +133,32 @@ class StateData extends React.Component {
     }
 
     render () {
-    
+
         return (
             <div className="state-data-history">
                 <div className="page-header">
                     <div className="page-title">
-                        <h2>Covid 19 Data Charts by State</h2>
+                        <h2>Covid19 Data Charts for U.S. States</h2>
                     </div>
                 </div>
                 <div className="page-layout">
                     <div className="chart-configuration">
                         <form>
+                            <div className="config-field">Data Loaded:</div>
+                            <div>{this.state.dataRefreshedTimestamp}</div>
+                            <br/>
                             <div className="config-field">State:</div>
-                            <select name="state-selection" onChange ={e => this.handleStateSelection(e)}>
+                            <select name="state-selection" onChange ={e => this.handleStateSelection(e)} defaultValue={this.state.selectedState}>
                                 <option value="">...select state...</option>
                                 {
                                     STATES.map (item => 
-                                            <option key={item} value={item}>{item}</option>
+                                            <option key={item} value={item} >{item}</option>
                                     )
                                 }
                             </select>
                             <br/><br/>
                             <div className="config-field" >Date Range:</div>
-                            <select name="date-range-selection" onChange ={e => this.handleDateRangeSelection(e)}>
+                            <select name="date-range-selection" onChange ={e => this.handleDateRangeSelection(e)} defaultValue={this.state.selectedDateRange}>
                                 <option value="15">Last 15 Days</option>
                                 <option value="30">Last 30 Days</option>
                                 <option value="45">Last 45 Days</option>
@@ -171,15 +180,18 @@ class StateData extends React.Component {
                             }
                             
                         </form>
+                        
                     </div>
                     <div className="chart-container">
+                        <div className="chart-title">Data for {this.state.selectedState} last {this.state.selectedDateRange} days</div>
                         <canvas id="myChart" ref={this.chartRef} />
+                        <p><b>** Not All States Report All Data</b></p>
                     </div>
                 </div>
                 <div className="page-footer">
-                    <p>This is a visual representation of the data collection by The COVID Tracking Project</p>
-                    <p>For more info, visit <a href="https://covidtracking.com/">https://covidtracking.com/</a></p>
-                    <p>For field definitions, visit <a href="https://covidtracking.com/api">https://covidtracking.com/api</a></p>
+                    <p>This is a visual representation of the data collected by The COVID Tracking Project</p>
+                    <p>For more info, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>https://covidtracking.com/</span></p>
+                    <p>For field definitions, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/api")}>https://covidtracking.com/api</span></p>
                 </div>
             </div>
         )
