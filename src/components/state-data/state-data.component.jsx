@@ -4,6 +4,8 @@ import "./state-data.css";
 
 import {CHART_OPTIONS, DATA_FIELD_VALUES, STATES} from '../utilities/data-fields';
 
+import ShortDropDown from '../dropdown/dropdown.component';
+
 import {
     getHistoryByState, 
     getChartDataset, 
@@ -148,14 +150,7 @@ class StateData extends React.Component {
                             <div>{this.state.dataRefreshedTimestamp}</div>
                             <br/>
                             <div className="config-field">State:</div>
-                            <select name="state-selection" onChange ={e => this.handleStateSelection(e)} defaultValue={this.state.selectedState}>
-                                <option value="">...select state...</option>
-                                {
-                                    STATES.map (item => 
-                                            <option key={item} value={item} >{item}</option>
-                                    )
-                                }
-                            </select>
+                            <ShortDropDown fieldName="states-list" optionList={STATES} defaultSelected={this.state.selectedState} onChangeEvent={this.handleStateSelection.bind(this)} />
                             <br/><br/>
                             <div className="config-field" >Date Range:</div>
                             <select name="date-range-selection" onChange ={e => this.handleDateRangeSelection(e)} defaultValue={this.state.selectedDateRange}>
