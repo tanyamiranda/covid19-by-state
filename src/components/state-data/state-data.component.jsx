@@ -136,6 +136,15 @@ class StateData extends React.Component {
 
     render () {
 
+        const dateRangeListAndLabels = [];
+        dateRangeListAndLabels["15"]= "Last 15 days"
+        dateRangeListAndLabels["30"]= "Last 30 days"
+        dateRangeListAndLabels["45"]= "Last 45 days";
+        dateRangeListAndLabels["60"]= "Last 60 days";
+
+        //const dateRangeList = ["7","15","30", "45", "60"];
+        //const dateRangeLabels = ["Last 7 days","Last 15 days","Last 30 days ", "Last 45 days", "Last 60 days"];
+
         return (
             <div className="state-data-history">
                 <div className="page-header">
@@ -150,15 +159,20 @@ class StateData extends React.Component {
                             <div>{this.state.dataRefreshedTimestamp}</div>
                             <br/>
                             <div className="config-field">State:</div>
-                            <ShortDropDown fieldName="states-list" optionList={STATES} defaultSelected={this.state.selectedState} onChangeEvent={this.handleStateSelection.bind(this)} />
+                            <ShortDropDown 
+                                fieldName="states-list" 
+                                optionList={STATES} 
+                                defaultSelected={this.state.selectedState} 
+                                onChangeEvent={this.handleStateSelection.bind(this)} 
+                            />
                             <br/><br/>
                             <div className="config-field" >Date Range:</div>
-                            <select name="date-range-selection" onChange ={e => this.handleDateRangeSelection(e)} defaultValue={this.state.selectedDateRange}>
-                                <option value="15">Last 15 Days</option>
-                                <option value="30">Last 30 Days</option>
-                                <option value="45">Last 45 Days</option>
-                                <option value="60">Last 60 Days</option>
-                            </select>
+                            <ShortDropDown 
+                                fieldName="date-range-list" 
+                                optionList={Object.keys(dateRangeListAndLabels)} 
+                                labelsList={dateRangeListAndLabels}
+                                defaultSelected={this.state.selectedDateRange} 
+                                onChangeEvent={this.handleDateRangeSelection.bind(this)} />
                             <br/><br/>
                             <div className="config-field">Data Fields:</div>
                             {
