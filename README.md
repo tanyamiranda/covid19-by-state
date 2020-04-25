@@ -1,5 +1,8 @@
 This project takes data from the Covide Tracking site and charts it out using Chart.js.
 
+Hosted on Github:<br/>
+https://tanyamiranda.github.io/covid19-by-state/
+
 ## Resources:
 
 Covid Tracking Data:<br/>
