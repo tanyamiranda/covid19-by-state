@@ -142,9 +142,6 @@ class StateData extends React.Component {
         dateRangeListAndLabels["45"]= "Last 45 days";
         dateRangeListAndLabels["60"]= "Last 60 days";
 
-        //const dateRangeList = ["7","15","30", "45", "60"];
-        //const dateRangeLabels = ["Last 7 days","Last 15 days","Last 30 days ", "Last 45 days", "Last 60 days"];
-
         return (
             <div className="state-data-history">
                 <div className="page-header">
