@@ -2,6 +2,7 @@ import React from 'react';
 
 //import Covid19Chart from './components/covid19chart/covid19chart.component';
 import StateData from './components/state-data/state-data.component';
+//import StateDataChart from './components/state-data/state-data-chart.component';
 
 import './App.css';
 

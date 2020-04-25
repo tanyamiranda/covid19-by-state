@@ -47,6 +47,7 @@ export const DATA_FIELD_COLORS = [
 ];
 
 export const CHART_OPTIONS = {
+    type:"line",
     responsive: true,
     title: { display: false},
     tooltips: {mode: 'index', intersect: false},
@@ -68,3 +69,73 @@ export const CHART_OPTIONS = {
         }]
     }
 }
+
+export const getDefaultFields = () => {
+
+    const defaultFields = [];
+
+    defaultFields[DATA_FIELD_VALUES[0]] = true;
+    defaultFields[DATA_FIELD_VALUES[1]] = true;
+    defaultFields[DATA_FIELD_VALUES[2]] = true;
+
+    return defaultFields;
+}
+
+export const STATES = [
+    "AK",
+    "AL",
+    "AR",
+    "AS",
+    "AZ",
+    "CA",
+    "CO",
+    "CT",
+    "DC",
+    "DE",
+    "FL",
+    "GA",
+    "GU",
+    "HI",
+    "IA",
+    "ID",
+    "IL",
+    "IN",
+    "KS",
+    "KY",
+    "LA",
+    "MA",
+    "MD",
+    "ME",
+    "MI",
+    "MN",
+    "MO",
+    "MP",
+    "MS",
+    "MT",
+    "NC",
+    "ND",
+    "NE",
+    "NH",
+    "NJ",
+    "NM",
+    "NV",
+    "NY",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "PR",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VA",
+    "VI",
+    "VT",
+    "WA",
+    "WI",
+    "WV",
+    "WY"
+]

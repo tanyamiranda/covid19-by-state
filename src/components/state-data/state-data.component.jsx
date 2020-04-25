@@ -2,13 +2,12 @@ import React from 'react';
 import Chart from 'chart.js';
 import "./state-data.css";
 
-import {CHART_OPTIONS, DATA_FIELD_VALUES} from '../utilities/data-fields';
+import {CHART_OPTIONS, DATA_FIELD_VALUES, STATES} from '../utilities/data-fields';
 
 import {
     getHistoryByState, 
     getChartDataset, 
-    getDatesFromData,  
-    getStateHistoryData
+    getDateListFromData
 } from '../utilities/data-processing';
 
 // Necessary to be able to refresh charts
@@ -31,7 +30,7 @@ class StateData extends React.Component {
             selectedState:"",
             selectedDateRange:"15",
             selectedFields: defaultFields,
-            statesHistorydata:  getStateHistoryData()
+            statesHistoryData: null
         }
     }
 
@@ -50,9 +49,7 @@ class StateData extends React.Component {
     
     loadChart() {
 
-        console.log("loadChart()...");
-
-        const {selectedState, selectedFields, selectedDateRange} = this.state;
+        const {statesHistoryData, selectedState, selectedFields, selectedDateRange} = this.state;
 
         var now = new Date();
         now.setDate(now.getDate() - Number(selectedDateRange));
@@ -64,9 +61,9 @@ class StateData extends React.Component {
             return selectedFields[id]
         })
 
-        const stateData = getHistoryByState(selectedState, dateValue); 
+        const stateData = getHistoryByState(statesHistoryData, selectedState, dateValue); 
         const chartDataSet = getChartDataset(stateData, fields);
-        const dateList = getDatesFromData(stateData);
+        const dateList = getDateListFromData(stateData);
         
         // Destroy previous chart if it exists 
         if (typeof currentLineChart !== "undefined") currentLineChart.destroy();
@@ -84,8 +81,26 @@ class StateData extends React.Component {
 
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // Load blank chart as placeholder.
+
+        console.log("Fetching Data from https://covidtracking.com/api/v1/states/daily.json.");
+
+        try {
+            const response = await fetch('https://covidtracking.com/api/v1/states/daily.json');
+            if (response.ok) {
+                
+                const json = await response.json();
+                this.setState({statesHistoryData: json})
+            }
+            else {
+                throw Error(response.statusText);
+            }
+ 
+        } catch (error) {
+            console.log(error);
+        }
+
         this.loadChart();
     }
 
@@ -117,7 +132,7 @@ class StateData extends React.Component {
             <div className="state-data-history">
                 <div className="page-header">
                     <div className="page-title">
-                        <h2>Covid 19 Data by State</h2>
+                        <h2>Covid 19 Data Charts by State</h2>
                     </div>
                 </div>
                 <div className="page-layout">
@@ -127,7 +142,7 @@ class StateData extends React.Component {
                             <select name="state-selection" onChange ={e => this.handleStateSelection(e)}>
                                 <option value="">...select state...</option>
                                 {
-                                    this.state.statesHistorydata.statesList.map (item => 
+                                    STATES.map (item => 
                                             <option key={item} value={item}>{item}</option>
                                     )
                                 }
@@ -162,8 +177,9 @@ class StateData extends React.Component {
                     </div>
                 </div>
                 <div className="page-footer">
-                    <p>Visual Representation of the data collection by</p>
-                    <p>Covid Tracking Data @ https://covidtracking.com/</p>
+                    <p>This is a visual representation of the data collection by The COVID Tracking Project</p>
+                    <p>For more info, visit <a href="https://covidtracking.com/">https://covidtracking.com/</a></p>
+                    <p>For field definitions, visit <a href="https://covidtracking.com/api">https://covidtracking.com/api</a></p>
                 </div>
             </div>
         )
