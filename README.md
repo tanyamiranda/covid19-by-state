@@ -1,4 +1,4 @@
-This project takes data from the Covide Tracking site and charts it out using Chart.js.
+This application displays data from The Covid Tracking Project using Chart.js.
 
 Hosted on Github:<br/>
 https://tanyamiranda.github.io/covid19-by-state/
