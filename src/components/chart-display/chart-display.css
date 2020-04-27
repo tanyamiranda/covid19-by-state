@@ -3,6 +3,19 @@
     height: auto;
     max-width: 950px;
     background: white;
-    border: unset;
     margin: 0 0;
+}
+
+@media only screen and (max-width: 800px) {
+
+    .chart-display {
+        max-width: unset;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+
+    .chart {
+        display:none;
+    }
 }

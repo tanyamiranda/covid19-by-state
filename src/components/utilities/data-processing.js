@@ -86,7 +86,7 @@ export const getFormattedDateForFiltering = (date) => {
 
 export const getFreshData = async() => {
     
-    console.log("Fetching Data from https://covidtracking.com/...");
+    //console.log("Fetching Data from https://covidtracking.com/...");
 
     let historyData = null;
     let stateInfo = null;

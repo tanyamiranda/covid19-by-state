@@ -1,0 +1,58 @@
+
+.mobile-message {
+    display: none;
+}
+
+@media only screen and (max-width: 400px) {
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(90deg);
+        }
+            
+    }
+
+    .mobile-message {
+        
+        margin: auto;
+        display: grid;
+        place-items: center center;
+    }
+
+    .message {
+        padding: 20px 20px; 
+    }    
+
+    .phone {
+        width: 115px;
+        height: 200px;	
+        border: 1px solid black;
+        border-radius: 10%; 
+        padding: 10px;
+        animation: rotate 2s linear;
+        animation-fill-mode: forwards;
+    }
+
+    .phone-screen {
+        width: 95px;
+        height: 160px;
+        margin: 10px 10px;	
+        border: 0.5px solid black;
+
+        
+    }
+
+    .phone-button {
+        width: 20px;
+        height: 20px;
+        margin: auto;
+        border-radius:50%;
+        border: 0.5px solid black;
+        margin-top: 10px;
+    }
+
+   
+}

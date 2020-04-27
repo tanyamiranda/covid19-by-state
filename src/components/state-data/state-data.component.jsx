@@ -8,7 +8,6 @@ import ChartDisplay from '../chart-display/chart-display.component';
 import {getFreshData} from '../utilities/data-processing';
 import Spinner from '../spinner/spinner.component';
 
-
 class StateData extends React.Component {  
 
     constructor() {
@@ -86,7 +85,7 @@ class StateData extends React.Component {
                             selectedFields={selectedFields}
                             stateSelectionHandler={this.handleStateSelection.bind(this)} 
                             dateSelectionHander={this.handleDateRangeSelection.bind(this)}
-                            fieldSelectionHandler={this.handleDateRangeSelection.bind(this)}
+                            fieldSelectionHandler={this.handleFieldSelection.bind(this)}
                         /> 
                         <div className="chart-container">
                             <div className="chart-header">
