@@ -41,13 +41,13 @@ const ChartConfiguration = ({dataRefreshedTimestamp, selectedState, selectedDate
                 <div className="config-field">Data Fields:</div>
                 {
                     DATA_FIELD_VALUES.map( field => 
-                        <div className="field-option" key={field}>
-                            <input type="checkbox" name="field-selection" 
+                        <div key={field}>
+                            <input className="field-option" type="checkbox" name="field-selection" 
                                 onChange={fieldSelectionHandler} 
                                 value={field}
                                 checked = {!selectedFields[field] ? false : true}
                             />
-                            <label>{field}</label> 
+                            <label name="field-selection">{field}</label> 
                         </div>
                     )
                 }

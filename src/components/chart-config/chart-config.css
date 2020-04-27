@@ -12,6 +12,10 @@
     line-height: 2em;
 }
 
+.field-option {
+    vertical-align: middle;
+}
+
 @media only screen and (max-width: 800px) {
     .chart-configuration  { 
         order:2; 

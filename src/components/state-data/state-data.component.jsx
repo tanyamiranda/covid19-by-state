@@ -100,9 +100,10 @@ class StateData extends React.Component {
                             />
 
                             <div className="chart-footer"> 
-                                <span className="site-link" onClick={()=> window.open(stateInformation[selectedState].website)}>{selectedState} COVID19 Website</span>
-                                &nbsp;&nbsp;&bull;&nbsp;&nbsp;<span className="site-link" onClick={()=> window.open('https://www.twitter.com/' + stateInformation[selectedState].twitter)}>Twitter</span>                                   
-                                &nbsp;&nbsp;&bull;&nbsp;&nbsp;Data Quality Grade for {stateInformation[selectedState].name}: &nbsp;&nbsp;<b>{stateInformation[selectedState].grade} **</b>  
+                                Data Quality Grade for {stateInformation[selectedState].name}: &nbsp;&nbsp;<b>{stateInformation[selectedState].grade} **</b> <br/>
+                                <span className="site-link" onClick={()=> window.open(stateInformation[selectedState].website)}>{selectedState} COVID19 Website</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                                <span className="site-link" onClick={()=> window.open('https://www.twitter.com/' + stateInformation[selectedState].twitter)}>Twitter</span>                                   
+                                
                             </div>
                         </div>
                     </div>

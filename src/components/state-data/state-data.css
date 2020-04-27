@@ -43,7 +43,8 @@
 }
 
 .chart-footer {
-    padding-top: 20px;
+    padding-top: 10px;
+    line-height: 1.5em;
 }
 
 .site-link {
@@ -71,7 +72,7 @@
     }
 
     .page-title {
-        font-size: 14pt;
+        font-size: 13pt;
     }
 
 }
