@@ -6,13 +6,9 @@
 @media only screen and (max-width: 400px) {
 
     @keyframes rotate {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(90deg);
-        }
-            
+        0% {transform: rotate(0deg);}
+        75% {transform: rotate(90deg);}
+        100% {transform: rotate(90deg);}
     }
 
     .mobile-message {
@@ -32,7 +28,7 @@
         border: 1px solid black;
         border-radius: 10%; 
         padding: 10px;
-        animation: rotate 2s linear;
+        animation: rotate 2s linear infinite;
         animation-fill-mode: forwards;
     }
 
