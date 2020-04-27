@@ -3,7 +3,7 @@
     display: none;
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 500px) {
 
     @keyframes rotate {
         0% {transform: rotate(0deg);}

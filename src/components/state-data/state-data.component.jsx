@@ -70,9 +70,7 @@ class StateData extends React.Component {
         return (
 
             <div className="state-data-history">
-                <div className="page-title">
-                    <h2>Covid19 Data Charts for U.S. States</h2>
-                </div>
+                <div className="page-title">Covid19 Data Charts for U.S. States</div>
                 { !dataRefreshedTimestamp ? ( 
                     <Spinner />
                 ) : (

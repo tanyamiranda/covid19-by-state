@@ -7,13 +7,13 @@
 
 .page-title {
     text-align: center;
-    padding: 2px;
+    padding: 20px 10px;
     font-family: 'Gruppo', sans-serif;
-    border-bottom: 0.5px solid silver;
-    background: url(https://cdn.pixabay.com/photo/2020/02/15/14/33/network-4851119_1280.jpg);
+    font-size: 20pt;
+    font-weight: bold;
     color: white;
-    font-size: 16pt;
     text-transform: uppercase;
+    background: url(https://cdn.pixabay.com/photo/2020/02/15/14/33/network-4851119_1280.jpg);
 }
 
 .page-layout {
@@ -72,7 +72,7 @@
     }
 
     .page-title {
-        font-size: 13pt;
+        font-size: 16pt;
     }
 
 }
