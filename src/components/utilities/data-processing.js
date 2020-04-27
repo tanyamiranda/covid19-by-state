@@ -1,5 +1,3 @@
-//import STATE_HISTORY_DATA from './state-history-data.json';
-
 import {DATA_FIELD_COLORS} from './data-fields';
 
 export const getDateListFromData = (stateData) => {
@@ -30,7 +28,6 @@ export const getHistoryByState = (stateHistoryData, state, startFromDate) => {
     
 }    
 
-
 export const getChartDataset = (stateData, fieldNames) => {
 
     const fieldDatasets = [];
@@ -54,4 +51,87 @@ export const getChartDataset = (stateData, fieldNames) => {
     });
 
     return fieldDatasets;
+}
+
+
+export const getStatesInfo = (stateInfo) => {
+    
+    const stateNames = []; 
+
+    stateInfo.forEach(data => {
+        stateNames[data.state] = {
+            name: data.name,
+            website: data.covid19Site,
+            twitter: data.twitter,
+            notes: data.notes
+        }
+    })
+    
+    return stateNames;
+}
+
+
+export const getFormattedDateForFiltering = (date) => {
+    var d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    let year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+    return year + month + day;
+}
+
+export const getFreshData = async() => {
+    
+    console.log("Fetching Data from https://covidtracking.com/...");
+
+    let historyData = null;
+    let stateInfo = null;
+
+    try {
+
+        const stateInfoRes = await fetch('https://covidtracking.com/api/v1/states/info.json');
+        if (stateInfoRes.ok) {
+            
+            const json = await stateInfoRes.json();
+            stateInfo = getStatesInfo(json);
+        }
+        else {
+            throw Error(stateInfoRes.statusText);
+        }
+
+        const historicalDataRes = await fetch('https://covidtracking.com/api/v1/states/daily.json');
+        if (historicalDataRes.ok) {
+            
+            const json = await historicalDataRes.json();
+            historyData = json;
+        }
+        else {
+            throw Error(historicalDataRes.statusText);
+        }
+
+        const statesCurrentDataRes = await fetch('https://covidtracking.com/api/v1/states/current.json');
+        if (statesCurrentDataRes.ok) {
+            
+            const json = await statesCurrentDataRes.json();
+            json.forEach(data => {
+                stateInfo[data.state].grade = data.dataQualityGrade
+            });
+        }
+        else {
+            throw Error(statesCurrentDataRes.statusText);
+        }
+
+        return {
+            statesHistoryData: historyData,
+            stateInformation: stateInfo
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+
 }

@@ -5,16 +5,17 @@ export const DATA_FIELD_VALUES = [
     "totalTestResults",
     "pending",
 
+    "death",
+    "recovered",
+    "hospitalized",
+
     "hospitalizedCurrently",
     "inIcuCurrently",
     "onVentilatorCurrently",
-    "death",
-    
+        
     "hospitalizedCumulative",
     "inIcuCumulative",
     "onVentilatorCumulative",    
-    "recovered",
-    "hospitalized",
     
     "deathIncrease",
     "hospitalizedIncrease",
@@ -22,6 +23,13 @@ export const DATA_FIELD_VALUES = [
     "positiveIncrease",
     "totalTestResultsIncrease"
 ]
+
+export const DATE_RANGES = {
+    15: "Last 15 days",
+    30: "Last 30 days",
+    45: "Last 45 days",
+    60: "Last 60 days"
+}
 
 export const DATA_FIELD_COLORS = [
     '#138E05',
@@ -44,93 +52,69 @@ export const DATA_FIELD_COLORS = [
     '#387862'
 ];
 
-export const CHART_OPTIONS = {
-    type:"line",
-    responsive: true,
-    title: { display: false},
-    tooltips: {mode: 'index', intersect: false},
-    hover: {mode: 'nearest', intersect: true},
-    scales: {
-        xAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Day'
-            }
-        }],
-        yAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Value'
-            }
-        }]
-    }
+export const DEFAULT_SELECTED_DATA_FIELDS = {
+
+    "hospitalizedCurrently": true,
+    "inIcuCurrently": true,
+    "onVentilatorCurrently" : true,
+    "death": true
 }
 
-export const DEFAULTS_FIELDS = [
-
-    "hospitalizedCurrently",
-    "inIcuCurrently",
-    "onVentilatorCurrently",
-    "death"
-]
-
-export const STATES = [
-    "AK",
-    "AL",
-    "AR",
-    "AS",
-    "AZ",
-    "CA",
-    "CO",
-    "CT",
-    "DC",
-    "DE",
-    "FL",
-    "GA",
-    "GU",
-    "HI",
-    "IA",
-    "ID",
-    "IL",
-    "IN",
-    "KS",
-    "KY",
-    "LA",
-    "MA",
-    "MD",
-    "ME",
-    "MI",
-    "MN",
-    "MO",
-    "MP",
-    "MS",
-    "MT",
-    "NC",
-    "ND",
-    "NE",
-    "NH",
-    "NJ",
-    "NM",
-    "NV",
-    "NY",
-    "OH",
-    "OK",
-    "OR",
-    "PA",
-    "PR",
-    "RI",
-    "SC",
-    "SD",
-    "TN",
-    "TX",
-    "UT",
-    "VA",
-    "VI",
-    "VT",
-    "WA",
-    "WI",
-    "WV",
-    "WY"
-]
+export const US_STATES_DATA = {
+    AK:"Alaska",
+    AL:"Alabama",
+    AR:"Arkansas",
+    AS:"American Samoa",
+    AZ:"Arizona",
+    CA:"California", 
+    CO:"Colorado", 
+    CT:"Connecticut", 
+    DC:"District Of Columbia",
+    DE:"Delaware", 
+    FL:"Florida", 
+    GA:"Georgia",
+    GU:"Guam", 
+    HI:"Hawaii", 
+    IA:"Iowa", 
+    ID:"Idaho", 
+    IL:"Illinois", 
+    IN:"Indiana", 
+    KS:"Kansas", 
+    KY:"Kentucky", 
+    LA:"Louisiana", 
+    MA:"Massachusetts",
+    MD:"Maryland", 
+    ME:"Maine", 
+    MI:"Michigan",
+    MN:"Minnesota",
+    MO:"Missouri", 
+    MP:"Northern Mariana Islands",
+    MS:"Mississippi", 
+    MT:"Montana", 
+    NC:"North Carolina", 
+    ND:"North Dakota", 
+    NE:"Nebraska", 
+    NH:"New Hampshire", 
+    NJ:"New Jersey", 
+    NM:"New Mexico", 
+    NV:"Nevada", 
+    NY:"New York", 
+    OH:"Ohio", 
+    OK:"Oklahoma", 
+    OR:"Oregon", 
+    PA:"Pennsylvania", 
+    PR:"Puerto Rico", 
+    RI:"Rhode Island",
+    SC:"South Carolina", 
+    SD:"South Dakota", 
+    TN:"Tennessee", 
+    TX:"Texas", 
+    UT:"Utah", 
+    VA:"Virginia", 
+    VI:"US Virgin Islands", 
+    VT:"Vermont", 
+    WA:"Washington", 
+    WI:"Wisconsin", 
+    WV:"West Virginia", 
+    WY:"Wyoming"
+}
