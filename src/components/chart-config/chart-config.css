@@ -25,6 +25,7 @@
     text-transform: capitalize;
     font-style: italic;
     line-height: 2em;
+    padding-top: 5px;
 }
 
 @media only screen and (max-width: 800px) {
