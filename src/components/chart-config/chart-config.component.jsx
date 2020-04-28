@@ -10,7 +10,7 @@ import {
 } from '../utilities/data-fields';
 
 
-const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, stateSelectionHandler, dateSelectionHander, fieldSelectionHandler}) => {
+const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, stateSelectionHandler, dateSelectionHander, fieldSelectionHandler, groupSelectionHandler}) => {
 
     //console.log("selectedState=",selectedState);
     //console.log("selectedFields=",selectedFields);

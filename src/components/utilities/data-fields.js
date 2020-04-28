@@ -1,27 +1,3 @@
-export const DATA_FIELD_VALUES = [
-    
-    "positive",
-    "negative",
-    "pending",
-    "totalTestResults",
-
-    "hospitalizedCurrently",
-    "inIcuCurrently",
-    "onVentilatorCurrently",
-    "death",
-    "recovered",
-    
-    "hospitalizedCumulative",
-    "inIcuCumulative",
-    "onVentilatorCumulative",    
-    
-    "deathIncrease",
-    "hospitalizedIncrease",
-    "negativeIncrease",
-    "positiveIncrease",
-    "totalTestResultsIncrease"
-]
-
 export const DATE_RANGES = {
     15: "Last 15 days",
     30: "Last 30 days",
@@ -52,13 +28,14 @@ export const DATA_FIELD_COLORS = [
 
 export const DEFAULT_SELECTED_DATA_FIELDS = {
 
-    "hospitalizedCurrently": true,
-    "inIcuCurrently": true,
-    "onVentilatorCurrently" : true,
-    "death": true
+    "positive": true,
+    "negative": true,
+    "pending" : true,
+    "totalTestResults": true
 }
 
 export const US_STATES_DATA = {
+    ALL:"All States (default)",
     AK:"Alaska",
     AL:"Alabama",
     AR:"Arkansas",
@@ -147,7 +124,7 @@ export const DATA_FIELD_GROUPS = {
     ]
 };
 
-export const DATA_FIELDS = {
+export const DATA_FIELD_DISPLAY_NAMES = {
     
     positive: "Positive Result",
     negative: "Negative Result",
@@ -167,3 +144,4 @@ export const DATA_FIELDS = {
     positiveIncrease: "Positive Increases",
     totalTestResultsIncrease: "Total Test Results Increases"
 }
+

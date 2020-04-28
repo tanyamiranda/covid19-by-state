@@ -1,25 +1,27 @@
 import React from 'react';
 
-import "./state-data.css";
+import "./covid19-us-dashboard.css";
 
 import {DEFAULT_SELECTED_DATA_FIELDS } from '../utilities/data-fields';
 import ChartConfiguration from '../chart-config/chart-config.component';
-import ChartDisplay from '../chart-display/chart-display.component';
+import StateHistoryChart from '../state-history-chart/state-history-chart.component';
 import {getFreshData} from '../utilities/data-processing';
 import Spinner from '../spinner/spinner.component';
 import MobileMessage from '../mobile-message/mobile-message.component';
+import USHistoryChart from '../us-history-chart/us-history-chart.component';
 
-class StateData extends React.Component {  
+class Covid19UsDashboard extends React.Component {  
 
     constructor() {
         super();
         
         this.state = {
-            selectedState:"NJ",
+            selectedState:"ALL",
             selectedDateRange:"30",
             selectedFields: DEFAULT_SELECTED_DATA_FIELDS,
             statesHistoryData: null,
             stateInformation: null,
+            countryHistoryData: null,
             dataRefreshedTimestamp: ""
         }
     }
@@ -35,6 +37,7 @@ class StateData extends React.Component {
             await this.setState({
                 statesHistoryData: freshData.statesHistoryData,
                 stateInformation: freshData.stateInformation,
+                countryHistoryData: freshData.countryHistoryData,
                 dataRefreshedTimestamp: formatted_date
             });
 
@@ -57,10 +60,26 @@ class StateData extends React.Component {
         this.setState({ selectedFields: updatedSelectedFields}); 
     }
 
+    handleGroupSelection = (event) => {   
+
+        console.log("event.values=", event.values);
+        const fieldGroupList = event.values;
+
+        const selectedGroupList = [];
+
+        fieldGroupList.forEach(fieldName => {
+            selectedGroupList[fieldName] = true;
+        });
+
+        console.log("fieldGroupList=", selectedGroupList)
+        this.setState({ selectedFields: selectedGroupList}); 
+    }
+
     render () {
 
         const{   
             statesHistoryData,
+            countryHistoryData,
             selectedState,
             selectedDateRange,
             selectedFields,
@@ -86,14 +105,31 @@ class StateData extends React.Component {
                                 stateSelectionHandler={this.handleStateSelection.bind(this)} 
                                 dateSelectionHander={this.handleDateRangeSelection.bind(this)}
                                 fieldSelectionHandler={this.handleFieldSelection.bind(this)}
+                                groupSelectionHandler={this.handleGroupSelection.bind(this)}
                             />
                         </div> 
+
+                        {selectedState === "ALL" ? (
+
+                        <div className="chart-container">
+                            <div className="chart-header">
+                                Data for All United States last {selectedDateRange} days
+                            </div>
+                            <USHistoryChart 
+                            countryHistoryData={countryHistoryData} 
+                                selectedDateRange= {selectedDateRange}
+                                selectedFields={selectedFields}
+                            />
+                        </div>
+
+                        ) : (
+
                         <div className="chart-container">
                             <div className="chart-header">
                                 Data for {stateInformation[selectedState].name} last {selectedDateRange} days
                             </div>
                             
-                            <ChartDisplay
+                            <StateHistoryChart
                                 selectedState= {selectedState}
                                 selectedDateRange= {selectedDateRange}
                                 selectedFields={selectedFields}
@@ -107,6 +143,7 @@ class StateData extends React.Component {
                                 
                             </div>
                         </div>
+                        )}
                     </div>
                 )}
                 <div className="page-footer">
@@ -123,4 +160,4 @@ class StateData extends React.Component {
     }
 };
 
-export default StateData;
+export default Covid19UsDashboard;

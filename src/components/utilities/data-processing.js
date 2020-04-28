@@ -90,6 +90,7 @@ export const getFreshData = async() => {
 
     let historyData = null;
     let stateInfo = null;
+    let countryData = null;
 
     try {
 
@@ -125,13 +126,33 @@ export const getFreshData = async() => {
             throw Error(statesCurrentDataRes.statusText);
         }
 
+        const countryDataRes = await fetch('https://covidtracking.com/api/v1/us/daily.json');
+        if (countryDataRes.ok) {
+            
+            const json = await countryDataRes.json();
+            countryData = json;
+        }
+        else {
+            throw Error(countryDataRes.statusText);
+        }
+
         return {
             statesHistoryData: historyData,
-            stateInformation: stateInfo
+            stateInformation: stateInfo,
+            countryHistoryData: countryData
         }
 
     } catch (error) {
         console.log(error);
     }
+}
 
+export const getCountryHistoryData = (countryHistoryData, startFromDate) => {
+
+    return countryHistoryData
+        .filter(data => data.date >= startFromDate )
+        .sort(function (a, b) {
+            return a.date - b.date;
+        });
+    
 }

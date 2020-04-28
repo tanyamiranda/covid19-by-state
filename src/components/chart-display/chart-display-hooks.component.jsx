@@ -3,48 +3,17 @@
  * Canvas won't clear before Chart.js loads the next chart. 
  * Saving this to work on later. Seems to be an issue with using
  * Chart.js with Hooks and as a component where the data updates 
- * are happening in the parent component.
+ * are happening in the parent component. The canvas is not 
+ * being cleared before it is reloaded. 
  * *************************************************************
  */
-
 
 import React, { useRef, useState, useEffect}from 'react'
 import ChartJs from 'chart.js';
 
 import './chart-display.css';
 
-import {
-    getHistoryByState, 
-    getChartDataset, 
-    getDateListFromData,
-    getFormattedDateForFiltering
-} from '../utilities/data-processing';
-
-const CHART_OPTIONS = {
-    responsive: true,
-    title: { display: false},
-    tooltips: {mode: 'index', intersect: false},
-    hover: {mode: 'nearest', intersect: true},
-    scales: {
-        xAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Day'
-            }
-        }],
-        yAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Value'
-            }
-        }]
-    }
-}
-
-
-const ChartDisplay  = ({statesHistoryData, selectedState, selectedFields, selectedDateRange}) => {
+const ChartDisplayHooks  = ({chartType, chartOptions, chartLabels, chartDataSet}) => {
 
     const chartContainer = useRef(null);
     const [chartInstance, setChartInstance] = useState(null);
@@ -56,56 +25,29 @@ const ChartDisplay  = ({statesHistoryData, selectedState, selectedFields, select
 
     useEffect(() => {
         
-        if (chartContainer && chartContainer.current && statesHistoryData) {
+        if (chartContainer && chartContainer.current) {
 
             console.log("Chart useEffect()...");
             console.log("chartInstance=",chartInstance);
             console.log("chartContainer=",chartContainer);
             console.log("chartContainer.current=",chartContainer.current);
-            //console.log("statesHistoryData=",statesHistoryData);
-            //console.log("selectedState=",selectedState);
-            //console.log("selectedFields=",selectedFields);
-            //console.log("selectedDateRange=",selectedDateRange);
 
-            var now = new Date();
-            now.setDate(now.getDate() - Number(selectedDateRange));
-            const dateValue = getFormattedDateForFiltering(now);
-            
-            //Filter out only fields that the user selected
-            const identifiers = Object.keys(selectedFields)
-            const fields = identifiers.filter(function(id) {
-                return selectedFields[id]
-            })
-
-            const stateData = getHistoryByState(statesHistoryData, selectedState, dateValue); 
-            const chartDataSet = getChartDataset(stateData, fields);
-            const dateList = getDateListFromData(stateData);
             
             const chartConfig = {
-                type: 'line',
+                type: chartType,
                 data: {
-                    labels: dateList
-                    /*,
-                    datasets: chartDataSet*/
+                    labels: chartLabels,
+                    datasets: chartDataSet
                 },
-                options: CHART_OPTIONS
+                options: chartOptions
               };
             
               
             const newChartInstance = new ChartJs(chartContainer.current, chartConfig);
-            newChartInstance.clear();
-            newChartInstance.data.datasets = chartDataSet; 
-            newChartInstance.update();
             setChartInstance(newChartInstance);
-            
+            //console.log("chartInstance=",chartInstance);
         }
-    }, [chartContainer,statesHistoryData, selectedState, selectedFields, selectedDateRange]);
-
-  
-    const updateDataset = (datasetIndex, newData) => {
-        chartInstance.data.datasets[datasetIndex].data = newData;
-        chartInstance.update();
-    };
+    }, [chartContainer,chartInstance,chartType, chartOptions, chartLabels, chartDataSet]);
 
     return (
         <div className="chart-container">
@@ -114,4 +56,4 @@ const ChartDisplay  = ({statesHistoryData, selectedState, selectedFields, select
     )
 }
 
-export default ChartDisplay;
+export default ChartDisplayHooks;

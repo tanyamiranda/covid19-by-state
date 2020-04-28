@@ -3,36 +3,6 @@ import Chart from 'chart.js';
 
 import './chart-display.css';
 
-import {
-    getHistoryByState, 
-    getChartDataset, 
-    getDateListFromData,
-    getFormattedDateForFiltering
-} from '../utilities/data-processing';
-
-const CHART_OPTIONS = {
-    responsive: true,
-    title: { display: false},
-    tooltips: {mode: 'index', intersect: false},
-    hover: {mode: 'nearest', intersect: true},
-    scales: {
-        xAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Day'
-            }
-        }],
-        yAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Value'
-            }
-        }]
-    }
-}
-
 // Necessary to be able to refresh charts
 let currentLineChart;
 
@@ -42,30 +12,13 @@ class ChartDisplay extends React.Component {
     
     loadChart() {
 
-        const {statesHistoryData, selectedState, selectedFields, selectedDateRange} = this.props;
-
-        if (!statesHistoryData)
-            return;
+        const {chartType, chartOptions, chartLabels, chartDataSet} = this.props;
 
         //console.log("loadChart()...");
-        //console.log("statesHistoryData=",statesHistoryData);
-        //console.log("selectedState=",selectedState);
-        //console.log("selectedFields=",selectedFields);
-        //console.log("selectedDateRange=",selectedDateRange);
-
-        var now = new Date();
-        now.setDate(now.getDate() - Number(selectedDateRange));
-        const dateValue = getFormattedDateForFiltering(now);
-        
-        //Filter out only fields that the user selected
-        const identifiers = Object.keys(selectedFields)
-        const fields = identifiers.filter(function(id) {
-            return selectedFields[id]
-        })
-
-        const stateData = getHistoryByState(statesHistoryData, selectedState, dateValue); 
-        const chartDataSet = getChartDataset(stateData, fields);
-        const dateList = getDateListFromData(stateData);
+        //console.log("chartType=",chartType);
+        //console.log("chartOptions=",chartOptions);
+        //console.log("chartLabels=",chartLabels);
+        //console.log("chartDataset=",chartDataSet);
         
         // Destroy previous chart if it exists 
         if (typeof currentLineChart !== "undefined") currentLineChart.destroy();
@@ -73,12 +26,12 @@ class ChartDisplay extends React.Component {
         const stateChartRef = this.chartRef.current.getContext("2d");
 
         currentLineChart = new Chart(stateChartRef, {
-            type: "line",
+            type: chartType,
             data: {
-                labels: dateList,
+                labels: chartLabels,
                 datasets: chartDataSet
             },
-            options: CHART_OPTIONS
+            options: chartOptions
         });
 
     }
