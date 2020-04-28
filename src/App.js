@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Covid19UsDashboard from './components/covid19-us-dashboard/covid19-us-dashboard.component';
+import Covid19UsDashboard from './components/dashboard/dashboard.component';
 
 import './App.css';
 

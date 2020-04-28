@@ -1,10 +1,15 @@
 /***************************************************************
- * This Loads but flickers between new chart and previous chart. 
- * Canvas won't clear before Chart.js loads the next chart. 
- * Saving this to work on later. Seems to be an issue with using
- * Chart.js with Hooks and as a component where the data updates 
- * are happening in the parent component. The canvas is not 
- * being cleared before it is reloaded. 
+ * This loads but flickers between new chart and previous chart
+ * whenever a user updates data and then  hovers over any part 
+ * of the new chart.
+ *  
+ * Saving this to work on later. 
+ * 
+ * Seems to be an issue with using Chart.js with Hooks and as 
+ * a functional component where the data values are updated 
+ * in the parent component instead of in the same component as
+ * the chart. The canvas does not seem to be cleared 
+ * before the new chart is loaded. 
  * *************************************************************
  */
 
@@ -13,7 +18,7 @@ import ChartJs from 'chart.js';
 
 import './chart-display.css';
 
-const ChartDisplayHooks  = ({chartType, chartOptions, chartLabels, chartDataSet}) => {
+const ChartDisplayHooks = ({chartType, chartOptions, chartLabels, chartDataSet}) => {
 
     const chartContainer = useRef(null);
     const [chartInstance, setChartInstance] = useState(null);

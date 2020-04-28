@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import './state-history-chart.css';
 
+import {US_STATES_DATA, CHART_OPTIONS} from '../../utilities/data-fields';
 import ChartDisplay from '../chart-display/chart-display.component';
 
 import {
@@ -9,32 +11,9 @@ import {
     getChartDataset, 
     getDateListFromData,
     getFormattedDateForFiltering
-} from '../utilities/data-processing';
+} from '../../utilities/data-processing';
 
-const CHART_OPTIONS = {
-    responsive: true,
-    title: { display: false},
-    tooltips: {mode: 'index', intersect: false},
-    hover: {mode: 'nearest', intersect: true},
-    scales: {
-        xAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Day'
-            }
-        }],
-        yAxes: [{
-            display: true,
-            scaleLabel: {
-                display: true,
-                labelString: 'Value'
-            }
-        }]
-    }
-}
-
-const StateHistoryChart = ({statesHistoryData, selectedState, selectedFields, selectedDateRange}) => {  
+const StateHistoryChart = ({statesHistoryData, stateInformation, selectedState, selectedFields, selectedDateRange}) => {  
         
     if (!statesHistoryData)
         return;
@@ -48,27 +27,36 @@ const StateHistoryChart = ({statesHistoryData, selectedState, selectedFields, se
     var now = new Date();
     now.setDate(now.getDate() - Number(selectedDateRange));
     const dateValue = getFormattedDateForFiltering(now);
-    
-    //Filter out only fields that the user selected
-    const identifiers = Object.keys(selectedFields)
-    const fields = identifiers.filter(function(id) {
-        return selectedFields[id]
-    })
 
     const stateData = getHistoryByState(statesHistoryData, selectedState, dateValue); 
-    const chartDataSet = getChartDataset(stateData, fields);
+    const chartDataSet = getChartDataset(stateData, selectedFields);
     const dateList = getDateListFromData(stateData);
 
-    
     return (
-           <ChartDisplay 
-           chartType="line"
-           chartOptions = {CHART_OPTIONS}
-           chartLabels = {dateList} 
-           chartDataSet = {chartDataSet}
-        />      
+        <div className="chart-container">
+            <div className="chart-header">Data for {US_STATES_DATA[selectedState]} last {selectedDateRange} days</div>
+            <ChartDisplay 
+            chartType="line"
+            chartOptions = {CHART_OPTIONS}
+            chartLabels = {dateList} 
+            chartDataSet = {chartDataSet}
+            />      
+            <div className="chart-footer"> 
+                Data Quality Grade for {US_STATES_DATA[selectedState]}: &nbsp;&nbsp;<b>{stateInformation[selectedState].grade} **</b> <br/>
+                <span className="site-link" onClick={()=> window.open(stateInformation[selectedState].website)}>{selectedState} COVID19 Website</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                <span className="site-link" onClick={()=> window.open('https://www.twitter.com/' + stateInformation[selectedState].twitter)}>Twitter</span>
+            </div>
+        </div>
     )
 
 };
 
-export default StateHistoryChart;
+const mapStateToProps = state => ({
+    stateInformation: state.chartConfig.stateInformation,
+    statesHistoryData: state.chartConfig.statesHistoryData,
+    selectedState: state.chartConfig.selectedState,
+    selectedDateRange: state.chartConfig.selectedDateRange, 
+    selectedFields: state.chartConfig.selectedFields
+});
+
+export default connect(mapStateToProps)(StateHistoryChart);

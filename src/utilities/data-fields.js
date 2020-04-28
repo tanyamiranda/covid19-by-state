@@ -5,6 +5,29 @@ export const DATE_RANGES = {
     60: "Last 60 days"
 }
 
+export const CHART_OPTIONS = {
+    responsive: true,
+    title: { display: false},
+    tooltips: {mode: 'index', intersect: false},
+    hover: {mode: 'nearest', intersect: true},
+    scales: {
+        xAxes: [{
+            display: true,
+            scaleLabel: {
+                display: true,
+                labelString: 'Day'
+            }
+        }],
+        yAxes: [{
+            display: true,
+            scaleLabel: {
+                display: true,
+                labelString: 'Value'
+            }
+        }]
+    }
+}
+
 export const DATA_FIELD_COLORS = [
     '#138E05',
     '#A15B81',
@@ -25,14 +48,6 @@ export const DATA_FIELD_COLORS = [
     '#28FD7E',
     '#387862'
 ];
-
-export const DEFAULT_SELECTED_DATA_FIELDS = {
-
-    "positive": true,
-    "negative": true,
-    "pending" : true,
-    "totalTestResults": true
-}
 
 export const US_STATES_DATA = {
     ALL:"All States (default)",
@@ -145,3 +160,16 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     totalTestResultsIncrease: "Total Test Results Increases"
 }
 
+export const DEFAULT_SELECTED_DATA_FIELDS = {
+    "positive": true,
+    "negative": true,
+    "pending" : true,
+    "totalTestResults": true
+}
+
+export const DEFAULT_DATA_FIELD = [
+    "positive",
+    "negative",
+    "pending",
+    "totalTestResults"
+]

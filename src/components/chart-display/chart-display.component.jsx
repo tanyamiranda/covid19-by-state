@@ -3,7 +3,7 @@ import Chart from 'chart.js';
 
 import './chart-display.css';
 
-// Necessary to be able to refresh charts
+// Necessary to be able to clear previous charts
 let currentLineChart;
 
 class ChartDisplay extends React.Component {  
