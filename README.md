@@ -12,5 +12,5 @@ Chart.js Documentation:<br/>
 https://www.chartjs.org/docs/latest/
 
 Chart.js on NPM & Yarn:<br/> 
-https://www.npmjs.com/package/chart.js
+https://www.npmjs.com/package/chart.js <br/>
 https://classic.yarnpkg.com/en/package/chart.js
