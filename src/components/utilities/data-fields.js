@@ -2,17 +2,15 @@ export const DATA_FIELD_VALUES = [
     
     "positive",
     "negative",
-    "totalTestResults",
     "pending",
-
-    "death",
-    "recovered",
-    "hospitalized",
+    "totalTestResults",
 
     "hospitalizedCurrently",
     "inIcuCurrently",
     "onVentilatorCurrently",
-        
+    "death",
+    "recovered",
+    
     "hospitalizedCumulative",
     "inIcuCumulative",
     "onVentilatorCumulative",    
@@ -117,4 +115,55 @@ export const US_STATES_DATA = {
     WI:"Wisconsin", 
     WV:"West Virginia", 
     WY:"Wyoming"
+}
+
+
+export const DATA_FIELD_GROUPS = {
+    
+    testing:[
+        "positive",
+        "negative",
+        "pending",
+        "totalTestResults"
+    ],
+    patient: [
+        "hospitalizedCurrently",
+        "inIcuCurrently",
+        "onVentilatorCurrently",
+        "death",
+        "recovered"
+    ],
+    cumulative: [
+        "hospitalizedCumulative",
+        "inIcuCumulative",
+        "onVentilatorCumulative"
+    ],
+    increase: [
+        "deathIncrease",
+        "hospitalizedIncrease",
+        "negativeIncrease",
+        "positiveIncrease",
+        "totalTestResultsIncrease"
+    ]
+};
+
+export const DATA_FIELDS = {
+    
+    positive: "Positive Result",
+    negative: "Negative Result",
+    totalTestResults: "Total Test Results",
+    pending: "Pending",
+    death: "Death", 
+    recovered: "Recovered",
+    hospitalizedCurrently: "Currently Hospitalized",
+    inIcuCurrently: "Currently In ICU",
+    onVentilatorCurrently: "Currently On Ventilator",
+    hospitalizedCumulative: "Hospitalized Cumulative",
+    inIcuCumulative: "In ICU Cumulative",
+    onVentilatorCumulative: "On Ventilator Cumulative",    
+    deathIncrease: "Death Increases",
+    hospitalizedIncrease: "Hospitalized Increases",
+    negativeIncrease: "Negative Increases",
+    positiveIncrease: "Positive Increases",
+    totalTestResultsIncrease: "Total Test Results Increases"
 }

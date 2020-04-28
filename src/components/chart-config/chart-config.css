@@ -6,6 +6,11 @@
     padding-right: 10px;
 }
 
+.config-section {
+    padding-bottom: 10px;
+    width: 100%;
+}
+
 .config-field {
     font-weight: bold;
     text-transform: uppercase;
@@ -16,9 +21,28 @@
     vertical-align: middle;
 }
 
+.group {
+    text-transform: capitalize;
+    font-style: italic;
+    line-height: 2em;
+}
+
 @media only screen and (max-width: 800px) {
     .chart-configuration  { 
-        order:2; 
-        padding-top: 20px;
+        width: 90%; 
+        padding: 20px 10px;
+    }
+
+    .field-groups {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-rows: 100px 100px;
+        grid-auto-flow: column;
+    }
+
+    .top-section {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-auto-flow: row;
     }
 }

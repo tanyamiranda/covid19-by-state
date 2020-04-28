@@ -3,7 +3,6 @@ import Chart from 'chart.js';
 
 import './chart-display.css';
 
-import MobileMessage from '../mobile-message/mobile-message.component';
 import {
     getHistoryByState, 
     getChartDataset, 
@@ -95,7 +94,6 @@ class ChartDisplay extends React.Component {
     render () {
         return (
             <div className="chart-display">    
-                <MobileMessage/>                
                 <div className="chart">
                     <canvas id="myChart" ref={this.chartRef} />                        
                 </div>

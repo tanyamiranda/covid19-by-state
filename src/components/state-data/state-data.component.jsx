@@ -7,6 +7,7 @@ import ChartConfiguration from '../chart-config/chart-config.component';
 import ChartDisplay from '../chart-display/chart-display.component';
 import {getFreshData} from '../utilities/data-processing';
 import Spinner from '../spinner/spinner.component';
+import MobileMessage from '../mobile-message/mobile-message.component';
 
 class StateData extends React.Component {  
 
@@ -76,15 +77,17 @@ class StateData extends React.Component {
                 ) : (
 
                     <div className="page-layout">
-                        <ChartConfiguration 
-                            dataRefreshedTimestamp = {dataRefreshedTimestamp}
-                            selectedState= {selectedState}
-                            selectedDateRange= {selectedDateRange}
-                            selectedFields={selectedFields}
-                            stateSelectionHandler={this.handleStateSelection.bind(this)} 
-                            dateSelectionHander={this.handleDateRangeSelection.bind(this)}
-                            fieldSelectionHandler={this.handleFieldSelection.bind(this)}
-                        /> 
+                        <MobileMessage />
+                        <div className="chart-config-container">
+                            <ChartConfiguration 
+                                selectedState= {selectedState}
+                                selectedDateRange= {selectedDateRange}
+                                selectedFields={selectedFields}
+                                stateSelectionHandler={this.handleStateSelection.bind(this)} 
+                                dateSelectionHander={this.handleDateRangeSelection.bind(this)}
+                                fieldSelectionHandler={this.handleFieldSelection.bind(this)}
+                            />
+                        </div> 
                         <div className="chart-container">
                             <div className="chart-header">
                                 Data for {stateInformation[selectedState].name} last {selectedDateRange} days
@@ -107,13 +110,13 @@ class StateData extends React.Component {
                     </div>
                 )}
                 <div className="page-footer">
-                    <p><b>** Data Quality Grade determined by The COVID Tracking Project </b></p>
-                    <p>Not All States Report All Data</p>
-                    <p>Historical Data Refreshed daily at 4:00 PM EST</p>
-                    <p>~ ~ ~</p>
-                    <p>This is a visual representation of the data collected by The COVID Tracking Project</p>
-                    <p>For more info, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>https://covidtracking.com/</span></p>
-                    <p>For field definitions, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/api")}>https://covidtracking.com/api</span></p>
+                    <b>** Data Quality Grade determined by The COVID Tracking Project </b><br/>
+                    Not All States Report All Data<br/>
+                    Historical Data Refreshed daily at 4:00 PM EST<br/>
+                    ~ ~ ~<br/>
+                    This is a visual representation of the data collected by The COVID Tracking Project<br/>
+                    For more info, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>https://covidtracking.com/</span><br/>
+                    For field definitions, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/api")}>https://covidtracking.com/api</span><br/>
                 </div>
             </div>
         )

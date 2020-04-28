@@ -26,7 +26,8 @@
 .page-footer {
     padding:20px;
     border-top: 0.5px solid silver;
-
+    font-size: 10px;
+    line-height: 2em;
 }
 
 .chart-header {
@@ -43,8 +44,9 @@
 }
 
 .chart-footer {
+    font-size: 10px;
     padding-top: 10px;
-    line-height: 1.5em;
+    line-height: 2em;
 }
 
 .site-link {
@@ -62,19 +64,30 @@
         padding-right: 5px;
     }
 
-    .chart-container { 
-        width: 100%;
-        order: 1; 
-        border-bottom: 0.5px solid silver;
-        padding-bottom: 20px;
-        padding-left: 0px;
-        padding-right: 0px;
-    }
-
     .page-title {
         font-size: 16pt;
     }
 
+    .chart-container {
+        order:1; 
+        max-width: unset;
+        width: 100%;
+        border-bottom: 0.5px solid silver;
+        padding-bottom: 20px;
+        padding-left: 0px;
+        padding-right: 1px;
+    }
+
+    .chart-config-container {
+        order:2;
+    }
+
+}
+
+@media only screen and (max-width: 500px) {
+    .chart-container, .chart-config-container {
+        display:none;
+    }
 }
 
 
