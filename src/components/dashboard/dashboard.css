@@ -78,16 +78,17 @@
         padding-right: 1px;
     }
 
-    .chart-config-container {
+    .chart-configuration {
         order:2;
     }
 
 }
 
 @media only screen and (max-width: 500px) {
-    .chart-container, .chart-config-container {
+    .chart-container, .chart-configuration {
         display:none;
     }
+
 }
 
 
