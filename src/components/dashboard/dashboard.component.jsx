@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 
 import "./dashboard.css";
 
-//import {DEFAULT_SELECTED_DATA_FIELDS } from '../../utilities/data-fields';
 import {getFreshData} from '../../utilities/data-processing';
 import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
 import ChartConfiguration from '../chart-config/chart-config.component';
@@ -52,13 +51,9 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
             { !dataRefreshedTimestamp ? ( 
                 <Spinner />
             ) : (
-
                 <div className="page-layout">
                     <MobileMessage />
-                    <div className="chart-config-container">
-                        <ChartConfiguration />
-                    </div> 
-
+                    <ChartConfiguration />
                     {selectedState === "ALL" ? (   
                         <USHistoryChart />
                     ) : (      

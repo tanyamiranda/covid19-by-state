@@ -40,6 +40,11 @@ const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, s
         setFieldSelection(currentSelectedFields);
     }
 
+    const handleGroupSelection = (event) => {        
+        const group = event.target.id;
+        setFieldSelection(DATA_FIELD_GROUPS[group]);
+    }
+
     return (
         <div className="chart-configuration">
             <div className="top-section">
@@ -68,7 +73,7 @@ const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, s
                     fieldGroups.map(group => 
                         
                         <div className="config-field-group" key={group}>
-                            <div className="group">{group} Data </div>
+                            <div className="group site-link" id={group} onClick={handleGroupSelection}>{group} Data</div>
                             {
                             DATA_FIELD_GROUPS[group].map( field => (
                                 <div key={field}>
