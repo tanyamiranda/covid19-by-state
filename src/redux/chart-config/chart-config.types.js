@@ -5,6 +5,6 @@ const ChartConfigTypes = {
 
     SET_COVID19_DATA : "SET_COVID19_DATA"
 
-}
+};
 
 export default ChartConfigTypes;

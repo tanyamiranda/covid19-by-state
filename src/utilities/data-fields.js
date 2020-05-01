@@ -160,13 +160,6 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     totalTestResultsIncrease: "Total Test Results Increases"
 }
 
-export const DEFAULT_SELECTED_DATA_FIELDS = {
-    "positive": true,
-    "negative": true,
-    "pending" : true,
-    "totalTestResults": true
-}
-
 export const DEFAULT_DATA_FIELD = [
     "positive",
     "negative",
