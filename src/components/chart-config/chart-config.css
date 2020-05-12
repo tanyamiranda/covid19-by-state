@@ -47,6 +47,7 @@ select:focus {
     .chart-configuration  { 
         width: 90%; 
         padding: 20px 10px;
+        margin: auto;
     }
 
     .field-groups {

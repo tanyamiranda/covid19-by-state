@@ -31,7 +31,7 @@ const USHistoryChart = ({countryHistoryData, selectedFields, selectedDateRange})
     const dateList = getDateListFromData(countryData);
 
     return (
-        <div className="chart-container">
+        <div className="us-history-chart">
             <div className="chart-header">Data for All United States last {selectedDateRange} days</div>
             <ChartDisplay 
                 chartType="line"

@@ -33,7 +33,7 @@ const StateHistoryChart = ({statesHistoryData, stateInformation, selectedState, 
     const dateList = getDateListFromData(stateData);
 
     return (
-        <div className="chart-container">
+        <div className="state-history-chart">
             <div className="chart-header">Data for {US_STATES_DATA[selectedState]} last {selectedDateRange} days</div>
             <ChartDisplay 
             chartType="line"

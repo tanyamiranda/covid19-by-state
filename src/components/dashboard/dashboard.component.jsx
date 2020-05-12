@@ -48,19 +48,22 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
 
         <div className="state-data-history">
             <div className="page-title">Covid19 Data Charts for U.S. States</div>
-            { !dataRefreshedTimestamp ? ( 
-                <Spinner />
-            ) : (
                 <div className="page-layout">
                     <MobileMessage />
                     <ChartConfiguration />
-                    {selectedState === "ALL" ? (   
-                        <USHistoryChart />
-                    ) : (      
-                        <StateHistoryChart />
-                    )}
+                    <div className="chart-container">
+                        { !dataRefreshedTimestamp ? ( 
+                            <Spinner />
+                        ) : (
+                            selectedState === "ALL" ? 
+                            (   
+                                <USHistoryChart />
+                            ) : (      
+                                <StateHistoryChart />
+                            )
+                        )}
+                    </div>
                 </div>
-            )}
             <div className="page-footer">
                 <b>** Data Quality Grade determined by The COVID Tracking Project </b><br/>
                 Not All States Report All Data<br/>
