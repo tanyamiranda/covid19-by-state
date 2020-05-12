@@ -69,6 +69,8 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 This is a visual representation of the data collected by The COVID Tracking Project<br/>
                 For more info, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>https://covidtracking.com/</span><br/>
                 For field definitions, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/api")}>https://covidtracking.com/api</span><br/>
+                ~ ~ ~<br/>
+                Site built by Tanya Miranda<br/>tanya.miranda@gmail.com
             </div>
         </div>
     

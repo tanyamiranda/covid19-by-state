@@ -50,15 +50,15 @@ const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, s
             <div className="top-section">
                 <div className="config-section">
                     <div className="config-field">State:</div>
-                    <select className="short-drop-down" name="stateSelection" defaultValue={selectedState} onChange={handleStateSelection}>
+                    <select name="stateSelection" defaultValue={selectedState} onChange={handleStateSelection}>
                         {stateKeys.map ((item) => 
                             <option  key={item} value={item} >{US_STATES_DATA[item]}</option>
                         )}
                     </select>
                 </div>
                 <div className="config-section">
-                    <div className="config-field" >Date Range:</div>
-                    <select className="short-drop-down" name="dateRangeSelection" defaultValue={selectedDateRange}  onChange={handleDateRangeSelection}>
+                    <div className="config-field">Date Range:</div>
+                    <select name="dateRangeSelection" defaultValue={selectedDateRange}  onChange={handleDateRangeSelection}>
                         {dateRangeKeys.map ((item) => 
                             <option key={item} value={item} >{DATE_RANGES[item]}</option>
                         )}
@@ -77,12 +77,12 @@ const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, s
                             {
                             DATA_FIELD_GROUPS[group].map( field => (
                                 <div key={field}>
-                                    <input className="field-option" type="checkbox" name="field-selection" 
+                                    <input className="field-option" type="checkbox" name="fieldSelection" 
                                         onChange={handleFieldSelection} 
                                         value={field}
                                         checked = {selectedFields.indexOf(field) === -1 ? false : true}
                                     />
-                                    <label name="field-selection">{field}</label> 
+                                    <label>{field}</label> 
                                 </div>
                             ))
                             }
