@@ -7,6 +7,26 @@
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     }
+    {
+      "src": "covid19data_550x550.png",
+      "type": "image/png",
+      "sizes": "550x550"
+    }
+    {
+      "src": "covid19data_500x500.png",
+      "type": "image/png",
+      "sizes": "500x500"
+    }
+    {
+      "src": "covid19data_250x250.png",
+      "type": "image/png",
+      "sizes": "250x250"
+    }
+    {
+      "src": "covid19data_192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
   ],
   "start_url": ".",
   "display": "standalone",

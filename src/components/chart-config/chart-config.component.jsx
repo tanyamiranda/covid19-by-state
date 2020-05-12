@@ -49,20 +49,22 @@ const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, s
         <div className="chart-configuration">
             <div className="top-section">
                 <div className="config-section">
-                    <div className="config-field">State:</div>
-                    <select name="stateSelection" defaultValue={selectedState} onChange={handleStateSelection}>
-                        {stateKeys.map ((item) => 
-                            <option  key={item} value={item} >{US_STATES_DATA[item]}</option>
-                        )}
-                    </select>
+                    <label className="config-field">State:<br/>
+                        <select name="stateSelection" defaultValue={selectedState} onChange={handleStateSelection}>
+                            {stateKeys.map ((item) => 
+                                <option  key={item} value={item} >{US_STATES_DATA[item]}</option>
+                            )}
+                        </select>
+                    </label>
                 </div>
                 <div className="config-section">
-                    <div className="config-field">Date Range:</div>
-                    <select name="dateRangeSelection" defaultValue={selectedDateRange}  onChange={handleDateRangeSelection}>
-                        {dateRangeKeys.map ((item) => 
-                            <option key={item} value={item} >{DATE_RANGES[item]}</option>
-                        )}
-                    </select>
+                    <label className="config-field">Date Range:<br/>
+                        <select name="dateRangeSelection" defaultValue={selectedDateRange}  onChange={handleDateRangeSelection}>
+                            {dateRangeKeys.map ((item) => 
+                                <option key={item} value={item} >{DATE_RANGES[item]}</option>
+                            )}
+                        </select>
+                    </label>
                 </div>
             </div>
             <div className="config-section">
@@ -77,12 +79,16 @@ const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, s
                             {
                             DATA_FIELD_GROUPS[group].map( field => (
                                 <div key={field}>
-                                    <input className="field-option" type="checkbox" name="fieldSelection" 
-                                        onChange={handleFieldSelection} 
-                                        value={field}
-                                        checked = {selectedFields.indexOf(field) === -1 ? false : true}
-                                    />
-                                    <label>{field}</label> 
+                                    <label>
+                                        <input className="field-option" 
+                                            type="checkbox" 
+                                            name="fieldSelection" 
+                                            onChange={handleFieldSelection} 
+                                            value={field}
+                                            checked = {selectedFields.indexOf(field) === -1 ? false : true}
+                                        />
+                                        {field}
+                                    </label> 
                                 </div>
                             ))
                             }
