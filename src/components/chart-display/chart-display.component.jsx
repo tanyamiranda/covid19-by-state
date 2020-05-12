@@ -13,7 +13,7 @@ const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet}) => {
 
         if (chartContainer && chartContainer.current) {
 
-            console.log("loading chart...");
+            //console.log("loading chart...");
 
             const chartConfig = {
                 type: chartType,
