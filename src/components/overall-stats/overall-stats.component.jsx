@@ -20,12 +20,12 @@ const OverallStats = ({selectedState, stateInformation}) => {
     
     return (
         <div className="overall-stats dashboard-component">
-            <div className="stats-title">Overall Data for {stateInfo.name} </div>
+            <div className="stats-title">{stateInfo.name} Overview</div>
             <div className="links"> 
-                <span className="site-link" onClick={()=> window.open(stateInfo.website)}>State COVID19 Website</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                <span className="site-link" onClick={()=> window.open(stateInfo.website)}>COVID19 Website</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
                 <span className="site-link" onClick={()=> window.open('https://www.twitter.com/' + stateInfo.twitter)}>Twitter</span>
             </div>
-            <div className="estimate">Estimated Population: {Intl.NumberFormat('en-US', {useGrouping: true}).format(stateInfo.estimatedPopulation)}</div>
+            <div>Estimated Population : <span className="estimate">{Intl.NumberFormat('en-US', {useGrouping: true}).format(stateInfo.estimatedPopulation)}</span></div>
             <div className="totals-data">
                 <div className="data-group">
                     <div>Total Tested:</div>

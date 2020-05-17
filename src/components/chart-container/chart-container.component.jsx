@@ -44,7 +44,7 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, s
     const dateList = getDateListFromData(dataSet);
 
     return (
-        <div className="state-history-chart dashboard-component">
+        <div className="chart-container dashboard-component">
             <div className="chart-header">Data for {US_STATES_DATA[selectedState]} last {selectedDateRange} days</div>
             <ChartDisplay 
             chartType="line"
