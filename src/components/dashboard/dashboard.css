@@ -1,10 +1,13 @@
-.state-data-history {
+.dashboard {
     margin: auto;
     text-align: center;
     font-family: "open sans", Arial, Helvetica, sans-serif;
     font-size: 12px;
 }
 
+.page-layout {
+    padding: 10px;
+}
 .page-title {
     text-align: center;
     padding: 20px 10px;
@@ -14,13 +17,6 @@
     color: white;
     text-transform: uppercase;
     background: url(https://cdn.pixabay.com/photo/2020/02/15/14/33/network-4851119_1280.jpg);
-}
-
-.page-layout {
-    display: flex;
-    margin: auto;
-    text-align: center;
-    padding: 20px;
 }
 
 .page-footer {
@@ -37,12 +33,6 @@
     margin: 0;
 }
 
-.chart-container {
-    width: 100%;
-    height: auto;
-    max-width: 950px;
-}
-
 .chart-footer {
     font-size: 10px;
     padding-top: 10px;
@@ -54,42 +44,31 @@
     color: blue;
 }
 
-
-@media only screen and (max-width: 800px) {
-   
-    .page-layout {
-        display: flex; 
-        flex-direction: column;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
-    .page-title {
-        font-size: 16pt;
-    }
-
-    .chart-container {
-        order:1; 
-        max-width: unset;
-        width: 100%;
-        border-bottom: 0.5px solid silver;
-        padding-bottom: 20px;
-        padding-left: 0px;
-        padding-right: 1px;
-    }
-
-    .chart-configuration {
-        order:2;
-    }
-
+.page-footer {
+    background-color: black;
+    color: #cacaca;
 }
 
-@media only screen and (max-width: 500px) {
-    .chart-container, .chart-configuration {
-        display:none;
-    }
-
+.footer-site-link {
+    cursor: pointer;
+    color: lightgreen;
 }
+
+/*
+This style is used by several components contained in the dashboard component. 
+*/
+.dashboard-component {
+    width: 97%;
+    max-width: 800px;
+    text-align: center;
+    line-height: 2em;
+    padding: 5px;
+    border: 0.5px solid silver;
+    border-radius: 10px;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
 
 
 

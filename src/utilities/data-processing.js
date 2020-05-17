@@ -1,4 +1,5 @@
-import {DATA_FIELD_COLORS} from './data-fields';
+import {DATA_FIELD_COLORS,USA_IDENTIFIER} from './data-fields';
+import POPULATION_ESTIMATES from './population-estimates';
 
 export const getDateListFromData = (stateData) => {
 
@@ -18,10 +19,10 @@ export const getDateListFromData = (stateData) => {
     return newDateList;
 }
 
-export const getHistoryByState = (stateHistoryData, state, startFromDate) => {
-
+export const getHistoryByState = (stateHistoryData, state, startDate, endDate) => {
+    
     return stateHistoryData
-        .filter(stateData => stateData.state === state && stateData.date >= startFromDate )
+        .filter(stateData => stateData.state === state && stateData.date >= startDate && stateData.date <= endDate)
         .sort(function (a, b) {
             return a.date - b.date;
         });
@@ -39,6 +40,7 @@ export const getChartDataset = (stateData, fieldNames) => {
             fill: false,
             backgroundColor: DATA_FIELD_COLORS[index],
             borderColor: DATA_FIELD_COLORS[index],
+            borderWidth: 1,
             data: []
         })
     })
@@ -119,11 +121,43 @@ export const getFreshData = async() => {
             
             const json = await statesCurrentDataRes.json();
             json.forEach(data => {
-                stateInfo[data.state].grade = data.dataQualityGrade
+                stateInfo[data.state].dataQualityGrade = data.dataQualityGrade;
+                stateInfo[data.state].totalDeath = data.death;
+                stateInfo[data.state].totalPositive = data.positive;
+                stateInfo[data.state].totalTestResults = data.totalTestResults;
+
+                let population = POPULATION_ESTIMATES[stateInfo[data.state].name];
+                if (population === undefined)
+                    population=-1;
+
+                stateInfo[data.state].estimatedPopulation = population;
             });
         }
         else {
             throw Error(statesCurrentDataRes.statusText);
+        }
+
+
+        const countryCurrentDataRes = await fetch('https://covidtracking.com/api/v1/us/current.json');
+        if (countryCurrentDataRes.ok) {
+            
+            const json = await countryCurrentDataRes.json();
+            
+            json.forEach(data => {    
+                stateInfo[USA_IDENTIFIER] = {
+                    estimatedPopulation: POPULATION_ESTIMATES[USA_IDENTIFIER],
+                    totalPositive: data.positive,
+                    totalDeath: data.death,
+                    totalTestResults: data.totalTestResults,
+                    name: "United States",
+                    dataQualityGrade: "N/A",
+                    twitter:"https://twitter.com/CDCgov",
+                    website:"https://www.cdc.gov/coronavirus/2019-ncov/index.html"
+                }
+            });
+        }
+        else {
+            throw Error(countryCurrentDataRes.statusText);
         }
 
         const countryDataRes = await fetch('https://covidtracking.com/api/v1/us/daily.json');
@@ -147,12 +181,13 @@ export const getFreshData = async() => {
     }
 }
 
-export const getCountryHistoryData = (countryHistoryData, startFromDate) => {
+export const getCountryHistoryData = (countryHistoryData, startDate, endDate) => {
 
     return countryHistoryData
-        .filter(data => data.date >= startFromDate )
+        .filter(data => data.date >= startDate && data.date <= endDate )
         .sort(function (a, b) {
             return a.date - b.date;
         });
     
 }
+

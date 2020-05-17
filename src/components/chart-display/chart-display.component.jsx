@@ -2,6 +2,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
 
+import './chart-display.css';
+
 // Necessary to be able to clear previous charts
 let currentLineChart;
 
@@ -34,7 +36,7 @@ const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet}) => {
     }, [chartContainer, chartType, chartOptions, chartLabels, chartDataSet]);
     
     return (
-        <div>
+        <div className="chart-display">
             <canvas id={!chartInstance ? "0" : "chart-js-display"} ref={chartContainer} />
         </div>
     );

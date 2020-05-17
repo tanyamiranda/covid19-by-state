@@ -6,10 +6,9 @@ import "./dashboard.css";
 import {getFreshData} from '../../utilities/data-processing';
 import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
 import ChartConfiguration from '../chart-config/chart-config.component';
-import StateHistoryChart from '../state-history-chart/state-history-chart.component';
+import ChartContainer from '../chart-container/chart-container.component';
 import Spinner from '../spinner/spinner.component';
-import MobileMessage from '../mobile-message/mobile-message.component';
-import USHistoryChart from '../us-history-chart/us-history-chart.component';
+import OverallStats from '../overall-stats/overall-stats.component';
 
 const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState, selectedDateRange,selectedFields}) => {  
 
@@ -46,32 +45,23 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
 
     return (   
 
-        <div className="state-data-history">
+        <div className="dashboard">
             <div className="page-title">Covid19 Data Charts for U.S. States</div>
+            { !dataRefreshedTimestamp ? ( 
+                <Spinner />
+            ) : (
                 <div className="page-layout">
-                    <MobileMessage />
                     <ChartConfiguration />
-                    <div className="chart-container">
-                        { !dataRefreshedTimestamp ? ( 
-                            <Spinner />
-                        ) : (
-                            selectedState === "ALL" ? 
-                            (   
-                                <USHistoryChart />
-                            ) : (      
-                                <StateHistoryChart />
-                            )
-                        )}
-                    </div>
+                    <ChartContainer />
+                    <OverallStats/>
                 </div>
+            )}
             <div className="page-footer">
-                <b>** Data Quality Grade determined by The COVID Tracking Project </b><br/>
-                Not All States Report All Data<br/>
-                Historical Data Refreshed daily at 4:00 PM EST<br/>
+                <b>**</b> Data Quality Grade for each state is determined by The COVID Tracking Project<br/>
                 ~ ~ ~<br/>
-                This is a visual representation of the data collected by The COVID Tracking Project<br/>
-                For more info, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>https://covidtracking.com/</span><br/>
-                For field definitions, visit <span className="site-link" onClick={()=> window.open("https://covidtracking.com/api")}>https://covidtracking.com/api</span><br/>
+                Data collected by <span className="footer-site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span><br/>
+                ~ ~ ~<br/>
+                Population Estimates obtained from <span className="footer-site-link" onClick={()=> window.open("https://www.census.gov/programs-surveys/popest.html")}>U.S. Census Bureau</span><br/>
                 ~ ~ ~<br/>
                 Site built by Tanya Miranda<br/>tanya.miranda@gmail.com
             </div>

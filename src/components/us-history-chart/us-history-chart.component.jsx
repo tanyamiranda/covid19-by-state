@@ -22,16 +22,19 @@ const USHistoryChart = ({countryHistoryData, selectedFields, selectedDateRange})
     //console.log("selectedFields=",selectedFields);
     //console.log("selectedDateRange=",selectedDateRange);
 
-    var now = new Date();
+    const now = new Date();
+    const yesterday = new Date();
     now.setDate(now.getDate() - Number(selectedDateRange));
-    const dateValue = getFormattedDateForFiltering(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const startDate = getFormattedDateForFiltering(now);
+    const endDate = getFormattedDateForFiltering(yesterday);
 
-    const countryData = getCountryHistoryData(countryHistoryData, dateValue); 
+    const countryData = getCountryHistoryData(countryHistoryData, startDate, endDate); 
     const chartDataSet = getChartDataset(countryData, selectedFields);
     const dateList = getDateListFromData(countryData);
 
     return (
-        <div className="us-history-chart">
+        <div className="us-history-chart dashboard-component">
             <div className="chart-header">Data for All United States last {selectedDateRange} days</div>
             <ChartDisplay 
                 chartType="line"

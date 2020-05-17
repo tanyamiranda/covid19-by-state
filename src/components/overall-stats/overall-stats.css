@@ -1,0 +1,33 @@
+.overall-stats {
+    line-height: 3em;
+}
+
+.stats-title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.totals-data {
+    width: 99%;
+    max-width: 400px;
+    padding: 10px 0px;
+    margin: auto;
+}
+
+.data-group {
+    margin: auto;
+    display: inline-grid;
+    grid-template-columns: 80px 80px 80px;
+    grid-gap: 10px;
+    text-align: left;
+    border-bottom: 0.5px solid silver;
+}
+
+.data-number {
+    text-align: right;
+}
+
+.percent, .estimate {
+    color:green;
+}
+

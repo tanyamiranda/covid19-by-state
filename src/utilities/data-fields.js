@@ -7,22 +7,42 @@ export const DATE_RANGES = {
 
 export const CHART_OPTIONS = {
     responsive: true,
+    aspectRatio: 1,
+    maintainAspectRatio: false,
     title: { display: false},
     tooltips: {mode: 'index', intersect: false},
     hover: {mode: 'nearest', intersect: true},
+    legend: {position:'top', labels: {boxWidth:5, boxHeight:1}},
+    elements: {
+        point:{
+            radius: 0
+        }
+    },
+    layout: {
+        padding: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+        }},
     scales: {
         xAxes: [{
             display: true,
+            ticks: {
+                callback: function(dataLabel, index) {
+                    // Hide the label of every 2nd dataset. return null to hide the grid line too
+                    return index % 2 === 0 ? dataLabel : '';
+                }
+            },
             scaleLabel: {
-                display: true,
-                labelString: 'Day'
+                display: true
             }
         }],
         yAxes: [{
             display: true,
+            padding:0,
             scaleLabel: {
-                display: true,
-                labelString: 'Value'
+                display: false
             }
         }]
     }
@@ -49,12 +69,13 @@ export const DATA_FIELD_COLORS = [
     '#387862'
 ];
 
+export const USA_IDENTIFIER = "USA";
+
 export const US_STATES_DATA = {
-    ALL:"All States (default)",
+    USA:"United States",
     AK:"Alaska",
     AL:"Alabama",
     AR:"Arkansas",
-    AS:"American Samoa",
     AZ:"Arizona",
     CA:"California", 
     CO:"Colorado", 
@@ -63,7 +84,6 @@ export const US_STATES_DATA = {
     DE:"Delaware", 
     FL:"Florida", 
     GA:"Georgia",
-    GU:"Guam", 
     HI:"Hawaii", 
     IA:"Iowa", 
     ID:"Idaho", 
@@ -78,7 +98,6 @@ export const US_STATES_DATA = {
     MI:"Michigan",
     MN:"Minnesota",
     MO:"Missouri", 
-    MP:"Northern Mariana Islands",
     MS:"Mississippi", 
     MT:"Montana", 
     NC:"North Carolina", 
@@ -100,8 +119,7 @@ export const US_STATES_DATA = {
     TN:"Tennessee", 
     TX:"Texas", 
     UT:"Utah", 
-    VA:"Virginia", 
-    VI:"US Virgin Islands", 
+    VA:"Virginia",
     VT:"Vermont", 
     WA:"Washington", 
     WI:"Wisconsin", 
@@ -112,57 +130,32 @@ export const US_STATES_DATA = {
 
 export const DATA_FIELD_GROUPS = {
     
+    increase: [
+        "deathIncrease",
+        "hospitalizedIncrease",
+        "positiveIncrease"
+    ],
+    hospital: [
+        "hospitalizedCurrently",
+        "inIcuCurrently",
+        "onVentilatorCurrently"
+    ],
     testing:[
         "positive",
         "negative",
         "pending",
         "totalTestResults"
-    ],
-    patient: [
-        "hospitalizedCurrently",
-        "inIcuCurrently",
-        "onVentilatorCurrently",
-        "death",
-        "recovered"
-    ],
-    cumulative: [
-        "hospitalizedCumulative",
-        "inIcuCumulative",
-        "onVentilatorCumulative"
-    ],
-    increase: [
-        "deathIncrease",
-        "hospitalizedIncrease",
-        "negativeIncrease",
-        "positiveIncrease",
-        "totalTestResultsIncrease"
     ]
 };
 
-export const DATA_FIELD_DISPLAY_NAMES = {
-    
-    positive: "Positive Result",
-    negative: "Negative Result",
-    totalTestResults: "Total Test Results",
-    pending: "Pending",
-    death: "Death", 
-    recovered: "Recovered",
-    hospitalizedCurrently: "Currently Hospitalized",
-    inIcuCurrently: "Currently In ICU",
-    onVentilatorCurrently: "Currently On Ventilator",
-    hospitalizedCumulative: "Hospitalized Cumulative",
-    inIcuCumulative: "In ICU Cumulative",
-    onVentilatorCumulative: "On Ventilator Cumulative",    
-    deathIncrease: "Death Increases",
-    hospitalizedIncrease: "Hospitalized Increases",
-    negativeIncrease: "Negative Increases",
-    positiveIncrease: "Positive Increases",
-    totalTestResultsIncrease: "Total Test Results Increases"
-}
-
 export const DEFAULT_DATA_FIELD = [
+    "deathIncrease",
+    "hospitalizedIncrease",
+    "positiveIncrease"
+]
+
+export const  STATE_INFO_JSON_FIELDS = [
+    "dataQualityGrade",
     "positive",
-    "negative",
-    "pending",
-    "totalTestResults"
+    "death"
 ]

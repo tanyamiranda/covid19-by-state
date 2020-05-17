@@ -2,20 +2,22 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import './chart-config.css';
-
+import ConfigSection from '../config-section/config-section.component';
 import {DATE_RANGES,US_STATES_DATA,DATA_FIELD_GROUPS} from '../../utilities/data-fields';
 import {setDateRangeSelection, setStateSelection, setFieldSelection} from '../../redux/chart-config/chart-config.actions';
 
-const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, setStateSelection, setDateRangeSelection, setFieldSelection}) => {
+const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection, setDateRangeSelection, setFieldSelection}) => {
 
     //console.log("ChartConfiguration()...");
     //console.log("selectedState=",selectedState);
     //console.log("selectedDateRange=",selectedDateRange);
     //console.log("selectedFields=",selectedFields);
 
+    const fieldGroupsMap = {};
     const fieldGroups = Object.keys(DATA_FIELD_GROUPS);
-    const dateRangeKeys = Object.keys(DATE_RANGES);
-    const stateKeys = Object.keys(US_STATES_DATA);
+    fieldGroups.forEach(groupName => {
+        fieldGroupsMap[groupName] = groupName + " data set";
+    });
 
     const handleStateSelection = (event) => {
         setStateSelection(event.target.value);
@@ -23,97 +25,45 @@ const ChartConfiguration = ({selectedState, selectedDateRange, selectedFields, s
     const handleDateRangeSelection = (event) => {
         setDateRangeSelection(event.target.value);
     }
-    const handleFieldSelection = (event) => {
-
-        const checkedValue = event.target.checked;
-        const fieldName = event.target.value;
-        let currentSelectedFields = null;
-
-        if (checkedValue) {
-            currentSelectedFields = [...selectedFields];
-            currentSelectedFields.push(fieldName);
-        }
-        else {
-            currentSelectedFields = selectedFields.filter(value => value !== fieldName);
-        }
-
-        setFieldSelection(currentSelectedFields);
-    }
-
-    const handleGroupSelection = (event) => {        
-        const group = event.target.id;
-        setFieldSelection(DATA_FIELD_GROUPS[group]);
+    const handleGroupSelection = (event) => {  
+        setFieldSelection(DATA_FIELD_GROUPS[event.target.value]);
     }
 
     return (
-        <div className="chart-configuration">
+        <div className="chart-configuration dashboard-component">
             <div className="top-section">
-                <div className="config-section">
-                    <label className="config-field">State:<br/>
-                        <select name="stateSelection" defaultValue={selectedState} onChange={handleStateSelection}>
-                            {stateKeys.map ((item) => 
-                                <option  key={item} value={item} >{US_STATES_DATA[item]}</option>
-                            )}
-                        </select>
-                    </label>
-                </div>
-                <div className="config-section">
-                    <label className="config-field">Date Range:<br/>
-                        <select name="dateRangeSelection" defaultValue={selectedDateRange}  onChange={handleDateRangeSelection}>
-                            {dateRangeKeys.map ((item) => 
-                                <option key={item} value={item} >{DATE_RANGES[item]}</option>
-                            )}
-                        </select>
-                    </label>
-                </div>
-            </div>
-            <div className="config-section">
-                <div className="config-field">Data Fields:</div>
-                <div className="field-groups">
-                {
-                    
-                    fieldGroups.map(group => 
-                        
-                        <div className="config-field-group" key={group}>
-                            <div className="group site-link" id={group} onClick={handleGroupSelection}>{group} Data</div>
-                            {
-                            DATA_FIELD_GROUPS[group].map( field => (
-                                <div key={field}>
-                                    <label>
-                                        <input className="field-option" 
-                                            type="checkbox" 
-                                            name="fieldSelection" 
-                                            onChange={handleFieldSelection} 
-                                            value={field}
-                                            checked = {selectedFields.indexOf(field) === -1 ? false : true}
-                                        />
-                                        {field}
-                                    </label> 
-                                </div>
-                            ))
-                            }
-                        </div>
-                    )
-                }
-                </div>
+                <ConfigSection 
+                    fieldName="stateSelection"
+                    fieldDefaultValue = {selectedState}
+                    fieldClickEvent= {handleStateSelection}
+                    fieldDataMap={US_STATES_DATA}
+                />
+                <ConfigSection 
+                    fieldName="dateRangeSelection"
+                    fieldDefaultValue = {selectedDateRange}
+                    fieldClickEvent= {handleDateRangeSelection}
+                    fieldDataMap={DATE_RANGES}
+                />
+                <ConfigSection 
+                    fieldName="datasetSelection"
+                    fieldDefaultValue = ""
+                    fieldClickEvent= {handleGroupSelection}
+                    fieldDataMap={fieldGroupsMap}
+                />
             </div>            
         </div>
     )
-
 };
 
 const mapStateToProps = state => ({
     selectedState: state.chartConfig.selectedState,
-    selectedDateRange: state.chartConfig.selectedDateRange, 
-    selectedFields: state.chartConfig.selectedFields
+    selectedDateRange: state.chartConfig.selectedDateRange
 });
 
 const mapDispatchToProps = dispatch => ({
-
     setStateSelection: (userSelectedState) => dispatch(setStateSelection(userSelectedState)),
     setDateRangeSelection: (userSelectedDateRange) => dispatch(setDateRangeSelection(userSelectedDateRange)),
     setFieldSelection: (userSelectedFields) => dispatch(setFieldSelection(userSelectedFields))
-
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(ChartConfiguration);

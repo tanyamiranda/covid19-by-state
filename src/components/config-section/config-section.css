@@ -1,0 +1,20 @@
+select {
+    text-transform: capitalize;
+    outline: none !important;
+    border: 0.5px solid silver;
+    padding: 3px 2px;
+    width: 130px; 
+    font-size: smaller;
+    margin-right: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px silver;
+}
+
+select:focus {
+    outline: none !important;
+    border: 0.5px solid silver;
+}
+
+.field-label {
+    display: none;
+}
