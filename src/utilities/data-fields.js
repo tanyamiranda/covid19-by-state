@@ -12,7 +12,7 @@ export const CHART_OPTIONS = {
     title: { display: false},
     tooltips: {mode: 'index', intersect: false},
     hover: {mode: 'nearest', intersect: true},
-    legend: {position:'top', labels: {boxWidth:5, boxHeight:1}},
+    legend: {position:'top', labels: {boxWidth:5, fontSize:14, usePointStyle:true}},
     elements: {
         point:{
             radius: 0
@@ -31,7 +31,7 @@ export const CHART_OPTIONS = {
             ticks: {
                 callback: function(dataLabel, index) {
                     // Hide the label of every 2nd dataset. return null to hide the grid line too
-                    return index % 2 === 0 ? dataLabel : '';
+                    return index % 3 === 0 ? dataLabel : '';
                 }
             },
             scaleLabel: {
@@ -43,6 +43,9 @@ export const CHART_OPTIONS = {
             padding:0,
             scaleLabel: {
                 display: false
+            },
+            ticks: {
+                beginAtZero:true
             }
         }]
     }
@@ -73,40 +76,40 @@ export const USA_IDENTIFIER = "USA";
 
 export const US_STATES_DATA = {
     USA:"United States",
-    AK:"Alaska",
     AL:"Alabama",
+    AK:"Alaska",
     AR:"Arkansas",
     AZ:"Arizona",
     CA:"California", 
     CO:"Colorado", 
     CT:"Connecticut", 
-    DC:"District Of Columbia",
-    DE:"Delaware", 
+    DE:"Delaware",
+    DC:"District Of Columbia", 
     FL:"Florida", 
     GA:"Georgia",
     HI:"Hawaii", 
-    IA:"Iowa", 
     ID:"Idaho", 
     IL:"Illinois", 
+    IA:"Iowa", 
     IN:"Indiana", 
     KS:"Kansas", 
     KY:"Kentucky", 
-    LA:"Louisiana", 
-    MA:"Massachusetts",
-    MD:"Maryland", 
-    ME:"Maine", 
+    LA:"Louisiana",
+    ME:"Maine",  
+    MD:"Maryland",
+    MA:"Massachusetts", 
     MI:"Michigan",
     MN:"Minnesota",
-    MO:"Missouri", 
     MS:"Mississippi", 
+    MO:"Missouri", 
     MT:"Montana", 
     NC:"North Carolina", 
     ND:"North Dakota", 
     NE:"Nebraska", 
+    NV:"Nevada",
     NH:"New Hampshire", 
     NJ:"New Jersey", 
-    NM:"New Mexico", 
-    NV:"Nevada", 
+    NM:"New Mexico",  
     NY:"New York", 
     OH:"Ohio", 
     OK:"Oklahoma", 
@@ -119,8 +122,8 @@ export const US_STATES_DATA = {
     TN:"Tennessee", 
     TX:"Texas", 
     UT:"Utah", 
-    VA:"Virginia",
     VT:"Vermont", 
+    VA:"Virginia",
     WA:"Washington", 
     WI:"Wisconsin", 
     WV:"West Virginia", 
@@ -135,7 +138,7 @@ export const DATA_FIELD_GROUPS = {
         "hospitalizedIncrease",
         "positiveIncrease"
     ],
-    hospital: [
+    hospitalization: [
         "hospitalizedCurrently",
         "inIcuCurrently",
         "onVentilatorCurrently"

@@ -14,11 +14,10 @@ import {
     getCountryHistoryData
 } from '../../utilities/data-processing';
 
-const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, selectedFields, selectedDateRange}) => {  
-        
-    if (!statesHistoryData)
-        return;
+//import {setStateHistoryData} from '../../redux/chart-config/chart-config.actions';
 
+const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, selectedFields, selectedDateRange}) => {  
+    
     //console.log("StateHistoryChart...");
     //console.log("stateInformation=",stateInformation);
     //console.log("selectedState=",selectedState);
@@ -36,7 +35,7 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, s
 
     if (selectedState === USA_IDENTIFIER) 
         dataSet = getCountryHistoryData(countryHistoryData, startDate, endDate);
-    else
+    else 
         dataSet = getHistoryByState(statesHistoryData, selectedState, startDate, endDate); 
 
     //const stateData = getHistoryByState(statesHistoryData, selectedState, startDate, endDate); 
@@ -45,13 +44,14 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, s
 
     return (
         <div className="chart-container dashboard-component">
-            <div className="chart-header">Data for {US_STATES_DATA[selectedState]} last {selectedDateRange} days</div>
+            <div className="chart-header"><span>Data for {US_STATES_DATA[selectedState]}</span> <span> last {selectedDateRange} days</span></div>
             <ChartDisplay 
             chartType="line"
             chartOptions = {CHART_OPTIONS}
             chartLabels = {dateList} 
             chartDataSet = {chartDataSet}
-            />                  
+            />
+            <div className="chart-footer">Not all states report Hospitalization Data</div>                  
         </div>
     )
 

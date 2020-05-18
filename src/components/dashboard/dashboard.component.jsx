@@ -8,9 +8,9 @@ import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
 import ChartConfiguration from '../chart-config/chart-config.component';
 import ChartContainer from '../chart-container/chart-container.component';
 import Spinner from '../spinner/spinner.component';
-import OverallStats from '../overall-stats/overall-stats.component';
+import Overview from '../overview/overview.component';
 
-const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState, selectedDateRange,selectedFields}) => {  
+const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp}) => {  
 
     useEffect(() => {
 
@@ -20,13 +20,7 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 if (!dataRefreshedTimestamp) {
                     //console.log("retrievingData()...");
                     const freshData = await getFreshData();
-
-                    const data = {
-                        statesHistoryData: freshData.statesHistoryData,
-                        stateInformation: freshData.stateInformation,
-                        countryHistoryData: freshData.countryHistoryData
-                    };
-                    setCOVID19Data(data);
+                    setCOVID19Data(freshData);
                 }
 
             } catch (error) {
@@ -46,22 +40,22 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
     return (   
 
         <div className="dashboard">
-            <div className="page-title">Covid19 Data Charts for U.S. States</div>
+            <div className="page-title">United States COVID19 Data Charts</div>
             { !dataRefreshedTimestamp ? ( 
                 <Spinner />
             ) : (
                 <div className="page-layout">
                     <ChartConfiguration />
                     <ChartContainer />
-                    <OverallStats/>
+                    <Overview/>
                 </div>
             )}
             <div className="page-footer">
-                <b>**</b> Data Quality Grade for each state is determined by The COVID Tracking Project<br/>
-                ~ ~ ~<br/>
-                Data collected by <span className="footer-site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span><br/>
+                Chart Data obtained from <span className="footer-site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span><br/>
                 ~ ~ ~<br/>
                 Population Estimates obtained from <span className="footer-site-link" onClick={()=> window.open("https://www.census.gov/programs-surveys/popest.html")}>U.S. Census Bureau</span><br/>
+                ~ ~ ~<br/>
+                County-Level Data obtained from <span className="footer-site-link" onClick={()=> window.open("https://github.com/nytimes/covid-19-data/blob/master/live/us-counties.csv")}>N.Y. Times</span><br/>
                 ~ ~ ~<br/>
                 Site built by Tanya Miranda<br/>tanya.miranda@gmail.com
             </div>
@@ -71,10 +65,7 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
 };
 
 const mapStateToProps = state => ({
-    dataRefreshedTimestamp: state.chartConfig.dataRefreshedTimestamp,
-    selectedState: state.chartConfig.selectedState,
-    selectedDateRange: state.chartConfig.selectedDateRange, 
-    selectedFields: state.chartConfig.selectedFields
+    dataRefreshedTimestamp: state.chartConfig.dataRefreshedTimestamp
 });
 
 const mapDispatchToProps = dispatch => ({

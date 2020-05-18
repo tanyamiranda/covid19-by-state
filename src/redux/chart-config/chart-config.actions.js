@@ -20,5 +20,10 @@ export const setCOVID19Data = (data) => ({
     payload: data
 });
 
+export const setStateHistoryData = (data) => ({
+    type : ChartConfigTypes.SET_STATE_HISTORY_DATA,
+    payload: data
+})
+
 
 

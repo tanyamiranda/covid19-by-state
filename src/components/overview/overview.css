@@ -1,0 +1,59 @@
+.overall-stats {
+    line-height: 3em;
+}
+
+.stats-title {
+    font-size: 12pt;
+    text-transform: uppercase;
+}
+
+.totals-data {
+    width: 99%;
+    max-width: 400px;
+    padding: 10px 0px;
+    margin: auto;
+}
+
+.data-group {
+    margin: auto;
+    display: inline-grid;
+    grid-template-columns: 120px 80px 80px;
+    text-align: left;
+    border-bottom: 0.5px solid silver;
+}
+
+.data-number {
+    text-align: right;
+}
+
+.percent, .estimate {
+    color:green;
+}
+
+.county-data-set {
+    display: inline-block;
+}
+
+.county-data {
+    line-height: 2em;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 150px 65px 65px;;
+}
+
+.county-data div{
+    border-bottom: 0.5px solid silver;
+}
+
+.county-data-header{
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+.data-county-name {
+    text-align: left;
+}
+
+.scrollable {
+    overflow: auto;
+}

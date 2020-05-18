@@ -40,7 +40,7 @@ export const getChartDataset = (stateData, fieldNames) => {
             fill: false,
             backgroundColor: DATA_FIELD_COLORS[index],
             borderColor: DATA_FIELD_COLORS[index],
-            borderWidth: 1,
+            borderWidth: 1.5,
             data: []
         })
     })
@@ -54,24 +54,6 @@ export const getChartDataset = (stateData, fieldNames) => {
 
     return fieldDatasets;
 }
-
-
-export const getStatesInfo = (stateInfo) => {
-    
-    const stateNames = []; 
-
-    stateInfo.forEach(data => {
-        stateNames[data.state] = {
-            name: data.name,
-            website: data.covid19Site,
-            twitter: data.twitter,
-            notes: data.notes
-        }
-    })
-    
-    return stateNames;
-}
-
 
 export const getFormattedDateForFiltering = (date) => {
     var d = new Date(date);
@@ -90,90 +72,23 @@ export const getFreshData = async() => {
     
     //console.log("Fetching Data from https://covidtracking.com/...");
 
-    let historyData = null;
-    let stateInfo = null;
-    let countryData = null;
+    let stateHistoryData = [];
+    let stateInformation = [];
+    let countryHistoryData = [];
+    let stateCountyInfo = [];
 
     try {
 
-        const stateInfoRes = await fetch('https://covidtracking.com/api/v1/states/info.json');
-        if (stateInfoRes.ok) {
-            
-            const json = await stateInfoRes.json();
-            stateInfo = getStatesInfo(json);
-        }
-        else {
-            throw Error(stateInfoRes.statusText);
-        }
-
-        const historicalDataRes = await fetch('https://covidtracking.com/api/v1/states/daily.json');
-        if (historicalDataRes.ok) {
-            
-            const json = await historicalDataRes.json();
-            historyData = json;
-        }
-        else {
-            throw Error(historicalDataRes.statusText);
-        }
-
-        const statesCurrentDataRes = await fetch('https://covidtracking.com/api/v1/states/current.json');
-        if (statesCurrentDataRes.ok) {
-            
-            const json = await statesCurrentDataRes.json();
-            json.forEach(data => {
-                stateInfo[data.state].dataQualityGrade = data.dataQualityGrade;
-                stateInfo[data.state].totalDeath = data.death;
-                stateInfo[data.state].totalPositive = data.positive;
-                stateInfo[data.state].totalTestResults = data.totalTestResults;
-
-                let population = POPULATION_ESTIMATES[stateInfo[data.state].name];
-                if (population === undefined)
-                    population=-1;
-
-                stateInfo[data.state].estimatedPopulation = population;
-            });
-        }
-        else {
-            throw Error(statesCurrentDataRes.statusText);
-        }
-
-
-        const countryCurrentDataRes = await fetch('https://covidtracking.com/api/v1/us/current.json');
-        if (countryCurrentDataRes.ok) {
-            
-            const json = await countryCurrentDataRes.json();
-            
-            json.forEach(data => {    
-                stateInfo[USA_IDENTIFIER] = {
-                    estimatedPopulation: POPULATION_ESTIMATES[USA_IDENTIFIER],
-                    totalPositive: data.positive,
-                    totalDeath: data.death,
-                    totalTestResults: data.totalTestResults,
-                    name: "United States",
-                    dataQualityGrade: "N/A",
-                    twitter:"https://twitter.com/CDCgov",
-                    website:"https://www.cdc.gov/coronavirus/2019-ncov/index.html"
-                }
-            });
-        }
-        else {
-            throw Error(countryCurrentDataRes.statusText);
-        }
-
-        const countryDataRes = await fetch('https://covidtracking.com/api/v1/us/daily.json');
-        if (countryDataRes.ok) {
-            
-            const json = await countryDataRes.json();
-            countryData = json;
-        }
-        else {
-            throw Error(countryDataRes.statusText);
-        }
+        stateInformation = await fetchStateData();
+        stateCountyInfo = await fetchCountyData();
+        stateHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/states/daily.json');
+        countryHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/us/daily.json');
 
         return {
-            statesHistoryData: historyData,
-            stateInformation: stateInfo,
-            countryHistoryData: countryData
+            statesHistoryData: stateHistoryData,
+            stateInformation: stateInformation,
+            countryHistoryData: countryHistoryData,
+            stateCountyInfo: stateCountyInfo
         }
 
     } catch (error) {
@@ -191,3 +106,142 @@ export const getCountryHistoryData = (countryHistoryData, startDate, endDate) =>
     
 }
 
+export const fetchJsonData = async(url) => {
+    try{
+
+        let json = null;
+
+        // U.S. States Historical Data
+        const response = await fetch(url);
+        if (response.ok) {
+            json = await response.json();
+        }
+        else {
+            throw Error(response.statusText);
+        }
+        
+        return json;
+    }
+    catch (error) {
+        console.log("fetchJsonData() error!", error);
+    }
+}
+
+const fetchStateData = async() => {
+
+    try {
+        const stateInformation = [];
+
+        // U.S. States Data - 1 record per state
+        const stateInfoRes = await fetch('https://covidtracking.com/api/v1/states/info.json');
+        if (stateInfoRes.ok) {
+            const json = await stateInfoRes.json();
+
+            json.forEach(data => {
+                stateInformation[data.state] = {
+                    name: data.name,
+                    website: data.covid19Site,
+                    twitter: data.twitter
+                }
+            })
+        }
+        else {
+            throw Error(stateInfoRes.statusText);
+        }
+
+        // U.S. States Current Data - 1 record per state
+        const statesCurrentDataRes = await fetch('https://covidtracking.com/api/v1/states/current.json');
+        if (statesCurrentDataRes.ok) {
+            const json = await statesCurrentDataRes.json();
+            json.forEach(data => {
+                stateInformation[data.state].dataQualityGrade = data.dataQualityGrade;
+                stateInformation[data.state].totalDeath = data.death;
+                stateInformation[data.state].totalPositive = data.positive;
+                stateInformation[data.state].totalTestResults = data.totalTestResults;
+                stateInformation[data.state].totalRecovered = data.recovered;
+
+                let population = POPULATION_ESTIMATES[stateInformation[data.state].name];
+                if (population === undefined)
+                    population=-1;
+
+                stateInformation[data.state].estimatedPopulation = population;
+            });
+        }
+        else {
+            throw Error(statesCurrentDataRes.statusText);
+        }
+
+        // U.S. Country-Wide Current Data stored as a record in states data 
+        const countryCurrentDataRes = await fetch('https://covidtracking.com/api/v1/us/current.json');
+        if (countryCurrentDataRes.ok) {
+            const json = await countryCurrentDataRes.json();
+            
+            json.forEach(data => {    
+                stateInformation[USA_IDENTIFIER] = {
+                    estimatedPopulation: POPULATION_ESTIMATES[USA_IDENTIFIER],
+                    totalPositive: data.positive,
+                    totalDeath: data.death,
+                    totalTestResults: data.totalTestResults,
+                    totalRecovered: data.recovered,
+                    name: "United States",
+                    dataQualityGrade: "N/A",
+                    twitter:"https://twitter.com/CDCgov",
+                    website:"https://www.cdc.gov/coronavirus/2019-ncov/index.html"
+                }
+            });
+        }
+        else {
+            throw Error(countryCurrentDataRes.statusText);
+        }
+
+        return stateInformation;
+    }
+    catch (error) {
+        console.log("fetchStateData() error!", error)
+    }
+        
+}
+
+export const fetchCountyData = async() => {
+
+    try {
+        const url = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv"
+        
+        let stateCountyData = [];
+
+        const response = await fetch(url);
+        if (response.ok) {
+            const csvText = await response.text();
+            stateCountyData = parseCountyCSVData(csvText);
+        }
+        else {
+            throw Error(response.statusText);
+        }
+
+        return stateCountyData;
+    }
+    catch (error) {
+        
+    }
+}
+
+//Parsing County Data specific to dataset specs
+function parseCountyCSVData(csv){
+
+    var lines=csv.split("\n");
+
+    var result = [];
+
+    for(var i=1;i<lines.length;i++){
+
+        const currentline=lines[i].split(",");
+        const county = {};
+        county.county = currentline[1];
+        county.stateName = currentline[2];
+        county.cases = currentline[4]
+        county.deaths = currentline[5];
+        result.push(county);
+    }
+
+    return result; 
+}
