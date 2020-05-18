@@ -16,7 +16,7 @@ import {
 
 //import {setStateHistoryData} from '../../redux/chart-config/chart-config.actions';
 
-const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, selectedFields, selectedDateRange}) => {  
+const ChartContainer = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedFields, selectedDateRange}) => {  
     
     //console.log("StateHistoryChart...");
     //console.log("stateInformation=",stateInformation);
@@ -51,7 +51,13 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, s
             chartLabels = {dateList} 
             chartDataSet = {chartDataSet}
             />
-            <div className="chart-footer">Not all states report Hospitalization Data</div>                  
+            { selectedState === USA_IDENTIFIER ? null : (
+            <div className="state-grade"> 
+                <div>Data Quality Grade for {stateInformation[selectedState].name}:  <b>{stateInformation[selectedState].dataQualityGrade}</b></div>
+                <div className="chart-footer">Not all states report Hospitalization Data</div>                  
+            </div>
+            )}
+            
         </div>
     )
 
@@ -60,6 +66,7 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, selectedState, s
 const mapStateToProps = state => ({
     countryHistoryData: state.chartConfig.countryHistoryData,
     statesHistoryData: state.chartConfig.statesHistoryData,
+    stateInformation: state.chartConfig.stateInformation,
     selectedState: state.chartConfig.selectedState,
     selectedDateRange: state.chartConfig.selectedDateRange, 
     selectedFields: state.chartConfig.selectedFields

@@ -25,6 +25,10 @@ const Overview = ({selectedState, stateInformation, stateCountyInfo}) => {
     return (
         <div className="overall-stats dashboard-component">
             <div className="stats-title">{stateInfo.name} Overview</div>
+            <div className="links"> 
+                <span className="site-link" onClick={()=> window.open(stateInfo.website)}>COVID19 Website</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
+                <span className="site-link" onClick={()=> window.open('https://www.twitter.com/' + stateInfo.twitter)}>Twitter</span>
+            </div>
             <div>Estimated Population : <span className="estimate">{formatNumber(stateInfo.estimatedPopulation)} *</span></div>
             <div className="totals-data">
                 <div className="data-group">
@@ -70,17 +74,6 @@ const Overview = ({selectedState, stateInformation, stateCountyInfo}) => {
                 </div>
             </div>
             )}
-
-            { selectedState === USA_IDENTIFIER ? null : (
-            <div className="state-grade"> 
-                <span>Data Quality Grade for {stateInfo.name}:  </span><span><b>{stateInfo.dataQualityGrade}</b></span><br/>
-                Grade determined by <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span>
-            </div>
-            )}
-            <div className="links"> 
-            <span className="site-link" onClick={()=> window.open(stateInfo.website)}>{stateInfo.name} COVID19 Website</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
-                <span className="site-link" onClick={()=> window.open('https://www.twitter.com/' + stateInfo.twitter)}>Twitter</span>
-            </div>
         </div>
     )
 
