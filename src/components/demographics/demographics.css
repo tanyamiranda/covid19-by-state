@@ -1,0 +1,20 @@
+.demo-data {
+    width: 99%;
+    max-width: 400px;
+    margin: auto;
+}
+
+.demo-data-header {
+    font-weight: bold;
+}
+
+.demo-data-row {
+    margin: auto;
+    display: inline-grid;
+    grid-template-columns: 150px 80px;
+    text-align: left;
+    border-bottom: 0.5px solid silver;
+    padding: 5px 0px;
+}
+
+

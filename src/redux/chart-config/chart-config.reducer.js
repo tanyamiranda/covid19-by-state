@@ -6,6 +6,7 @@ const INITIAL_STATE = {
     stateInformation: null,
     countryHistoryData: null,
     stateCountyInfo: null,
+    deathsByAgeGroups: null,
     dataRefreshedTimestamp: null,
     selectedState: null,
     selectedDateRange: null,   
@@ -25,6 +26,7 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
                 stateInformation: action.payload.stateInformation,
                 countryHistoryData: action.payload.countryHistoryData,
                 stateCountyInfo: action.payload.stateCountyInfo,
+                deathsByAgeGroups: action.payload.deathsByAgeGroups,
                 dataRefreshedTimestamp: (new Date()).toLocaleString()
             }
         case ChartConfigTypes.SET_STATE_HISTORY_DATA:

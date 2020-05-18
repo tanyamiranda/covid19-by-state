@@ -10,11 +10,10 @@ import {
     getHistoryByState, 
     getChartDataset, 
     getDateListFromData,
-    getFormattedDateForFiltering,
     getCountryHistoryData
 } from '../../utilities/data-processing';
 
-//import {setStateHistoryData} from '../../redux/chart-config/chart-config.actions';
+import {getFormattedDateForFiltering} from '../../utilities/formatting';
 
 const ChartContainer = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedFields, selectedDateRange}) => {  
     
@@ -43,8 +42,8 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, stateInformation
     const dateList = getDateListFromData(dataSet);
 
     return (
-        <div className="chart-container dashboard-component">
-            <div className="chart-header"><span>Data for {US_STATES_DATA[selectedState]}</span> <span> last {selectedDateRange} days</span></div>
+        <div className="dashboard-component chart-container ">
+            <div className="dashboard-component-title chart-header"><span>Data for {US_STATES_DATA[selectedState]}</span> <span> last {selectedDateRange} days</span></div>
             <ChartDisplay 
             chartType="line"
             chartOptions = {CHART_OPTIONS}
@@ -57,7 +56,9 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, stateInformation
                 <div className="chart-footer">Not all states report Hospitalization Data</div>                  
             </div>
             )}
-            
+            <div className="data-sources">Data:&nbsp;
+                <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span>
+            </div>
         </div>
     )
 

@@ -56,19 +56,6 @@ export const getChartDataset = (stateData, fieldNames) => {
     return fieldDatasets;
 }
 
-export const getFormattedDateForFiltering = (date) => {
-    var d = new Date(date);
-    let month = '' + (d.getMonth() + 1);
-    let day = '' + d.getDate();
-    let year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-    return year + month + day;
-}
-
 export const getFreshData = async() => {
     
     //console.log("Fetching Data from https://covidtracking.com/...");
@@ -77,6 +64,7 @@ export const getFreshData = async() => {
     let stateInformation = [];
     let countryHistoryData = [];
     let stateCountyInfo = [];
+    let deathsByAgeGroups = []
 
     try {
 
@@ -84,12 +72,14 @@ export const getFreshData = async() => {
         stateCountyInfo = await fetchCountyData();
         stateHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/states/daily.json');
         countryHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/us/daily.json');
+        deathsByAgeGroups = await fetchJsonData('https://data.cdc.gov/resource/9bhg-hcku.json?$select=state,age_group,sum(total_deaths)&$group=state,age_group&$order=state');
 
         return {
             statesHistoryData: stateHistoryData,
             stateInformation: stateInformation,
             countryHistoryData: countryHistoryData,
-            stateCountyInfo: stateCountyInfo
+            stateCountyInfo: stateCountyInfo,
+            deathsByAgeGroups: deathsByAgeGroups
         }
 
     } catch (error) {

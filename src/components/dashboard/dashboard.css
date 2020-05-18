@@ -26,17 +26,10 @@
     line-height: 2em;
 }
 
-.chart-header {
-    padding-bottom: 20px;
-    font-size: 12pt;
-    text-transform: uppercase;
-    margin: 0;
-}
-
-
 .site-link {
     cursor: pointer;
     color: blue;
+    white-space: nowrap;
 }
 
 .page-footer {
@@ -50,7 +43,10 @@
 }
 
 /*
-This style is used by several components contained in the dashboard component. 
+***********************************************************
+This style below this line are used across several components 
+contained in the dashboard component. 
+***********************************************************
 */
 .dashboard-component {
     width: 97%;
@@ -64,7 +60,31 @@ This style is used by several components contained in the dashboard component.
     margin-bottom: 10px;
 }
 
+.dashboard-component-title {
+    padding-bottom: 20px;
+    font-size: 12pt;
+    text-transform: uppercase;
+    margin: 0;
+}
 
+.dashboard-component-title span {
+    white-space: nowrap;
+}
 
+.component-data {
+    width: 99%;
+    max-width: 400px;
+    padding: 10px 0px;
+    margin: auto;
+}
+
+.data-number {
+    text-align: right;
+}
+
+.data-sources {
+    font-size: smaller;
+    padding: 10px 0px;
+}
 
   

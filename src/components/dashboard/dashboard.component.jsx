@@ -9,8 +9,11 @@ import ChartConfiguration from '../chart-config/chart-config.component';
 import ChartContainer from '../chart-container/chart-container.component';
 import Spinner from '../spinner/spinner.component';
 import Overview from '../overview/overview.component';
+import {USA_IDENTIFIER} from '../../utilities/data-fields';
+import CountyData from '../county-data/county-data.component';
+import Demographics from '../demographics/demographics.component';
 
-const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp}) => {  
+const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState}) => {  
 
     useEffect(() => {
 
@@ -48,14 +51,18 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp}) => {
                     <ChartConfiguration />
                     <ChartContainer />
                     <Overview/>
+                    <Demographics/>
+                    {selectedState === USA_IDENTIFIER ? null : (
+                        <CountyData />
+                    )}
                 </div>
             )}
             <div className="page-footer">
-                Chart Data obtained from <span className="footer-site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span><br/>
-                ~ ~ ~<br/>
-                Population Estimates obtained from <span className="footer-site-link" onClick={()=> window.open("https://www.census.gov/programs-surveys/popest.html")}>U.S. Census Bureau</span><br/>
-                ~ ~ ~<br/>
-                County-Level Data obtained from <span className="footer-site-link" onClick={()=> window.open("https://github.com/nytimes/covid-19-data/blob/master/live/us-counties.csv")}>N.Y. Times</span><br/>
+                Data Sources:<br/>
+                <span className="footer-site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span><br/>
+                <span className="footer-site-link" onClick={()=> window.open("https://www.census.gov/programs-surveys/popest.html")}>U.S. Census Bureau</span><br/>
+                <span className="footer-site-link" onClick={()=> window.open("https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Sex-Age-and-S/9bhg-hcku")}>Center For Disease Control</span><br/>
+                <span className="footer-site-link" onClick={()=> window.open("https://github.com/nytimes/covid-19-data/blob/master/live/us-counties.csv")}>N.Y. Times</span><br/>
                 ~ ~ ~<br/>
                 Site built by Tanya Miranda<br/>tanya.miranda@gmail.com
             </div>
@@ -65,7 +72,8 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp}) => {
 };
 
 const mapStateToProps = state => ({
-    dataRefreshedTimestamp: state.chartConfig.dataRefreshedTimestamp
+    dataRefreshedTimestamp: state.chartConfig.dataRefreshedTimestamp,
+    selectedState: state.chartConfig.selectedState
 });
 
 const mapDispatchToProps = dispatch => ({
