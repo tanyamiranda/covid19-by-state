@@ -1,4 +1,4 @@
-import {DATA_FIELD_COLORS,USA_IDENTIFIER} from './data-fields';
+import {DATA_FIELD_COLORS,USA_IDENTIFIER, DATA_FIELD_DISPLAY_NAMES} from './data-fields';
 import POPULATION_ESTIMATES from './population-estimates';
 
 export const getDateListFromData = (stateData) => {
@@ -36,7 +36,8 @@ export const getChartDataset = (stateData, fieldNames) => {
     // Initialize the datasets for each field.
     fieldNames.forEach ((fieldName, index) => {
         fieldDatasets.push({
-            label: fieldName,
+            fieldName: fieldName, 
+            label: DATA_FIELD_DISPLAY_NAMES[fieldName],
             fill: false,
             backgroundColor: DATA_FIELD_COLORS[index],
             borderColor: DATA_FIELD_COLORS[index],
@@ -47,7 +48,7 @@ export const getChartDataset = (stateData, fieldNames) => {
 
     stateData.forEach(dayRecord => {
         fieldNames.forEach (fieldName => {
-            const fieldData = fieldDatasets.find((data => data.label === fieldName))    
+            const fieldData = fieldDatasets.find((data => data.fieldName === fieldName))    
             fieldData.data.push(!dayRecord[fieldName] || dayRecord[fieldName] < 0 ? 0 : dayRecord[fieldName]);
         })
     });
@@ -133,67 +134,47 @@ const fetchStateData = async() => {
         const stateInformation = [];
 
         // U.S. States Data - 1 record per state
-        const stateInfoRes = await fetch('https://covidtracking.com/api/v1/states/info.json');
-        if (stateInfoRes.ok) {
-            const json = await stateInfoRes.json();
+        const stateJson = await fetchJsonData('https://covidtracking.com/api/v1/states/info.json');
+        stateJson.forEach(data => {
+            stateInformation[data.state] = {
+                name: data.name,
+                website: data.covid19Site,
+                twitter: data.twitter
+            }
+        })
 
-            json.forEach(data => {
-                stateInformation[data.state] = {
-                    name: data.name,
-                    website: data.covid19Site,
-                    twitter: data.twitter
-                }
-            })
-        }
-        else {
-            throw Error(stateInfoRes.statusText);
-        }
+        // U.S. States Latest Toals Data - 1 record per state
+        const statesLatestJson = await fetchJsonData('https://covidtracking.com/api/v1/states/current.json');
+        statesLatestJson.forEach(data => {
+            stateInformation[data.state].dataQualityGrade = data.dataQualityGrade;
+            stateInformation[data.state].totalDeath = data.death;
+            stateInformation[data.state].totalPositive = data.positive;
+            stateInformation[data.state].totalTestResults = data.totalTestResults;
+            stateInformation[data.state].totalRecovered = data.recovered;
 
-        // U.S. States Current Data - 1 record per state
-        const statesCurrentDataRes = await fetch('https://covidtracking.com/api/v1/states/current.json');
-        if (statesCurrentDataRes.ok) {
-            const json = await statesCurrentDataRes.json();
-            json.forEach(data => {
-                stateInformation[data.state].dataQualityGrade = data.dataQualityGrade;
-                stateInformation[data.state].totalDeath = data.death;
-                stateInformation[data.state].totalPositive = data.positive;
-                stateInformation[data.state].totalTestResults = data.totalTestResults;
-                stateInformation[data.state].totalRecovered = data.recovered;
+            let population = POPULATION_ESTIMATES[stateInformation[data.state].name];
+            if (population === undefined)
+                population=-1;
 
-                let population = POPULATION_ESTIMATES[stateInformation[data.state].name];
-                if (population === undefined)
-                    population=-1;
-
-                stateInformation[data.state].estimatedPopulation = population;
-            });
-        }
-        else {
-            throw Error(statesCurrentDataRes.statusText);
-        }
-
+            stateInformation[data.state].estimatedPopulation = population;
+        });
+        
         // U.S. Country-Wide Current Data stored as a record in states data 
-        const countryCurrentDataRes = await fetch('https://covidtracking.com/api/v1/us/current.json');
-        if (countryCurrentDataRes.ok) {
-            const json = await countryCurrentDataRes.json();
-            
-            json.forEach(data => {    
-                stateInformation[USA_IDENTIFIER] = {
-                    estimatedPopulation: POPULATION_ESTIMATES[USA_IDENTIFIER],
-                    totalPositive: data.positive,
-                    totalDeath: data.death,
-                    totalTestResults: data.totalTestResults,
-                    totalRecovered: data.recovered,
-                    name: "United States",
-                    dataQualityGrade: "N/A",
-                    twitter:"https://twitter.com/CDCgov",
-                    website:"https://www.cdc.gov/coronavirus/2019-ncov/index.html"
-                }
-            });
-        }
-        else {
-            throw Error(countryCurrentDataRes.statusText);
-        }
-
+        const countryJson = await fetchJsonData('https://covidtracking.com/api/v1/us/current.json');
+        countryJson.forEach(data => {    
+            stateInformation[USA_IDENTIFIER] = {
+                estimatedPopulation: POPULATION_ESTIMATES[USA_IDENTIFIER],
+                totalPositive: data.positive,
+                totalDeath: data.death,
+                totalTestResults: data.totalTestResults,
+                totalRecovered: data.recovered,
+                name: "United States",
+                dataQualityGrade: "N/A",
+                twitter:"https://twitter.com/CDCgov",
+                website:"https://www.cdc.gov/coronavirus/2019-ncov/index.html"
+            }
+        });
+    
         return stateInformation;
     }
     catch (error) {

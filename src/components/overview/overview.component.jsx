@@ -29,7 +29,7 @@ const Overview = ({selectedState, stateInformation, stateCountyInfo}) => {
                 <span className="site-link" onClick={()=> window.open(stateInfo.website)}>COVID19 Website</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;
                 <span className="site-link" onClick={()=> window.open('https://www.twitter.com/' + stateInfo.twitter)}>Twitter</span>
             </div>
-            <div>Estimated Population : <span className="estimate">{formatNumber(stateInfo.estimatedPopulation)} *</span></div>
+            <div className="estimated-population">Estimated Population : <span className="estimate">{formatNumber(stateInfo.estimatedPopulation)}</span></div>
             <div className="totals-data">
                 <div className="data-group">
                     <div>Total Tested:</div>

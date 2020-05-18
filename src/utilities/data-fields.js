@@ -153,6 +153,20 @@ export const DATA_FIELD_GROUPS = {
     ]
 };
 
+export const DATA_FIELD_DISPLAY_NAMES = {   
+    deathIncrease: "Deaths",
+    hospitalizedIncrease: "Hospitalizations",
+    positiveIncrease: "Cases",
+    hospitalizedCurrently: "Hospitalized",
+    inIcuCurrently: "In ICU",
+    onVentilatorCurrently: "On Ventilators",
+    positive: "Positive",
+    negative: "Negative",
+    pending: "Pending",
+    totalTestResults: "Tests Taken"
+};
+
+
 export const DEFAULT_DATA_FIELD = [
     "deathIncrease",
     "hospitalizedIncrease",

@@ -27,6 +27,7 @@
 }
 
 .percent, .estimate {
+    font-weight: bold;
     color:green;
 }
 
