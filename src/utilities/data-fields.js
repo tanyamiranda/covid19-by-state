@@ -29,6 +29,7 @@ export const CHART_OPTIONS = {
         xAxes: [{
             display: true,
             ticks: {
+                min: 0,
                 callback: function(dataLabel, index) {
                     // Hide the label of every 2nd dataset. return null to hide the grid line too
                     return index % 3 === 0 ? dataLabel : '';
@@ -45,6 +46,7 @@ export const CHART_OPTIONS = {
                 display: false
             },
             ticks: {
+                min: 0,
                 beginAtZero:true
             }
         }]

@@ -48,7 +48,7 @@ export const getChartDataset = (stateData, fieldNames) => {
     stateData.forEach(dayRecord => {
         fieldNames.forEach (fieldName => {
             const fieldData = fieldDatasets.find((data => data.label === fieldName))    
-            fieldData.data.push(!dayRecord[fieldName] ? 0 : dayRecord[fieldName]);
+            fieldData.data.push(!dayRecord[fieldName] || dayRecord[fieldName] < 0 ? 0 : dayRecord[fieldName]);
         })
     });
 
