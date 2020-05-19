@@ -17,6 +17,15 @@ export const getFormattedDateForFiltering = (date) => {
     return year + month + day;
 }
 
+export const getDateDisplayString = (date) => {
+    var d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    let year = d.getFullYear();
+
+    return month + "/" + day + "/" + year;
+}
+
 export const getPercentage = (partialNum, totalNum) => {
     var percent = ((partialNum / totalNum) * 100).toFixed(2);
     return percent + "%";
