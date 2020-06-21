@@ -72,7 +72,7 @@ export const getFreshData = async() => {
         stateCountyInfo = await fetchCountyData();
         stateHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/states/daily.json');
         countryHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/us/daily.json');
-        deathsByAgeGroups = await fetchJsonData('https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group,sum(covid_19_deaths)&$group=data_as_of,state,age_group&$order=state');
+        deathsByAgeGroups = await fetchJsonData('https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group,sum(covid_19_deaths)&$group=data_as_of,state,age_group&$where=sex%20in%20(%27Male%27,%27Female%27)&$order=state');
 
         return {
             statesHistoryData: stateHistoryData,

@@ -1,8 +1,8 @@
 export const DATE_RANGES = {
-    15: "Last 15 days",
     30: "Last 30 days",
     45: "Last 45 days",
-    60: "Last 60 days"
+    60: "Last 60 days",
+    90: "Last 90 days"
 }
 
 export const CHART_OPTIONS = {
