@@ -7,6 +7,8 @@
 
 .page-layout {
     padding: 10px;
+    background-color: #c1d9d5;
+    background-image: url(/covid19-by-state/web-pattern.svg);
 }
 .page-title {
     text-align: center;
@@ -58,6 +60,7 @@ contained in the dashboard component.
     border-radius: 10px;
     margin: auto;
     margin-bottom: 10px;
+    background-color: white;
 }
 
 .dashboard-component-title {
@@ -84,7 +87,11 @@ contained in the dashboard component.
 
 .data-sources {
     font-size: smaller;
-    padding: 10px 0px;
+    padding: 10px 5px;
+    width: 95%;
+    max-width: 400px;
+    text-align: center;
+    margin: auto;
 }
 
   

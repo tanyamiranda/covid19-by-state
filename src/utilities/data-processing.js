@@ -141,6 +141,8 @@ const fetchStateData = async() => {
             stateInformation[data.state].totalPositive = data.positive;
             stateInformation[data.state].totalTestResults = data.totalTestResults;
             stateInformation[data.state].totalRecovered = data.recovered;
+            stateInformation[data.state].hospitalizedCurrently = data.hospitalizedCurrently;
+            
 
             let population = POPULATION_ESTIMATES[stateInformation[data.state].name];
             if (population === undefined)
@@ -158,6 +160,7 @@ const fetchStateData = async() => {
                 totalDeath: data.death,
                 totalTestResults: data.totalTestResults,
                 totalRecovered: data.recovered,
+                hospitalizedCurrently: data.hospitalizedCurrently,
                 name: "United States",
                 dataQualityGrade: "N/A",
                 twitter:"https://twitter.com/CDCgov",
@@ -184,6 +187,7 @@ export const fetchCountyData = async() => {
         if (response.ok) {
             const csvText = await response.text();
             stateCountyData = parseCountyCSVData(csvText);
+            stateCountyData.filter(data => data.deaths > 0 || data.cases > 0);
         }
         else {
             throw Error(response.statusText);

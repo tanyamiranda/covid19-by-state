@@ -8,7 +8,7 @@
 .overview-data-row {
     margin: auto;
     display: inline-grid;
-    grid-template-columns: 120px 80px 80px;
+    grid-template-columns: 130px 80px 60px;
     text-align: left;
     border-bottom: 0.5px solid silver;
     padding: 5px 0px;

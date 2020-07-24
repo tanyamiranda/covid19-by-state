@@ -1,8 +1,12 @@
 export const DATE_RANGES = {
+    15: "Last 15 days",
     30: "Last 30 days",
     45: "Last 45 days",
     60: "Last 60 days",
-    90: "Last 90 days"
+    90: "Last 3 months",
+    120: "Last 4 months",
+    150: "Last 5 months",
+    180: "Last 6 Months"
 }
 
 export const CHART_OPTIONS = {
@@ -136,9 +140,9 @@ export const US_STATES_DATA = {
 export const DATA_FIELD_GROUPS = {
     
     increase: [
+        "positiveIncrease",
         "deathIncrease",
-        "hospitalizedIncrease",
-        "positiveIncrease"
+        "hospitalizedIncrease"
     ],
     hospitalization: [
         "hospitalizedCurrently",
@@ -153,13 +157,21 @@ export const DATA_FIELD_GROUPS = {
     ]
 };
 
+export const DATA_FIELD_GROUPS_DISPLAY_NAME = {
+    increase: "Daily Increases",
+    hospitalization: "Current Hospitalizations",
+    testing: "Testing Totals"
+}
+
 export const DATA_FIELD_DISPLAY_NAMES = {   
-    deathIncrease: "Deaths",
-    hospitalizedIncrease: "Hospitalizations",
-    positiveIncrease: "Cases",
+    deathIncrease: "New Deaths",
+    positiveIncrease: "New Cases",
+    hospitalizedIncrease: "New Hospitalizations",
+
     hospitalizedCurrently: "Hospitalized",
     inIcuCurrently: "In ICU",
     onVentilatorCurrently: "On Ventilators",
+
     positive: "Positive",
     negative: "Negative",
     pending: "Pending",
@@ -168,13 +180,19 @@ export const DATA_FIELD_DISPLAY_NAMES = {
 
 
 export const DEFAULT_DATA_FIELD = [
+    "positiveIncrease",
     "deathIncrease",
-    "hospitalizedIncrease",
-    "positiveIncrease"
+    "hospitalizedIncrease"
 ]
 
 export const  STATE_INFO_JSON_FIELDS = [
     "dataQualityGrade",
     "positive",
     "death"
-]
+];
+
+export const COUNTY_SORT_FIELDS = {
+    SORT_BY_DEATHS : "deaths",
+    SORT_BY_CASES : "cases",
+    SORT_BY_COUNTY : "county"
+}

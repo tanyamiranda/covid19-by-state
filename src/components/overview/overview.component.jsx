@@ -5,14 +5,15 @@ import './overview.css';
 
 import {getDisplayNumber, getPercentage} from '../../utilities/formatting'
 
-const Overview = ({selectedState, stateInformation, stateCountyInfo}) => {
+const Overview = ({selectedState, stateInformation}) => {
 
     let stateInfo = stateInformation[selectedState];
         
     const percentPositive =  getPercentage(stateInfo.totalPositive,stateInfo.estimatedPopulation);
     const percentTested =  getPercentage(stateInfo.totalTestResults,stateInfo.estimatedPopulation);
     const percentDeath =  getPercentage(stateInfo.totalDeath,stateInfo.estimatedPopulation);
-    
+    const percentHospitalized =  getPercentage(stateInfo.hospitalizedCurrently,stateInfo.estimatedPopulation);
+
     return (
         <div className="dashboard-component overview">
             <div className="dashboard-component-title">{stateInfo.name} Overview</div>
@@ -33,14 +34,14 @@ const Overview = ({selectedState, stateInformation, stateCountyInfo}) => {
                     <div className="data-number percent">{percentPositive}</div>
                 </div>
                 <div className="overview-data-row">
+                    <div>Currently Hospitalized:</div>
+                    <div className="data-number">{getDisplayNumber(stateInfo.hospitalizedCurrently)}</div>
+                    <div className="data-number percent">{percentHospitalized}</div>
+                </div>
+                <div className="overview-data-row">
                     <div>Total Deaths:</div>
                     <div className="data-number">{getDisplayNumber(stateInfo.totalDeath)}</div>
                     <div className="data-number percent">{percentDeath}</div>
-                </div>
-                <div className="overview-data-row">
-                    <div>Total Recovered:</div>
-                    <div className="data-number">{getDisplayNumber(stateInfo.totalRecovered)}</div>
-                    <div className="data-number percent">N/A</div>
                 </div>
             </div>
             <div className="estimate estimate-message">% calculated against Estimated Population</div>

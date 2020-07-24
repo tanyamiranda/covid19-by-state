@@ -52,8 +52,8 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, stateInformation
             />
             { selectedState === USA_IDENTIFIER ? null : (
             <div className="state-grade"> 
-                <div>Data Quality Grade for {stateInformation[selectedState].name}:  <b>{stateInformation[selectedState].dataQualityGrade}</b></div>
-                <div className="chart-footer">Not all states report Hospitalization Data</div>                  
+                <div className="data-sources">Data Quality Grade for {stateInformation[selectedState].name}:  <b>{stateInformation[selectedState].dataQualityGrade}</b></div>
+                <div className="data-sources">**Not all states report Hospitalization Data</div>                  
             </div>
             )}
             <div className="data-sources">Data:&nbsp;

@@ -24,13 +24,14 @@ const Demographics = ({selectedState, stateInformation, deathsByAgeGroups}) => {
 
     return(
         <div className="dashboard-component demographics">
-            <div className="dashboard-component-title">{stateInformation[selectedState].name} <span>Deaths By Age Group</span></div>
+            <div className="dashboard-component-title">{stateInformation[selectedState].name} <span>Demographics</span></div>
 
             {dataFetchedSuccessfully ? 
+            <div>
                 <div className="demo-data">
                     <div className="demo-data-row demo-data-header">
                         <div className="age-group">Age Group</div>
-                        <div className="data-number">Deaths</div>
+                        <div className="data-number">Total Deaths</div>
                     </div>
                     {deathsByAgeGroups
                     .filter(data => data.state.toLowerCase() === stateInformation[selectedState].name.toLowerCase() && data.age_group.includes('year'))
@@ -43,12 +44,35 @@ const Demographics = ({selectedState, stateInformation, deathsByAgeGroups}) => {
                     ))}
                 </div>
                     
+                {selectedState === "NY" ? 
                 
+                    <div className="demo-data">
+                        <div className="demo-nyc-message">The Center For Disease Control collects data for New York City separately from New York State. See New York City Demographics data below.</div>
+                        <div className="dashboard-component-title">New York City Demographics</div>
+                        
+                        <div className="demo-data-row demo-data-header">
+                            <div className="age-group">Age Group</div>
+                            <div className="data-number">Total Deaths</div>
+                        </div>
+                        {deathsByAgeGroups
+                        .filter(data => data.state === "New York City" && data.age_group.includes('year'))
+                        .sort((a,b) => compareTextNumbers(a.age_group,b.age_group))
+                        .map((data, index) => (
+                            <div key={index} className="demo-data-row">
+                                <div className="age-group">{data.age_group}</div>                    
+                                <div className="data-number">{getDisplayNumber(data.sum_covid_19_deaths)}</div>
+                            </div>
+                        ))}
+                    </div>
+                    : null 
+                }
+            </div>    
             : 
                 <div className="data-sources">Problem fetching data from CDC...</div>
             }
-            <div className="data-sources">Last Updated {dataDate}</div>
-            <div className="data-sources">**Some data may have been suppressed in accordance with NCHS confidentiality standards.</div>
+            
+            <div className="data-sources">**Data is reported on a weekly basis. Last Updated {dataDate}</div>
+            <div className="data-sources">++Number of deaths reported in this table are the total number of deaths received and coded as of the date of analysis. Click on the CDC link below for details.</div>
             <div className="data-sources">Data:&nbsp;
                 <span className="site-link" onClick={()=> window.open("https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Sex-Age-and-S/9bhg-hcku")}>Center For Disease Control</span><br/>
             </div>

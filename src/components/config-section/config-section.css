@@ -8,6 +8,7 @@ select {
     margin-right: 5px;
     border-radius: 5px;
     box-shadow: 1px 1px silver;
+    background-color: white;
 }
 
 select:focus {
