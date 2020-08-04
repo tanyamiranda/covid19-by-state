@@ -1,0 +1,10 @@
+.research-notes-details{
+    display: none;
+}
+
+.research-notes {
+    display: block;
+    line-break: strict;
+    text-align: center;
+    font-weight: bold;
+}

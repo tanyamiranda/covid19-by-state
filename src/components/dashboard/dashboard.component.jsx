@@ -6,7 +6,7 @@ import "./dashboard.css";
 import {getFreshData} from '../../utilities/data-processing';
 import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
 import ChartConfiguration from '../chart-config/chart-config.component';
-import ChartContainer from '../chart-container/chart-container.component';
+import StateHistoryChart from '../state-history-chart/state-history-chart.component';
 import Spinner from '../spinner/spinner.component';
 import Overview from '../overview/overview.component';
 import {USA_IDENTIFIER} from '../../utilities/data-fields';
@@ -49,7 +49,7 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
             ) : (
                 <div className="page-layout">
                     <ChartConfiguration />
-                    <ChartContainer />
+                    <StateHistoryChart />
                     <Overview/>
                     <Demographics/>
                     {selectedState === USA_IDENTIFIER ? null : (

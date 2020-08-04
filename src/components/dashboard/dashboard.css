@@ -7,8 +7,7 @@
 
 .page-layout {
     padding: 10px;
-    background-color: #c1d9d5;
-    background-image: url(/covid19-by-state/web-pattern.svg);
+    background-color: lightgray;
 }
 .page-title {
     text-align: center;
@@ -18,7 +17,7 @@
     font-weight: bold;
     color: white;
     text-transform: uppercase;
-    background: url(https://cdn.pixabay.com/photo/2020/02/15/14/33/network-4851119_1280.jpg);
+    background: url(/covid19-by-state/network-4851119_1280.jpg);
 }
 
 .page-footer {

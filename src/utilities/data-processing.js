@@ -29,7 +29,38 @@ export const getHistoryByState = (stateHistoryData, state, startDate, endDate) =
     
 }    
 
-export const getChartDataset = (stateData, fieldNames) => {
+export const getAgeGroupForState = (deathsByAgeGroups, stateName) => {
+    
+    return deathsByAgeGroups
+        .filter(data => data.state.toLowerCase() === stateName.toLowerCase() && data.age_group.includes('year'))
+        .sort((a,b) => compareAgeGroupValues(a.age_group,b.age_group));
+    
+}    
+
+export const formatAgeGroupNames = (ageGroups) => {
+    
+    const shortNames = [];
+
+    ageGroups.forEach(group => {
+        const groupName = group.replace("years and over","+").replace("years","").replace("year","").replace("Under","<"); 
+        shortNames.push(groupName);
+    });
+
+    return shortNames;
+}
+
+const compareAgeGroupValues = (a, b) => {
+
+    let numA = Number(a.substring(0,2).replace("-","").toLowerCase().replace("un","0"));
+    let numB = Number(b.substring(0,2).replace("-","").toLowerCase().replace("un","0"));
+
+    if (numA > numB) return 1;
+    if (numA < numB) return -1;
+
+    return 0;
+}
+
+export const getChartDataset = (data, fieldNames) => {
 
     const fieldDatasets = [];
 
@@ -46,14 +77,32 @@ export const getChartDataset = (stateData, fieldNames) => {
         })
     })
 
-    stateData.forEach(dayRecord => {
+    data.forEach(row => {
         fieldNames.forEach (fieldName => {
             const fieldData = fieldDatasets.find((data => data.fieldName === fieldName))    
-            fieldData.data.push(!dayRecord[fieldName] || dayRecord[fieldName] < 0 ? 0 : dayRecord[fieldName]);
+            fieldData.data.push(!row[fieldName] || row[fieldName] < 0 ? 0 : row[fieldName]);
         })
     });
 
     return fieldDatasets;
+}
+
+export const getAgeGroupChartDataset = (covidDeaths, allDeaths) => {
+
+    const ageGroupDataSet = [
+        {    
+            label: "Covid-19",
+            backgroundColor: "red",
+            data:covidDeaths 
+        },
+        { 
+            label: "All Deaths",
+            backgroundColor: "blue",
+            data:allDeaths
+        }
+    ];
+
+    return ageGroupDataSet;
 }
 
 export const getFreshData = async() => {
@@ -72,7 +121,7 @@ export const getFreshData = async() => {
         stateCountyInfo = await fetchCountyData();
         stateHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/states/daily.json');
         countryHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/us/daily.json');
-        deathsByAgeGroups = await fetchJsonData('https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group,sum(covid_19_deaths)&$group=data_as_of,state,age_group&$where=sex%20in%20(%27Male%27,%27Female%27)&$order=state');
+        deathsByAgeGroups = await fetchJsonData('https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group,sum(covid_19_deaths),sum(total_deaths)&$group=data_as_of,state,age_group&$where=sex%20in%20(%27Male%27,%27Female%27)&$order=state');
 
         return {
             statesHistoryData: stateHistoryData,
@@ -129,7 +178,8 @@ const fetchStateData = async() => {
             stateInformation[data.state] = {
                 name: data.name,
                 website: data.covid19Site,
-                twitter: data.twitter
+                twitter: data.twitter,
+                //notes: data.notes
             }
         })
 
@@ -142,7 +192,6 @@ const fetchStateData = async() => {
             stateInformation[data.state].totalTestResults = data.totalTestResults;
             stateInformation[data.state].totalRecovered = data.recovered;
             stateInformation[data.state].hospitalizedCurrently = data.hospitalizedCurrently;
-            
 
             let population = POPULATION_ESTIMATES[stateInformation[data.state].name];
             if (population === undefined)
@@ -219,4 +268,17 @@ function parseCountyCSVData(csv){
     }
 
     return result; 
+}
+
+export const formatYAxisDisplay = (label) => {
+    
+    if (label >= 1000000) {
+        return label / 1000000 + 'M';
+    }
+    else if (label >= 10000) {
+        return label / 1000 + 'K';
+    }
+    else {
+        return label;
+    }
 }

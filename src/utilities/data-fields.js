@@ -9,53 +9,6 @@ export const DATE_RANGES = {
     180: "Last 6 Months"
 }
 
-export const CHART_OPTIONS = {
-    responsive: true,
-    aspectRatio: 1,
-    maintainAspectRatio: false,
-    title: { display: false},
-    tooltips: {mode: 'index', intersect: false},
-    hover: {mode: 'nearest', intersect: true},
-    legend: {position:'top', labels: {boxWidth:5, fontSize:14, usePointStyle:true}},
-    elements: {
-        point:{
-            radius: 0
-        }
-    },
-    layout: {
-        padding: {
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0
-        }},
-    scales: {
-        xAxes: [{
-            display: true,
-            ticks: {
-                min: 0,
-                callback: function(dataLabel, index) {
-                    // Hide the label of every 2nd dataset. return null to hide the grid line too
-                    return index % 3 === 0 ? dataLabel : '';
-                }
-            },
-            scaleLabel: {
-                display: true
-            }
-        }],
-        yAxes: [{
-            display: true,
-            padding:0,
-            scaleLabel: {
-                display: false
-            },
-            ticks: {
-                min: 0,
-                beginAtZero:true
-            }
-        }]
-    }
-}
 
 export const DATA_FIELD_COLORS = [
     '#138E05',
@@ -150,10 +103,11 @@ export const DATA_FIELD_GROUPS = {
         "onVentilatorCurrently"
     ],
     testing:[
+        "totalTestResults",
         "positive",
-        "negative",
-        "pending",
-        "totalTestResults"
+        //"negative",
+        //"pending", 
+        "death"
     ]
 };
 
@@ -175,8 +129,13 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     positive: "Positive",
     negative: "Negative",
     pending: "Pending",
-    totalTestResults: "Tests Taken"
+    totalTestResults: "Tests Taken",
+    death: "Death"
 };
+
+export const DATA_FIELD_AGE_GROUP_DISPLAY_NAMES = {
+
+}
 
 
 export const DEFAULT_DATA_FIELD = [

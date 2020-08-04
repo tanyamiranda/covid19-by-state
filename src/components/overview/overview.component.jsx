@@ -34,14 +34,14 @@ const Overview = ({selectedState, stateInformation}) => {
                     <div className="data-number percent">{percentPositive}</div>
                 </div>
                 <div className="overview-data-row">
-                    <div>Currently Hospitalized:</div>
-                    <div className="data-number">{getDisplayNumber(stateInfo.hospitalizedCurrently)}</div>
-                    <div className="data-number percent">{percentHospitalized}</div>
-                </div>
-                <div className="overview-data-row">
                     <div>Total Deaths:</div>
                     <div className="data-number">{getDisplayNumber(stateInfo.totalDeath)}</div>
                     <div className="data-number percent">{percentDeath}</div>
+                </div>
+                <div className="overview-data-row">
+                    <div>Currently Hospitalized:</div>
+                    <div className="data-number">{getDisplayNumber(stateInfo.hospitalizedCurrently)}</div>
+                    <div className="data-number percent">{percentHospitalized}</div>
                 </div>
             </div>
             <div className="estimate estimate-message">% calculated against Estimated Population</div>

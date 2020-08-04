@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import './chart-container.css';
+import './state-history-chart.css';
 
-import {US_STATES_DATA, CHART_OPTIONS, USA_IDENTIFIER} from '../../utilities/data-fields';
+import {US_STATES_DATA, USA_IDENTIFIER} from '../../utilities/data-fields';
+import {CHART_OPTIONS_FOR_STATE_HISTORY} from '../../utilities/chart-options';
 import ChartDisplay from '../chart-display/chart-display.component';
 
 import {
@@ -15,18 +16,11 @@ import {
 
 import {getFormattedDateForFiltering} from '../../utilities/formatting';
 
-const ChartContainer = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedFields, selectedDateRange}) => {  
+const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedFields, selectedDateRange}) => {  
     
-    //console.log("StateHistoryChart...");
-    //console.log("stateInformation=",stateInformation);
-    //console.log("selectedState=",selectedState);
-    //console.log("selectedFields=",selectedFields);
-    //console.log("selectedDateRange=",selectedDateRange);
-
     const now = new Date();
     const yesterday = new Date();
     now.setDate(now.getDate() - Number(selectedDateRange));
-    yesterday.setDate(yesterday.getDate() - 1);
     const startDate = getFormattedDateForFiltering(now);
     const endDate = getFormattedDateForFiltering(yesterday);
 
@@ -42,18 +36,18 @@ const ChartContainer = ({countryHistoryData, statesHistoryData, stateInformation
     const dateList = getDateListFromData(dataSet);
 
     return (
-        <div className="dashboard-component chart-container ">
+        <div className="dashboard-component state-history-chart">
             <div className="dashboard-component-title chart-header"><span>Data for {US_STATES_DATA[selectedState]}</span> <span> last {selectedDateRange} days</span></div>
             <ChartDisplay 
             chartType="line"
-            chartOptions = {CHART_OPTIONS}
+            chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
             chartLabels = {dateList} 
             chartDataSet = {chartDataSet}
+            chartId = "HistoricalDataChart"
             />
             { selectedState === USA_IDENTIFIER ? null : (
             <div className="state-grade"> 
-                <div className="data-sources">Data Quality Grade for {stateInformation[selectedState].name}:  <b>{stateInformation[selectedState].dataQualityGrade}</b></div>
-                <div className="data-sources">**Not all states report Hospitalization Data</div>                  
+                <div className="data-sources">Data Quality Grade for {stateInformation[selectedState].name}:  <b>{stateInformation[selectedState].dataQualityGrade}</b></div>                  
             </div>
             )}
             <div className="data-sources">Data:&nbsp;
@@ -73,4 +67,4 @@ const mapStateToProps = state => ({
     selectedFields: state.chartConfig.selectedFields
 });
 
-export default connect(mapStateToProps)(ChartContainer);
+export default connect(mapStateToProps)(StateHistoryChart);

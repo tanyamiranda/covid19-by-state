@@ -5,9 +5,9 @@ import Chart from "chart.js";
 import './chart-display.css';
 
 // Necessary to be able to clear previous charts
-let currentLineChart;
+let currentLineChart = [];
 
-const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet}) => {
+const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chartId}) => {
     const chartContainer = useRef(null);
     const [chartInstance, setChartInstance] = useState(null);
 
@@ -27,13 +27,13 @@ const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet}) => {
             }
 
             // Destroy previous chart if it exists 
-            if (typeof currentLineChart !== "undefined") currentLineChart.destroy();
+            if (typeof currentLineChart[chartId] !== "undefined") currentLineChart[chartId].destroy();
 
-            currentLineChart = new Chart(chartContainer.current, chartConfig);
+            currentLineChart[chartId] = new Chart(chartContainer.current, chartConfig);
             setChartInstance(currentLineChart);
             
         }
-    }, [chartContainer, chartType, chartOptions, chartLabels, chartDataSet]);
+    }, [chartContainer, chartType, chartOptions, chartLabels, chartDataSet, chartId]);
     
     return (
         <div className="chart-display">
