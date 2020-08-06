@@ -37,7 +37,7 @@ const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chart
     
     return (
         <div className="chart-display">
-            <canvas id={!chartInstance ? "0" : "chart-js-display"} ref={chartContainer} />
+            <canvas id={!chartInstance ? "0" : chartId } ref={chartContainer} />
         </div>
     );
 };

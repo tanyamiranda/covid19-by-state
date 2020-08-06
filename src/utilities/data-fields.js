@@ -117,6 +117,7 @@ export const DATA_FIELD_GROUPS_DISPLAY_NAME = {
     testing: "Testing Totals"
 }
 
+//Keeping all names in case we go use in future
 export const DATA_FIELD_DISPLAY_NAMES = {   
     deathIncrease: "New Deaths",
     positiveIncrease: "New Cases",
@@ -125,18 +126,13 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     hospitalizedCurrently: "Hospitalized",
     inIcuCurrently: "In ICU",
     onVentilatorCurrently: "On Ventilators",
-
+    
     positive: "Positive",
     negative: "Negative",
     pending: "Pending",
     totalTestResults: "Tests Taken",
     death: "Death"
 };
-
-export const DATA_FIELD_AGE_GROUP_DISPLAY_NAMES = {
-
-}
-
 
 export const DEFAULT_DATA_FIELD = [
     "positiveIncrease",

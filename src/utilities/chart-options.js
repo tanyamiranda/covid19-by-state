@@ -56,7 +56,7 @@ export const CHART_OPTIONS_FOR_STATE_HISTORY = {
             ticks: {
                 min: 0,
                 beginAtZero:true,
-                callback: function(label, index, labels) {
+                callback: function(label) {
                     return formatYAxisDisplay(label);
                 }                
             }
@@ -97,10 +97,12 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
             }
         }],
         yAxes:[{
-            stacked: false,
+            // stacked:false - places bars in FRONT of each other instead of on TOP of each other
+            // if set to true, the two bars are combined into one bar with a aggregate total.
+            stacked: false, 
             ticks: {
                 beginAtZero: true,
-                callback: function(label, index, labels) {
+                callback: function(label) {
                     return formatYAxisDisplay(label);
                 }
               }

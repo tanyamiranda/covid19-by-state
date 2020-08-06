@@ -3,14 +3,20 @@ import {connect} from 'react-redux';
 
 import './demographics.css';
 
-import {getAgeGroupForState, getAgeGroupChartDataset, formatAgeGroupNames} from '../../utilities/data-processing';
+import {getAgeGroupForState, getAgeGroupChartDataset, formatAgeGroupNames, combineAgeGroupValues} from '../../utilities/data-processing';
 import {CHART_OPTIONS_FOR_AGE_GROUPS} from '../../utilities/chart-options';
 
 import ChartDisplay from '../chart-display/chart-display.component';
 
 const DeathsByAge = ({selectedState, stateInformation, deathsByAgeGroups}) => {
 
-    const dataSet = getAgeGroupForState(deathsByAgeGroups, stateInformation[selectedState].name);
+    let dataSet = getAgeGroupForState(deathsByAgeGroups, stateInformation[selectedState].name);
+
+    if(selectedState === "NY") {
+        const tempData = dataSet.concat(getAgeGroupForState(deathsByAgeGroups,"New York City"));
+        dataSet = combineAgeGroupValues(tempData);   
+    }
+    
     const ageLabels = formatAgeGroupNames(dataSet.map(item => item.age_group));
     const covid19Deaths = dataSet.map(item => item.sum_covid_19_deaths == null ? 0 : item.sum_covid_19_deaths);
     const totalDeaths = dataSet.map(item => item.sum_total_deaths == null ? 0 : item.sum_total_deaths);

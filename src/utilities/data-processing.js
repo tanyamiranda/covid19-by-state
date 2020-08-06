@@ -282,3 +282,29 @@ export const formatYAxisDisplay = (label) => {
         return label;
     }
 }
+
+
+export const combineAgeGroupValues = (ageGroupSet1) => {
+
+    var result = [];
+    ageGroupSet1.reduce(
+        function(age_group_sum, value) {
+            if (!age_group_sum[value.age_group]) {
+                age_group_sum[value.age_group] = {
+                    age_group: value.age_group,
+                    sum_covid_19_deaths: !Number(value.sum_covid_19_deaths) ? 0 : Number(value.sum_covid_19_deaths),
+                    sum_total_deaths: !Number(value.sum_total_deaths) ? 0 : Number(value.sum_total_deaths)
+                };
+                result.push(age_group_sum[value.age_group])
+            }
+            else {
+                age_group_sum[value.age_group].sum_covid_19_deaths += !Number(value.sum_covid_19_deaths) ? 0 : Number(value.sum_covid_19_deaths);
+                age_group_sum[value.age_group].sum_total_deaths += !Number(value.sum_total_deaths) ? 0 : Number(value.sum_total_deaths);
+            }
+            return age_group_sum;
+        }
+    , {});
+
+    return result;
+
+}
