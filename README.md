@@ -3,8 +3,16 @@ This application displays data from The COVID Tracking Project and the Center Fo
 Hosted on Github:<br/>
 https://tanyamiranda.github.io/covid19-by-state/
 
-<br/><br/>
-## Data Resources:
+## Resources
+
+Chart.js Documentation:<br/>
+https://www.chartjs.org/docs/latest/
+
+Chart.js on NPM & Yarn:<br/> 
+https://www.npmjs.com/package/chart.js <br/>
+https://classic.yarnpkg.com/en/package/chart.js
+
+## Data Sources:
 
 COVID Tracking Project:<br/>
 https://covidtracking.com/
@@ -17,13 +25,3 @@ https://github.com/nytimes/covid-19-data/blob/master/live/us-counties.csv
 
 U.S. Census Bureau<br/>
 https://www.census.gov/programs-surveys/popest.html 
-
-<br/><br/>
-## Tech Resources
-
-Chart.js Documentation:<br/>
-https://www.chartjs.org/docs/latest/
-
-Chart.js on NPM & Yarn:<br/> 
-https://www.npmjs.com/package/chart.js <br/>
-https://classic.yarnpkg.com/en/package/chart.js
