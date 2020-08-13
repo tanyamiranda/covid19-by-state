@@ -5,9 +5,14 @@
     font-size: 12px;
 }
 
+.page-header {
+    line-height: normal;
+    background: url(/covid19-by-state/network-4851119_1280.jpg);
+}
+
 .page-layout {
-    padding: 10px;
-    background-color: lightgray;
+    padding: 5px;
+    background-color: #E8E8E8;
 }
 .page-title {
     text-align: center;
@@ -17,7 +22,9 @@
     font-weight: bold;
     color: white;
     text-transform: uppercase;
-    background: url(/covid19-by-state/network-4851119_1280.jpg);
+}
+.page-title span {
+    white-space: nowrap;
 }
 
 .page-footer {
@@ -54,7 +61,6 @@ contained in the dashboard component.
     max-width: 800px;
     text-align: center;
     line-height: 2em;
-    padding: 5px;
     border: 0.5px solid silver;
     border-radius: 10px;
     margin: auto;
@@ -63,7 +69,7 @@ contained in the dashboard component.
 }
 
 .dashboard-component-title {
-    padding-bottom: 20px;
+    padding: 10px;
     font-size: 12pt;
     text-transform: uppercase;
     margin: 0;

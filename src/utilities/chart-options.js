@@ -9,7 +9,6 @@ export const CHART_OPTIONS_FOR_STATE_HISTORY = {
             mode: 'index', 
             intersect: false,
             bodyAlign: 'left',
-            titleAlign: 'center',
             callbacks: {
                 label: function(tooltipItem, data) {
                   var type = data.datasets[tooltipItem.datasetIndex].label;
@@ -68,12 +67,11 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
     aspectRatio: 1,
     maintainAspectRatio: false,
     responsive: true,
-    title: { display: true, text: "Deaths By Age Group"},
+    title: { display: false},
     tooltips: {
-        mode: 'label', 
+        mode: 'index', 
         intersect: false,
         bodyAlign: 'left',
-        titleAlign: 'center',
         callbacks: {
             label: function(tooltipItem, data) {
               var type = data.datasets[tooltipItem.datasetIndex].label;
@@ -89,6 +87,13 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
             radius: 0
         }
     },
+    layout: {
+        padding: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0
+        }},
     scales: {
         xAxes:[{
             stacked: true,

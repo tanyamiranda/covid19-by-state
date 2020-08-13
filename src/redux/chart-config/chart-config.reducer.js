@@ -20,7 +20,7 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
         case ChartConfigTypes.SET_COVID19_DATA: 
             return {
                 selectedState: USA_IDENTIFIER,
-                selectedDateRange: "60",   
+                selectedDateRange: "30",   
                 selectedFields: DEFAULT_DATA_FIELD,    
                 statesHistoryData: action.payload.statesHistoryData,
                 stateInformation: action.payload.stateInformation,

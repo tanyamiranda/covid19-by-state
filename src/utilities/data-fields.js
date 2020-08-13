@@ -1,5 +1,4 @@
 export const DATE_RANGES = {
-    15: "Last 15 days",
     30: "Last 30 days",
     45: "Last 45 days",
     60: "Last 60 days",
@@ -9,11 +8,10 @@ export const DATE_RANGES = {
     180: "Last 6 Months"
 }
 
-
 export const DATA_FIELD_COLORS = [
-    '#138E05',
-    '#A15B81',
-    '#2E16A6',
+    'green',
+    'red',
+    'blue',
     '#146AD4',
     '#A9D422',
     '#18F8BB',
@@ -103,11 +101,12 @@ export const DATA_FIELD_GROUPS = {
         "onVentilatorCurrently"
     ],
     testing:[
-        "totalTestResults",
-        "positive",
-        //"negative",
+        //"totalTestResults",
+        //"positive",
+        "totalTestResultsIncrease",
+        "positiveIncrease",
         //"pending", 
-        "death"
+        //"death"
     ]
 };
 
@@ -131,7 +130,8 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     negative: "Negative",
     pending: "Pending",
     totalTestResults: "Tests Taken",
-    death: "Death"
+    death: "Death",
+    totalTestResultsIncrease: "New Tests"
 };
 
 export const DEFAULT_DATA_FIELD = [

@@ -48,18 +48,18 @@ const CountyData = ({selectedState, stateInformation, stateCountyInfo}) => {
 
     return (    
         <div className="dashboard-component county-data-set">
-            <div className="dashboard-component-title">{stateInformation[selectedState].name} Counties</div>
+            <div className="dashboard-component-title">{stateInformation[selectedState].name} Totals by County</div>
             <div className="county-data">
                 <div className="county-data-row county-data-header">
                     <div className="county-data-header, site-link" onClick={() => sortCountyData(COUNTY_SORT_FIELDS.SORT_BY_COUNTY)}>{countyLabel}</div>
-                    <div className="data-number county-data-header, site-link" onClick={() => sortCountyData(COUNTY_SORT_FIELDS.SORT_BY_CASES)}>{casesLabel}</div>
-                    <div className="data-number county-data-header, site-link" onClick={() => sortCountyData(COUNTY_SORT_FIELDS.SORT_BY_DEATHS)}>{deathsLabel}</div>
+                    <div className="align-right county-data-header, site-link" onClick={() => sortCountyData(COUNTY_SORT_FIELDS.SORT_BY_CASES)}>{casesLabel}</div>
+                    <div className="align-right county-data-header, site-link" onClick={() => sortCountyData(COUNTY_SORT_FIELDS.SORT_BY_DEATHS)}>{deathsLabel}</div>
                 </div>
                 {!countyData ? null : countyData.map((data, index) => (             
                     <div key={index} className="county-data-row" >
                         <div>{data.county}</div>                    
-                        <div className="data-number">{getDisplayNumber(data.cases)}</div>
-                        <div className="data-number">{getDisplayNumber(data.deaths)}</div>
+                        <div className="align-right">{getDisplayNumber(data.cases)}</div>
+                        <div className="align-right">{getDisplayNumber(data.deaths)}</div>
                     </div>
                 ))}
             </div>

@@ -186,7 +186,6 @@ const fetchStateData = async() => {
         // U.S. States Latest Toals Data - 1 record per state
         const statesLatestJson = await fetchJsonData('https://covidtracking.com/api/v1/states/current.json');
         statesLatestJson.forEach(data => {
-            stateInformation[data.state].dataQualityGrade = data.dataQualityGrade;
             stateInformation[data.state].totalDeath = data.death;
             stateInformation[data.state].totalPositive = data.positive;
             stateInformation[data.state].totalTestResults = data.totalTestResults;

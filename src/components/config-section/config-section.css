@@ -3,9 +3,10 @@ select {
     outline: none !important;
     border: 0.5px solid silver;
     padding: 3px 1px;
-    width: 170px; 
+    width: 45%;;
+    max-width: 170px; 
     font-size: small;
-    margin-right: 5px;
+    margin: 5px;
     border-radius: 5px;
     box-shadow: 1px 1px silver;
     background-color: white;
@@ -18,12 +19,4 @@ select:focus {
 
 .field-label {
     display: none;
-}
-
-@media only screen and (max-width: 580px) {
-    select {
-        width: 95%;
-        margin: auto;
-        margin-top: 3px;
-    }
 }

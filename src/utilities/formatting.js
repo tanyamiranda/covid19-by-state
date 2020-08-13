@@ -28,5 +28,7 @@ export const getDateDisplayString = (date) => {
 
 export const getPercentage = (partialNum, totalNum) => {
     var percent = ((partialNum / totalNum) * 100).toFixed(2);
+    if (percent === "0.00")
+        percent = "< 0.01"
     return percent + "%";
 }

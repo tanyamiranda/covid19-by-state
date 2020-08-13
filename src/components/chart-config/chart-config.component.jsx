@@ -4,9 +4,9 @@ import {connect} from 'react-redux'
 import './chart-config.css';
 import ConfigSection from '../config-section/config-section.component';
 import {DATE_RANGES,US_STATES_DATA,DATA_FIELD_GROUPS, DATA_FIELD_GROUPS_DISPLAY_NAME} from '../../utilities/data-fields';
-import {setDateRangeSelection, setStateSelection, setFieldSelection} from '../../redux/chart-config/chart-config.actions';
+import {setDateRangeSelection, setStateSelection} from '../../redux/chart-config/chart-config.actions';
 
-const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection, setDateRangeSelection, setFieldSelection}) => {
+const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection, setDateRangeSelection}) => {
 
     //console.log("ChartConfiguration()...");
     //console.log("selectedState=",selectedState);
@@ -25,12 +25,9 @@ const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection
     const handleDateRangeSelection = (event) => {
         setDateRangeSelection(event.target.value);
     }
-    const handleGroupSelection = (event) => {  
-        setFieldSelection(DATA_FIELD_GROUPS[event.target.value]);
-    }
 
     return (
-        <div className="chart-configuration dashboard-component">
+        <div className="chart-configuration">
             <div className="top-section">
                 <ConfigSection 
                     fieldName="stateSelection"
@@ -44,12 +41,7 @@ const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection
                     fieldClickEvent= {handleDateRangeSelection}
                     fieldDataMap={DATE_RANGES}
                 />
-                <ConfigSection 
-                    fieldName="datasetSelection"
-                    fieldDefaultValue = ""
-                    fieldClickEvent= {handleGroupSelection}
-                    fieldDataMap={fieldGroupsMap}
-                />
+                
             </div>            
         </div>
     )
@@ -62,8 +54,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     setStateSelection: (userSelectedState) => dispatch(setStateSelection(userSelectedState)),
-    setDateRangeSelection: (userSelectedDateRange) => dispatch(setDateRangeSelection(userSelectedDateRange)),
-    setFieldSelection: (userSelectedFields) => dispatch(setFieldSelection(userSelectedFields))
+    setDateRangeSelection: (userSelectedDateRange) => dispatch(setDateRangeSelection(userSelectedDateRange))
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(ChartConfiguration);

@@ -16,7 +16,7 @@ import {
 
 import {getFormattedDateForFiltering} from '../../utilities/formatting';
 
-const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedFields, selectedDateRange}) => {  
+const StateHistoryChart = ({countryHistoryData, statesHistoryData, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId}) => {  
     
     const now = new Date();
     const yesterday = new Date();
@@ -31,27 +31,22 @@ const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformat
     else 
         dataSet = getHistoryByState(statesHistoryData, selectedState, startDate, endDate); 
 
-    //const stateData = getHistoryByState(statesHistoryData, selectedState, startDate, endDate); 
-    const chartDataSet = getChartDataset(dataSet, selectedFields);
+    const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
     const dateList = getDateListFromData(dataSet);
 
     return (
         <div className="dashboard-component state-history-chart">
-            <div className="dashboard-component-title chart-header"><span>Data for {US_STATES_DATA[selectedState]}</span> <span> last {selectedDateRange} days</span></div>
+            <div className="dashboard-component-title chart-header"><span>{stateChartTitle}</span> <span>last {selectedDateRange} days</span> for <span>{US_STATES_DATA[selectedState]}</span> </div>
             <ChartDisplay 
             chartType="line"
             chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
             chartLabels = {dateList} 
             chartDataSet = {chartDataSet}
-            chartId = "HistoricalDataChart"
+            chartId = {chartId}
             />
-            { selectedState === USA_IDENTIFIER ? null : (
-            <div className="state-grade"> 
-                <div className="data-sources">Data Quality Grade for {stateInformation[selectedState].name}:  <b>{stateInformation[selectedState].dataQualityGrade}</b></div>                  
-            </div>
-            )}
+
             <div className="data-sources">Data:&nbsp;
-                <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span>
+                <span className="site-link" onClick={()=> window.open("https://covidtracking.com/data")}>The COVID Tracking Project</span>
             </div>
         </div>
     )
@@ -61,10 +56,8 @@ const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformat
 const mapStateToProps = state => ({
     countryHistoryData: state.chartConfig.countryHistoryData,
     statesHistoryData: state.chartConfig.statesHistoryData,
-    stateInformation: state.chartConfig.stateInformation,
     selectedState: state.chartConfig.selectedState,
-    selectedDateRange: state.chartConfig.selectedDateRange, 
-    selectedFields: state.chartConfig.selectedFields
+    selectedDateRange: state.chartConfig.selectedDateRange
 });
 
 export default connect(mapStateToProps)(StateHistoryChart);

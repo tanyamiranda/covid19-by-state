@@ -23,7 +23,7 @@ const DeathsByAge = ({selectedState, stateInformation, deathsByAgeGroups}) => {
     const chartDataSet = getAgeGroupChartDataset(covid19Deaths, totalDeaths);
 
     return(
-        <div className="dashboard-component demographics">
+        <div className="demographics">
             <div>
                 <ChartDisplay 
                 chartType="bar"

@@ -11,7 +11,7 @@ const Demographics = ({selectedState, stateInformation, deathsByAgeGroups}) => {
 
     return(
         <div className="dashboard-component demographics">
-            <div className="dashboard-component-title">{stateInformation[selectedState].name} <span>Demographics</span></div> 
+            <div className="dashboard-component-title">{stateInformation[selectedState].name} <span>Total Deaths By Age Group</span></div> 
             <div>
                 {dataFetchedSuccessfully ? 
                     <DeathByAgeGroup />
