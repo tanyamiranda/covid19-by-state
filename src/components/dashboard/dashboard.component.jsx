@@ -68,7 +68,7 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 <span className="footer-site-link" onClick={()=> window.open("https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Sex-Age-and-S/9bhg-hcku")}>Center For Disease Control</span><br/>
                 <span className="footer-site-link" onClick={()=> window.open("https://github.com/nytimes/covid-19-data/blob/master/live/us-counties.csv")}>N.Y. Times</span><br/>
                 ~ ~ ~<br/>
-                Site built by Tanya Miranda<br/>tanya.miranda@gmail.com
+                <span className="footer-site-link" onClick={()=> window.open("https://tanyamiranda.github.io/")}>Contact Developer</span><br/>
             </div>
         </div>
     
