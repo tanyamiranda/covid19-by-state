@@ -7,3 +7,8 @@
     padding-top: 20px;
 }
 
+@media only screen and (max-width: 400px) {
+    .chart-display {
+        height: 60vh;
+    }
+}
