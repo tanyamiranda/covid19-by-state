@@ -8,6 +8,8 @@ export const DATE_RANGES = {
     180: "Last 6 Months"
 }
 
+export const DATE_RANGES_DEFAULT = "60";
+
 export const DATA_FIELD_COLORS = [
     'green',
     'red',

@@ -2,7 +2,8 @@ import {DATA_FIELD_COLORS,USA_IDENTIFIER, DATA_FIELD_DISPLAY_NAMES} from './data
 import POPULATION_ESTIMATES from './population-estimates';
 
 const URL_STATE_META_DATA = "https://api.covidtracking.com/v1/states/info.json";
-const URL_STATE_TOTALS_DATA = "https://api.covidtracking.com/v1/states/info.json";
+const URL_STATE_TOTALS_DATA = "https://api.covidtracking.com/v1/states/current.json";
+const URL_COUNTRY_TOTALS_DATA = "https://api.covidtracking.com/v1/us/current.json";
 const URL_COUNTY_LEVEL_DATA = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv"
 const URL_STATES_HISTORY_DATA = "https://api.covidtracking.com/v1/states/daily.json";
 const URL_COUNTRY_HISTORY_DATA = "https://api.covidtracking.com/v1/us/daily.json";
@@ -206,7 +207,7 @@ const fetchStateData = async() => {
         });
         
         // U.S. Country-Wide Current Data stored as a record in states data 
-        const countryJson = await fetchJsonData(URL_COUNTRY_HISTORY_DATA);
+        const countryJson = await fetchJsonData(URL_COUNTRY_TOTALS_DATA);
         countryJson.forEach(data => {    
             stateInformation[USA_IDENTIFIER] = {
                 estimatedPopulation: POPULATION_ESTIMATES[USA_IDENTIFIER],

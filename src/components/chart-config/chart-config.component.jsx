@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import './chart-config.css';
 import ConfigSection from '../config-section/config-section.component';
-import {DATE_RANGES,US_STATES_DATA,DATA_FIELD_GROUPS, DATA_FIELD_GROUPS_DISPLAY_NAME} from '../../utilities/data-fields';
+import {DATE_RANGES,US_STATES_DATA,DATA_FIELD_GROUPS, DATA_FIELD_GROUPS_DISPLAY_NAME,DATE_RANGES_DEFAULT} from '../../utilities/data-fields';
 import {setDateRangeSelection, setStateSelection} from '../../redux/chart-config/chart-config.actions';
 
 const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection, setDateRangeSelection}) => {
@@ -37,7 +37,7 @@ const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection
                 />
                 <ConfigSection 
                     fieldName="dateRangeSelection"
-                    fieldDefaultValue = {selectedDateRange}
+                    fieldDefaultValue = {!selectedDateRange ? DATE_RANGES_DEFAULT : selectedDateRange}
                     fieldClickEvent= {handleDateRangeSelection}
                     fieldDataMap={DATE_RANGES}
                 />
