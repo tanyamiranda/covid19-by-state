@@ -1,6 +1,13 @@
 import {DATA_FIELD_COLORS,USA_IDENTIFIER, DATA_FIELD_DISPLAY_NAMES} from './data-fields';
 import POPULATION_ESTIMATES from './population-estimates';
 
+const URL_STATE_META_DATA = "https://api.covidtracking.com/v1/states/info.json";
+const URL_STATE_TOTALS_DATA = "https://api.covidtracking.com/v1/states/info.json";
+const URL_COUNTY_LEVEL_DATA = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv"
+const URL_STATES_HISTORY_DATA = "https://api.covidtracking.com/v1/states/daily.json";
+const URL_COUNTRY_HISTORY_DATA = "https://api.covidtracking.com/v1/us/daily.json";
+const URL_DEATHS_BY_AGE_DATA = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group,sum(covid_19_deaths),sum(total_deaths)&$group=data_as_of,state,age_group&$where=sex%20in%20(%27Male%27,%27Female%27)&$order=state";
+
 export const getDateListFromData = (stateData) => {
 
     const datesList = stateData.map(item => item.date)
@@ -119,9 +126,9 @@ export const getFreshData = async() => {
 
         stateInformation = await fetchStateData();
         stateCountyInfo = await fetchCountyData();
-        stateHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/states/daily.json');
-        countryHistoryData = await fetchJsonData('https://covidtracking.com/api/v1/us/daily.json');
-        deathsByAgeGroups = await fetchJsonData('https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group,sum(covid_19_deaths),sum(total_deaths)&$group=data_as_of,state,age_group&$where=sex%20in%20(%27Male%27,%27Female%27)&$order=state');
+        stateHistoryData = await fetchJsonData(URL_STATES_HISTORY_DATA);
+        countryHistoryData = await fetchJsonData(URL_COUNTRY_HISTORY_DATA);
+        deathsByAgeGroups = await fetchJsonData(URL_DEATHS_BY_AGE_DATA);
 
         return {
             statesHistoryData: stateHistoryData,
@@ -173,18 +180,17 @@ const fetchStateData = async() => {
         const stateInformation = [];
 
         // U.S. States Data - 1 record per state
-        const stateJson = await fetchJsonData('https://covidtracking.com/api/v1/states/info.json');
+        const stateJson = await fetchJsonData(URL_STATE_META_DATA);
         stateJson.forEach(data => {
             stateInformation[data.state] = {
                 name: data.name,
                 website: data.covid19Site,
                 twitter: data.twitter,
-                //notes: data.notes
             }
         })
 
         // U.S. States Latest Toals Data - 1 record per state
-        const statesLatestJson = await fetchJsonData('https://covidtracking.com/api/v1/states/current.json');
+        const statesLatestJson = await fetchJsonData(URL_STATE_TOTALS_DATA);
         statesLatestJson.forEach(data => {
             stateInformation[data.state].totalDeath = data.death;
             stateInformation[data.state].totalPositive = data.positive;
@@ -200,7 +206,7 @@ const fetchStateData = async() => {
         });
         
         // U.S. Country-Wide Current Data stored as a record in states data 
-        const countryJson = await fetchJsonData('https://covidtracking.com/api/v1/us/current.json');
+        const countryJson = await fetchJsonData(URL_COUNTRY_HISTORY_DATA);
         countryJson.forEach(data => {    
             stateInformation[USA_IDENTIFIER] = {
                 estimatedPopulation: POPULATION_ESTIMATES[USA_IDENTIFIER],
@@ -227,7 +233,7 @@ const fetchStateData = async() => {
 export const fetchCountyData = async() => {
 
     try {
-        const url = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv"
+        const url = URL_COUNTY_LEVEL_DATA;
         
         let stateCountyData = [];
 
