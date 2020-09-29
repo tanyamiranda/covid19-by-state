@@ -9,7 +9,7 @@ import ChartConfiguration from '../chart-config/chart-config.component';
 import StateHistoryChart from '../state-history-chart/state-history-chart.component';
 import Spinner from '../spinner/spinner.component';
 import Overview from '../overview/overview.component';
-import {USA_IDENTIFIER, DATA_FIELD_GROUPS} from '../../utilities/data-fields';
+import {DATA_FIELD_GROUPS} from '../../utilities/data-fields';
 import Demographics from '../demographics/demographics.component';
 
 const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState}) => {  
