@@ -11,7 +11,7 @@ const Demographics = ({selectedState, stateInformation, deathsByAgeGroups}) => {
 
     return(
         <div className="dashboard-component demographics">
-            <div className="dashboard-component-title">{stateInformation[selectedState].name} <span>Total Deaths By Age Group</span></div> 
+            <div className="dashboard-component-title">Deaths By Age Group for <span>{stateInformation[selectedState].name}</span></div> 
             <div>
                 {dataFetchedSuccessfully ? 
                     <DeathByAgeGroup />
@@ -19,8 +19,6 @@ const Demographics = ({selectedState, stateInformation, deathsByAgeGroups}) => {
                     <div>Problem fetching data from CDC site...</div>
                 }
             </div>    
-            <div className="data-sources">Data tracked since 2/1/2020</div>
-            <div className="data-sources">++Number of deaths reported in this table are the total number of deaths received and coded as of the date of analysis. Click on the CDC link below for details.</div>
             <div className="data-sources">Data:&nbsp;
                 <span className="site-link" onClick={()=> window.open("https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Sex-Age-and-S/9bhg-hcku")}>Center For Disease Control</span><br/>
             </div>

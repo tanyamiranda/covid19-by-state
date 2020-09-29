@@ -10,7 +10,6 @@ import StateHistoryChart from '../state-history-chart/state-history-chart.compon
 import Spinner from '../spinner/spinner.component';
 import Overview from '../overview/overview.component';
 import {USA_IDENTIFIER, DATA_FIELD_GROUPS} from '../../utilities/data-fields';
-import CountyData from '../county-data/county-data.component';
 import Demographics from '../demographics/demographics.component';
 
 const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState}) => {  
@@ -51,14 +50,11 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 <Spinner />
             ) : (
                 <div className="page-layout">
+                    <Overview/>
                     <StateHistoryChart selectedFieldGroup={DATA_FIELD_GROUPS.increase} stateChartTitle="Daily Increases" chartId="dailyIncreases" />
                     <StateHistoryChart selectedFieldGroup={DATA_FIELD_GROUPS.hospitalization} stateChartTitle="Hospitalizations" chartId="hospitalizations"/>
-                    <StateHistoryChart selectedFieldGroup={DATA_FIELD_GROUPS.testing} stateChartTitle="Testing" chartId="testing"/>
-                    <Overview/>
+                    <StateHistoryChart selectedFieldGroup={DATA_FIELD_GROUPS.testing} stateChartTitle="Testing & Cases" chartId="testing"/>
                     <Demographics/>
-                    {selectedState === USA_IDENTIFIER ? null : (
-                        <CountyData />
-                    )}
                 </div>
             )}
             <div className="page-footer">

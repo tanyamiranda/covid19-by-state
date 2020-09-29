@@ -12,14 +12,18 @@ const Overview = ({selectedState, stateInformation}) => {
     const percentPositive =  getPercentage(stateInfo.totalPositive,stateInfo.estimatedPopulation);
     const percentTested =  getPercentage(stateInfo.totalTestResults,stateInfo.estimatedPopulation);
     const percentDeath =  getPercentage(stateInfo.totalDeath,stateInfo.estimatedPopulation);
-    const percentHospitalized =  getPercentage(stateInfo.hospitalizedCurrently,stateInfo.estimatedPopulation);
+    //const percentHospitalized =  getPercentage(stateInfo.hospitalizedCurrently,stateInfo.estimatedPopulation);
     //const percentPositiveOfTestedTotal = getPercentage(stateInfo.totalPositive,stateInfo.totalTestResults);
 
     return (
         <div className="dashboard-component overview">
-            <div className="dashboard-component-title">{stateInfo.name} Totals</div>
-            <div className="estimated-population">Population : <span className="estimate">{getDisplayNumber(stateInfo.estimatedPopulation)}</span></div>
+            <div className="dashboard-component-title">{stateInfo.name} Overview</div>
             <div className="overview-data">
+                <div className="overview-data-row">
+                    <div className="data-label">Estimated Population</div>
+                    <div className="data-number">{getDisplayNumber(stateInfo.estimatedPopulation)}</div>
+                    <div className="data-percent"><span className="percent"></span></div>
+                </div>
                 <div className="overview-data-row">
                     <div className="data-label">Total Tested</div>
                     <div className="data-number">{getDisplayNumber(stateInfo.totalTestResults)}</div>
@@ -35,11 +39,7 @@ const Overview = ({selectedState, stateInformation}) => {
                     <div className="data-number">{getDisplayNumber(stateInfo.totalDeath)}</div>
                     <div className="data-percent"><span className="percent">{percentDeath}</span> of Population</div>
                 </div>
-                <div className="overview-data-row">
-                    <div className="data-label">Currently Hospitalized</div>
-                    <div className="data-number">{getDisplayNumber(stateInfo.hospitalizedCurrently)}</div>
-                    <div className="data-percent"><span className="percent">{percentHospitalized}</span> of Population</div>
-                </div>
+                
             </div>            
             <div className="data-sources">Data:&nbsp;
                 <span className="site-link" onClick={()=> window.open("https://covidtracking.com/")}>The COVID Tracking Project</span>,&nbsp; 

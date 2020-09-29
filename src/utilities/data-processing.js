@@ -7,7 +7,7 @@ const URL_COUNTRY_TOTALS_DATA = "https://api.covidtracking.com/v1/us/current.jso
 const URL_COUNTY_LEVEL_DATA = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv"
 const URL_STATES_HISTORY_DATA = "https://api.covidtracking.com/v1/states/daily.json";
 const URL_COUNTRY_HISTORY_DATA = "https://api.covidtracking.com/v1/us/daily.json";
-const URL_DEATHS_BY_AGE_DATA = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group,sum(covid_19_deaths),sum(total_deaths)&$group=data_as_of,state,age_group&$where=sex%20in%20(%27Male%27,%27Female%27)&$order=state";
+const URL_DEATHS_BY_AGE_DATA = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=data_as_of,state,age_group_new%20as%20age_group,sum(covid_19_deaths),sum(total_deaths)&$group=data_as_of,state,age_group_new&$where=sex%20in%20(%27Male%27,%27Female%27)&$order=state";
 
 export const getDateListFromData = (stateData) => {
 
