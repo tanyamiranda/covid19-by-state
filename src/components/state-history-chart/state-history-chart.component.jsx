@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import './state-history-chart.css';
 
-import {US_STATES_DATA, USA_IDENTIFIER} from '../../utilities/data-fields';
+import {USA_IDENTIFIER, DATE_RANGES} from '../../utilities/data-fields';
 import {CHART_OPTIONS_FOR_STATE_HISTORY} from '../../utilities/chart-options';
 import ChartDisplay from '../chart-display/chart-display.component';
 
@@ -16,7 +16,7 @@ import {
 
 import {getFormattedDateForFiltering} from '../../utilities/formatting';
 
-const StateHistoryChart = ({countryHistoryData, statesHistoryData, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId}) => {  
+const StateHistoryChart = ({countryHistoryData, statesHistoryData, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId, displayDateRange}) => {  
     
     const now = new Date();
     const yesterday = new Date();
@@ -34,9 +34,18 @@ const StateHistoryChart = ({countryHistoryData, statesHistoryData, selectedState
     const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
     const dateList = getDateListFromData(dataSet);
 
+    let displayDateRangeText = "";
+
+    if (displayDateRange) 
+        displayDateRangeText = DATE_RANGES[selectedDateRange];
+
     return (
         <div className="dashboard-component state-history-chart">
-            <div className="dashboard-component-title chart-header"><span>{stateChartTitle}</span> <span>last {selectedDateRange} days</span> for <span>{US_STATES_DATA[selectedState]}</span> </div>
+            <div className="dashboard-component-title chart-header"><span>{stateChartTitle}</span>
+             {!displayDateRange ? "" : (
+                 <span> {displayDateRangeText}</span>
+             )}
+             </div>
             <ChartDisplay 
             chartType="line"
             chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}

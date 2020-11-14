@@ -5,7 +5,8 @@ export const DATE_RANGES = {
     90: "Last 3 months",
     120: "Last 4 months",
     150: "Last 5 months",
-    180: "Last 6 Months"
+    180: "Last 6 months",
+    270: "Last 9 months"
 }
 
 export const DATE_RANGES_DEFAULT = "60";
@@ -89,28 +90,24 @@ export const US_STATES_DATA = {
     WY:"Wyoming"
 }
 
+export const CHART_FIELD_GROUPS = {
 
-export const DATA_FIELD_GROUPS = {
-    
-    increase: [
-        "positiveIncrease",
-        "deathIncrease",
+    dailyDeaths: [
+        "deathIncrease"
+    ],
+    dailyPositiveCases: [
+        "positiveIncrease"
+    ],
+    dailyHospitalizations: [
         "hospitalizedIncrease"
     ],
-    hospitalization: [
+    dailyHospitalizedBreakdown: [
         "hospitalizedCurrently",
         "inIcuCurrently",
         "onVentilatorCurrently"
     ],
-    testing:[
-        //"totalTestResults",
-        //"positive",
-        "totalTestResultsIncrease",
-        "positiveIncrease",
-        //"pending", 
-        //"death"
-    ]
-};
+
+}
 
 export const DATA_FIELD_GROUPS_DISPLAY_NAME = {
     increase: "Daily Increases",
@@ -124,7 +121,7 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     positiveIncrease: "New Cases",
     hospitalizedIncrease: "New Hospitalizations",
 
-    hospitalizedCurrently: "Hospitalized",
+    hospitalizedCurrently: "Currently Hospitalized",
     inIcuCurrently: "In ICU",
     onVentilatorCurrently: "On Ventilators",
     

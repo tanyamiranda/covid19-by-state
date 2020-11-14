@@ -20,7 +20,7 @@ const Overview = ({selectedState, stateInformation}) => {
             <div className="dashboard-component-title">{stateInfo.name} Overview</div>
             <div className="overview-data">
                 <div className="overview-data-row">
-                    <div className="data-label">Estimated Population</div>
+                    <div className="data-label">Population</div>
                     <div className="data-number">{getDisplayNumber(stateInfo.estimatedPopulation)}</div>
                     <div className="data-percent"><span className="percent"></span></div>
                 </div>

@@ -276,8 +276,10 @@ function parseCountyCSVData(csv){
     return result; 
 }
 
-export const formatYAxisDisplay = (label) => {
-    
+export const formatYAxisDisplay = (labelText) => {
+
+    const label = Number(labelText);
+
     if (label >= 1000000) {
         return label / 1000000 + 'M';
     }

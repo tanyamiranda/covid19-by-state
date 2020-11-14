@@ -9,7 +9,7 @@ import ChartConfiguration from '../chart-config/chart-config.component';
 import StateHistoryChart from '../state-history-chart/state-history-chart.component';
 import Spinner from '../spinner/spinner.component';
 import Overview from '../overview/overview.component';
-import {DATA_FIELD_GROUPS} from '../../utilities/data-fields';
+import {CHART_FIELD_GROUPS} from '../../utilities/data-fields';
 import Demographics from '../demographics/demographics.component';
 
 const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState}) => {  
@@ -51,9 +51,11 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
             ) : (
                 <div className="page-layout">
                     <Overview/>
-                    <StateHistoryChart selectedFieldGroup={DATA_FIELD_GROUPS.increase} stateChartTitle="Daily Increases" chartId="dailyIncreases" />
-                    <StateHistoryChart selectedFieldGroup={DATA_FIELD_GROUPS.hospitalization} stateChartTitle="Hospitalizations" chartId="hospitalizations"/>
-                    <StateHistoryChart selectedFieldGroup={DATA_FIELD_GROUPS.testing} stateChartTitle="Testing & Cases" chartId="testing"/>
+                    
+                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyPositiveCases} stateChartTitle="New Positive Cases" chartId="dailyPositiveCases" displayDateRange={true} displayLegend={false}/>
+                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyDeaths} stateChartTitle="New Deaths" chartId="dailyDeaths" displayDateRange={true} displayLegend={false}/>
+                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyHospitalizedBreakdown} stateChartTitle="Hospitalization Breakdown" chartId="hospitalizations" displayDateRange={false} displayLegend={true}/>
+                    
                     <Demographics/>
                 </div>
             )}
