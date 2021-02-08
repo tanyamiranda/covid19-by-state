@@ -19,7 +19,7 @@ const Overview = ({selectedState, stateInformation}) => {
             <div className="dashboard-component-title">{stateInfo.name} Overview</div>
             <div className="overview-data">
                 <div className="overview-data-row">
-                    <div className="data-label">Population</div>
+                    <div className="data-label">Total Population</div>
                     <div className="data-number">{getDisplayNumber(stateInfo.estimatedPopulation)}</div>
                 </div>
                 <div className="overview-data-row">
@@ -28,7 +28,7 @@ const Overview = ({selectedState, stateInformation}) => {
                     
                 </div>
                 <div className="overview-data-row">
-                    <div className="data-label">Currently Hospitalized</div>
+                    <div className="data-label">Current Hospitalized</div>
                     <div className="data-number">{getDisplayNumber(stateInfo.hospitalizedCurrently)}<span className="percent">({percentHospitalized})</span></div>
                     
                 </div>
