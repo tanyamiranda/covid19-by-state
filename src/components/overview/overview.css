@@ -1,12 +1,12 @@
 .overview {
-    max-width: 980px;
+   /* max-width: 980px; */
 }
 .overview-data-row {
     margin: auto;
     display: inline-block;
     text-align: right;
-    height: 100px;
-    width: 40%;
+    height: 70px;
+    width: 100%;
     max-width: 160px;
     min-width: 120px;
     border: .5px solid silver;
@@ -22,7 +22,7 @@
     text-transform: uppercase;
     padding-top: 2px;
     line-height: normal;
-    height: 40px;
+    height: 20px;
 }
 
 .data-number {
@@ -31,8 +31,9 @@
 }
 
 .percent, .estimate {
-    font-weight: bold;
+    font-size: small;
     color:green;
+    display: block;
 }
 
 .data-percent {

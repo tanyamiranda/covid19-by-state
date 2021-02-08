@@ -126,7 +126,7 @@ export const getFreshData = async() => {
     try {
 
         stateInformation = await fetchStateData();
-        stateCountyInfo = await fetchCountyData();
+        //stateCountyInfo = await fetchCountyData();
         stateHistoryData = await fetchJsonData(URL_STATES_HISTORY_DATA);
         countryHistoryData = await fetchJsonData(URL_COUNTRY_HISTORY_DATA);
         deathsByAgeGroups = await fetchJsonData(URL_DEATHS_BY_AGE_DATA);

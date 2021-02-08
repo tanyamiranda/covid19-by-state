@@ -50,12 +50,9 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 <Spinner />
             ) : (
                 <div className="page-layout">
-                    <Overview/>
-                    
-                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyPositiveCases} stateChartTitle="New Positive Cases" chartId="dailyPositiveCases" displayDateRange={true} displayLegend={false}/>
-                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyDeaths} stateChartTitle="New Deaths" chartId="dailyDeaths" displayDateRange={true} displayLegend={false}/>
+                    <Overview/>                                     
+                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyTotals} stateChartTitle="New/Daily Metrics" chartId="dailyTotals" displayDateRange={false} displayLegend={false}/>
                     <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyHospitalizedBreakdown} stateChartTitle="Hospitalization Breakdown" chartId="hospitalizations" displayDateRange={false} displayLegend={true}/>
-                    
                     <Demographics/>
                 </div>
             )}

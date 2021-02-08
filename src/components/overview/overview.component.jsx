@@ -10,9 +10,8 @@ const Overview = ({selectedState, stateInformation}) => {
     let stateInfo = stateInformation[selectedState];
         
     const percentPositive =  getPercentage(stateInfo.totalPositive,stateInfo.estimatedPopulation);
-    const percentTested =  getPercentage(stateInfo.totalTestResults,stateInfo.estimatedPopulation);
     const percentDeath =  getPercentage(stateInfo.totalDeath,stateInfo.estimatedPopulation);
-    //const percentHospitalized =  getPercentage(stateInfo.hospitalizedCurrently,stateInfo.estimatedPopulation);
+    const percentHospitalized =  getPercentage(stateInfo.hospitalizedCurrently,stateInfo.estimatedPopulation);
     //const percentPositiveOfTestedTotal = getPercentage(stateInfo.totalPositive,stateInfo.totalTestResults);
 
     return (
@@ -22,22 +21,21 @@ const Overview = ({selectedState, stateInformation}) => {
                 <div className="overview-data-row">
                     <div className="data-label">Population</div>
                     <div className="data-number">{getDisplayNumber(stateInfo.estimatedPopulation)}</div>
-                    <div className="data-percent"><span className="percent"></span></div>
                 </div>
                 <div className="overview-data-row">
-                    <div className="data-label">Total Tested</div>
-                    <div className="data-number">{getDisplayNumber(stateInfo.totalTestResults)}</div>
-                    <div className="data-percent"><span className="percent">{percentTested}</span> of Population</div>
+                    <div className="data-label">Total Positive Tests</div>
+                    <div className="data-number">{getDisplayNumber(stateInfo.totalPositive)}<span className="percent">({percentPositive})</span></div>
+                    
                 </div>
                 <div className="overview-data-row">
-                    <div className="data-label">Total Positive</div>
-                    <div className="data-number">{getDisplayNumber(stateInfo.totalPositive)}</div>
-                    <div className="data-percent"><span className="percent">{percentPositive}</span> of Population</div>
+                    <div className="data-label">Currently Hospitalized</div>
+                    <div className="data-number">{getDisplayNumber(stateInfo.hospitalizedCurrently)}<span className="percent">({percentHospitalized})</span></div>
+                    
                 </div>
                 <div className="overview-data-row">
                     <div className="data-label">Total Deaths</div>
-                    <div className="data-number">{getDisplayNumber(stateInfo.totalDeath)}</div>
-                    <div className="data-percent"><span className="percent">{percentDeath}</span> of Population</div>
+                    <div className="data-number">{getDisplayNumber(stateInfo.totalDeath)}<span className="percent">({percentDeath})</span></div>
+
                 </div>
                 
             </div>            

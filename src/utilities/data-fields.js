@@ -6,7 +6,8 @@ export const DATE_RANGES = {
     120: "Last 4 months",
     150: "Last 5 months",
     180: "Last 6 months",
-    270: "Last 9 months"
+    270: "Last 9 months",
+    365: "Last 12 months"
 }
 
 export const DATE_RANGES_DEFAULT = "60";
@@ -92,6 +93,11 @@ export const US_STATES_DATA = {
 
 export const CHART_FIELD_GROUPS = {
 
+    dailyTotals: [
+        "positiveIncrease",
+        "deathIncrease",
+        "hospitalizedIncrease"
+    ],
     dailyDeaths: [
         "deathIncrease"
     ],
