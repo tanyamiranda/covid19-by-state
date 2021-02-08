@@ -16,7 +16,7 @@ import {
 
 import {getFormattedDateForFiltering} from '../../utilities/formatting';
 
-const StateHistoryChart = ({countryHistoryData, statesHistoryData, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId, displayDateRange}) => {  
+const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId, displayDateRange}) => {  
     
     const now = new Date();
     const yesterday = new Date();
@@ -41,7 +41,7 @@ const StateHistoryChart = ({countryHistoryData, statesHistoryData, selectedState
 
     return (
         <div className="dashboard-component state-history-chart">
-            <div className="dashboard-component-title chart-header"><span>{stateChartTitle}</span>
+            <div className="dashboard-component-title chart-header"><span>{stateChartTitle}</span> <span>for {stateInformation[selectedState].name}</span>
              {!displayDateRange ? "" : (
                  <span> {displayDateRangeText}</span>
              )}
@@ -66,7 +66,8 @@ const mapStateToProps = state => ({
     countryHistoryData: state.chartConfig.countryHistoryData,
     statesHistoryData: state.chartConfig.statesHistoryData,
     selectedState: state.chartConfig.selectedState,
-    selectedDateRange: state.chartConfig.selectedDateRange
+    selectedDateRange: state.chartConfig.selectedDateRange,
+    stateInformation: state.chartConfig.stateInformation
 });
 
 export default connect(mapStateToProps)(StateHistoryChart);
