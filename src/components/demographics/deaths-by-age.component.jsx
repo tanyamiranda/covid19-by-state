@@ -12,6 +12,7 @@ const DeathsByAge = ({selectedState, stateInformation, deathsByAgeGroups}) => {
 
     let dataSet = getAgeGroupForState(deathsByAgeGroups, stateInformation[selectedState].name);
 
+    /** CDC collects NYC separately from NY State. We are grouping them back into one number under NY state. **/
     if(selectedState === "NY") {
         const tempData = dataSet.concat(getAgeGroupForState(deathsByAgeGroups,"New York City"));
         dataSet = combineAgeGroupValues(tempData);   
