@@ -43,7 +43,7 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
 
         <div className="dashboard">
             <div className="page-header">
-                <div className="page-title"><span>COVID-19 Data Charts</span> <span>For U.S. States</span></div>
+                <div className="page-title"><span>COVID-19 Data Charts</span> <span>For United States</span></div>
                 <ChartConfiguration />
             </div>
             { !dataRefreshedTimestamp ? ( 
