@@ -16,7 +16,7 @@ import {
 
 import {getFormattedDateForFiltering} from '../../utilities/formatting';
 
-const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId, displayDateRange}) => {  
+const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformation, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId}) => {  
     
     const now = new Date();
     const yesterday = new Date();
@@ -34,18 +34,11 @@ const StateHistoryChart = ({countryHistoryData, statesHistoryData, stateInformat
     const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
     const dateList = getDateListFromData(dataSet);
 
-    let displayDateRangeText = "";
-
-    if (displayDateRange) 
-        displayDateRangeText = DATE_RANGES[selectedDateRange];
-
     return (
         <div className="dashboard-component state-history-chart">
-            <div className="dashboard-component-title chart-header"><span>{stateChartTitle}</span> <span>for {stateInformation[selectedState].name}</span>
-             {!displayDateRange ? "" : (
-                 <span> {displayDateRangeText}</span>
-             )}
-             </div>
+            <div className="dashboard-component-title chart-header">
+                <span>{stateChartTitle}</span> <span>for {stateInformation[selectedState].name}</span> <span>{DATE_RANGES[selectedDateRange]}</span>
+            </div>
             <ChartDisplay 
             chartType="line"
             chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
