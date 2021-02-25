@@ -7,7 +7,7 @@ const URL_COUNTRY_TOTALS_DATA = "https://api.covidtracking.com/v1/us/current.jso
 const URL_COUNTY_LEVEL_DATA = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv"
 const URL_STATES_HISTORY_DATA = "https://api.covidtracking.com/v1/states/daily.json";
 const URL_COUNTRY_HISTORY_DATA = "https://api.covidtracking.com/v1/us/daily.json";
-const URL_DEATHS_BY_AGE_DATA = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=state,sex,%20age_group,sum(covid_19_deaths),sum(total_deaths)%20where%20sex=%27All%20Sexes%27%20and%20%20age_group%20in%20(%270-17%20years%27,%20%2718-29%20years%27,%20%2730-39%20years%27,%2740-49%20years%27,%2750-64%20years%27,%2765-74%20years%27,%2775-84%20years%27,%2785%20years%20and%20over%27)%20group%20by%20state,sex,age_group&$order=state,age_group";
+const URL_DEATHS_BY_AGE_DATA = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=state,age_group,sum(covid_19_deaths),sum(total_deaths) where sex ='All Sexes' and `group`='By Total' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') group by state,age_group&$order=state, age_group";
 
 export const getDateListFromData = (stateData) => {
 
