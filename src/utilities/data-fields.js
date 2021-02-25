@@ -127,7 +127,7 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     positiveIncrease: "New Cases",
     hospitalizedIncrease: "New Hospitalizations",
 
-    hospitalizedCurrently: "Currently Hospitalized",
+    hospitalizedCurrently: "Hospitalized",
     inIcuCurrently: "In ICU",
     onVentilatorCurrently: "On Ventilators",
     

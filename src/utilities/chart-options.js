@@ -19,7 +19,7 @@ export const CHART_OPTIONS_FOR_STATE_HISTORY = {
             
         },
     hover: {mode: 'nearest', intersect: true},
-    legend: {position:'top', labels: {boxWidth:5, fontSize:14, usePointStyle:true}},
+    legend: {position:'top', labels: {boxWidth:5, fontSize:14, usePointStyle:true, padding:15}},
     elements: {
         point:{
             radius: 0
