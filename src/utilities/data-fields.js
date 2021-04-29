@@ -7,7 +7,8 @@ export const DATE_RANGES = {
     150: "Last 5 months",
     180: "Last 6 months",
     270: "Last 9 months",
-    365: "Last 12 months"
+    365: "Last 12 months",
+    500: "All Time"
 }
 
 export const DATE_RANGES_DEFAULT = "60";
@@ -91,68 +92,32 @@ export const US_STATES_DATA = {
     WY:"Wyoming"
 }
 
-export const CHART_FIELD_GROUPS = {
-
-    dailyTotals: [
-        "positiveIncrease",
-        "deathIncrease",
-        "hospitalizedIncrease"
-    ],
-    dailyDeaths: [
-        "deathIncrease"
-    ],
-    dailyPositiveCases: [
-        "positiveIncrease"
-    ],
-    dailyHospitalizations: [
-        "hospitalizedIncrease"
-    ],
-    dailyHospitalizedBreakdown: [
-        "hospitalizedCurrently",
-        "inIcuCurrently",
-        "onVentilatorCurrently"
-    ],
-
-}
-
-export const DATA_FIELD_GROUPS_DISPLAY_NAME = {
-    increase: "Daily Increases",
-    hospitalization: "Current Hospitalizations",
-    testing: "Testing Totals"
-}
-
-//Keeping all names in case we go use in future
 export const DATA_FIELD_DISPLAY_NAMES = {   
-    deathIncrease: "New Deaths",
-    positiveIncrease: "New Cases",
-    hospitalizedIncrease: "New Hospitalizations",
-
-    hospitalizedCurrently: "Hospitalized",
-    inIcuCurrently: "In ICU",
-    onVentilatorCurrently: "On Ventilators",
-    
-    positive: "Positive",
-    negative: "Negative",
-    pending: "Pending",
-    totalTestResults: "Tests Taken",
-    death: "Death",
-    totalTestResultsIncrease: "New Tests"
+    new_case: "New Cases",
+    new_death: "New Deaths",
 };
 
-export const DEFAULT_DATA_FIELD = [
-    "positiveIncrease",
-    "deathIncrease",
-    "hospitalizedIncrease"
-]
-
-export const  STATE_INFO_JSON_FIELDS = [
-    "dataQualityGrade",
-    "positive",
-    "death"
-];
 
 export const COUNTY_SORT_FIELDS = {
     SORT_BY_DEATHS : "deaths",
     SORT_BY_CASES : "cases",
     SORT_BY_COUNTY : "county"
+};
+
+
+export const CDC_DATA_FIELDS_DAILY = [
+    "new_case",
+    "new_death",
+];
+
+export const CDC_DATA_FIELDS_TOTALS = [
+    "max_tot_cases",
+    "max_tot_death",
+];
+
+export const CDC_DATA_CHART_FIELD_GROUPS = {
+    dailyTotals: [
+        "new_case",
+        "new_death"
+    ]
 }

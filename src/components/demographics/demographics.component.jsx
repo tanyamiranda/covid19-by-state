@@ -2,16 +2,16 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import './demographics.css';
-
+import {STATE_INFO} from '../../utilities/states-meta-data';
 import DeathByAgeGroup from './deaths-by-age.component' ;
 
-const Demographics = ({selectedState, stateInformation, deathsByAgeGroups}) => {
+const Demographics = ({selectedState, deathsByAgeGroups}) => {
 
     const dataFetchedSuccessfully = Array.isArray(deathsByAgeGroups) && deathsByAgeGroups.length > 0;
 
     return(
         <div className="dashboard-component demographics">
-            <div className="dashboard-component-title">All Deaths By Age Group <span>for {stateInformation[selectedState].name}</span> <span>Since January 2020</span></div> 
+            <div className="dashboard-component-title">All Deaths By Age Group <span>for {STATE_INFO[selectedState].name}</span> <span>Since January 2020</span></div> 
             <div>
                 {dataFetchedSuccessfully ? 
                     <DeathByAgeGroup />
@@ -29,7 +29,6 @@ const Demographics = ({selectedState, stateInformation, deathsByAgeGroups}) => {
 }
 const mapStateToProps = state => ({
     selectedState: state.chartConfig.selectedState,
-    stateInformation: state.chartConfig.stateInformation,
     deathsByAgeGroups: state.chartConfig.deathsByAgeGroups
 });
 

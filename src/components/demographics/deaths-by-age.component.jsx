@@ -5,12 +5,12 @@ import './demographics.css';
 
 import {getAgeGroupForState, getAgeGroupChartDataset, formatAgeGroupNames, combineAgeGroupValues} from '../../utilities/data-processing';
 import {CHART_OPTIONS_FOR_AGE_GROUPS} from '../../utilities/chart-options';
-
+import {STATE_INFO} from '../../utilities/states-meta-data';
 import ChartDisplay from '../chart-display/chart-display.component';
 
 const DeathsByAge = ({selectedState, stateInformation, deathsByAgeGroups}) => {
 
-    let dataSet = getAgeGroupForState(deathsByAgeGroups, stateInformation[selectedState].name);
+    let dataSet = getAgeGroupForState(deathsByAgeGroups, STATE_INFO[selectedState].name);
 
     /** CDC collects NYC separately from NY State. We are grouping them back into one number under NY state. **/
     if(selectedState === "NY") {

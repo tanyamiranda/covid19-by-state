@@ -1,5 +1,5 @@
 import ChartConfigTypes from './chart-config.types';
-import {DEFAULT_DATA_FIELD, USA_IDENTIFIER, DATE_RANGES_DEFAULT} from '../../utilities/data-fields';
+import {USA_IDENTIFIER, DATE_RANGES_DEFAULT} from '../../utilities/data-fields';
 
 const INITIAL_STATE = {
     statesHistoryData: null,
@@ -20,31 +20,18 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
         case ChartConfigTypes.SET_COVID19_DATA: 
             return {
                 selectedState: USA_IDENTIFIER,
-                selectedDateRange: DATE_RANGES_DEFAULT,   
-                selectedFields: DEFAULT_DATA_FIELD,    
-                statesHistoryData: action.payload.statesHistoryData,
-                stateInformation: action.payload.stateInformation,
-                countryHistoryData: action.payload.countryHistoryData,
+                selectedDateRange: DATE_RANGES_DEFAULT,    
                 stateCountyInfo: action.payload.stateCountyInfo,
                 deathsByAgeGroups: action.payload.deathsByAgeGroups,
-                dataRefreshedTimestamp: (new Date()).toLocaleString()
+                dataRefreshedTimestamp: (new Date()).toLocaleString(),
+                cdcHistoryByJurisdiction: action.payload.cdcHistoryByJurisdiction,
+                cdcTotalsByJurisdiction: action.payload.cdcTotalsByJurisdiction
             }
-        case ChartConfigTypes.SET_STATE_HISTORY_DATA:
-            return {
-                ...state,
-                statesHistoryData: action.payload
-            }
-
+            
         case ChartConfigTypes.SET_STATE_SELECTION:
             return {
                 ...state,
                 selectedState: action.payload
-            }
-        
-        case ChartConfigTypes.SET_FIELD_SELECTION:
-            return {
-                ...state,
-                selectedFields: action.payload
             }
         
         case ChartConfigTypes.SET_DATE_RANGE_SELECTION:

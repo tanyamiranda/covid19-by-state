@@ -10,20 +10,10 @@ export const setDateRangeSelection = (dateRangeSelection) => ({
     payload: dateRangeSelection
 });
 
-export const setFieldSelection = (fieldSelection) => ({
-    type : ChartConfigTypes.SET_FIELD_SELECTION,
-    payload: fieldSelection
-});
-
 export const setCOVID19Data = (data) => ({
     type : ChartConfigTypes.SET_COVID19_DATA,
     payload: data
 });
-
-export const setStateHistoryData = (data) => ({
-    type : ChartConfigTypes.SET_STATE_HISTORY_DATA,
-    payload: data
-})
 
 
 

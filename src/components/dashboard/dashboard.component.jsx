@@ -3,16 +3,16 @@ import {connect} from 'react-redux';
 
 import "./dashboard.css";
 
-import {getFreshData} from '../../utilities/data-processing';
+import {getFreshData,getCDCDataSet} from '../../utilities/data-processing';
 import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
 import ChartConfiguration from '../chart-config/chart-config.component';
-import StateHistoryChart from '../state-history-chart/state-history-chart.component';
+import CDCHistoryChart from '../cdc-history-chart/cdc-history-chart.component';
 import Spinner from '../spinner/spinner.component';
-import Overview from '../overview/overview.component';
-import {CHART_FIELD_GROUPS} from '../../utilities/data-fields';
+import DataTotals from '../data-totals/data-totals.component';
+import {CDC_DATA_CHART_FIELD_GROUPS} from '../../utilities/data-fields';
 import Demographics from '../demographics/demographics.component';
 
-const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState}) => {  
+const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState, selectedDateRange, cdcHistoryByJurisdiction}) => {  
 
     useEffect(() => {
 
@@ -50,17 +50,20 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 <Spinner />
             ) : (
                 <div className="page-layout">
-                    <Overview/>                                     
-                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyTotals} stateChartTitle="New/Daily Metrics" chartId="dailyTotals"/>
-                    <StateHistoryChart selectedFieldGroup={CHART_FIELD_GROUPS.dailyHospitalizedBreakdown} stateChartTitle="Hospitalization Breakdown" chartId="hospitalizations"/>
+                    <DataTotals/>                                               
+                    <CDCHistoryChart 
+                        dataSet={getCDCDataSet(selectedDateRange, cdcHistoryByJurisdiction, selectedState)} 
+                        selectedFieldGroup={CDC_DATA_CHART_FIELD_GROUPS.dailyTotals} 
+                        stateChartTitle="New Cases & Deaths" 
+                        chartId="newCasesDeaths"/>
+
                     <Demographics/>
                 </div>
             )}
             <div className="page-footer">
                 Data Sources:<br/>
-                <span className="footer-site-link" onClick={()=> window.open("https://covidtracking.com/data")}>The COVID Tracking Project</span><br/>
                 <span className="footer-site-link" onClick={()=> window.open("https://www.census.gov/programs-surveys/popest.html")}>U.S. Census Bureau</span><br/>
-                <span className="footer-site-link" onClick={()=> window.open("https://data.cdc.gov/NCHS/Provisional-COVID-19-Death-Counts-by-Sex-Age-and-S/9bhg-hcku")}>Center For Disease Control</span><br/>
+                <span className="footer-site-link" onClick={()=> window.open("https://data.cdc.gov")}>Center For Disease Control</span><br/>
                 <span className="footer-site-link" onClick={()=> window.open("https://github.com/nytimes/covid-19-data/blob/master/live/us-counties.csv")}>N.Y. Times</span><br/>
                 ~ ~ ~<br/>
                 <span className="footer-site-link" onClick={()=> window.open("https://tanyamiranda.github.io/")}>Contact Developer</span><br/>
@@ -72,7 +75,10 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
 
 const mapStateToProps = state => ({
     dataRefreshedTimestamp: state.chartConfig.dataRefreshedTimestamp,
-    selectedState: state.chartConfig.selectedState
+    selectedState: state.chartConfig.selectedState, 
+    selectedDateRange: state.chartConfig.selectedDateRange,
+    cdcHistoryByJurisdiction: state.chartConfig.cdcHistoryByJurisdiction
+
 });
 
 const mapDispatchToProps = dispatch => ({
