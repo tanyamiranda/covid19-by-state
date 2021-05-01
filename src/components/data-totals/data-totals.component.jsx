@@ -32,12 +32,12 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
             {dataFetchedSuccessfully ? 
                 <div className="data-totals">
                     <div className="data-row">
-                        <div className="data-label">Total Confirmed Cases</div>
+                        <div className="data-label">Total Cases</div>
                         <div className="data-number">{getDisplayNumber(jurisdictionData.total_cases)}</div>
                         <div className="percent">{percentPositive} of Est. Population**</div>
                     </div>
                     <div className="data-row">
-                        <div className="data-label">Total Confirmed Deaths</div>
+                        <div className="data-label">Total Deaths</div>
                         <div className="data-number">{getDisplayNumber(jurisdictionData.total_deaths)}</div>
                         <div className="percent">{percentDeath} of Est. Population**</div>
                     </div>
@@ -59,7 +59,7 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
                 <div>** Estimated population of {selectedState}: {getDisplayNumber(stateInfo.population)}</div>
                 Data:&nbsp;
                 <span className="site-link" onClick={()=> window.open("https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36")}>CDC</span>,&nbsp; 
-                <span className="site-link" onClick={()=> window.open("https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh")}>HealthData.gov</span>,&nbsp; 
+                <span className="site-link" onClick={()=> window.open("https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh")}>Healthdata.gov</span>,&nbsp; 
                 <span className="site-link" onClick={()=> window.open("https://www2.census.gov/programs-surveys/decennial/2020/data/apportionment/population-change-data-table.pdf")}>U.S. Census Bureau</span>    
             </div>
             
