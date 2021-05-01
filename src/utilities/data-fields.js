@@ -11,7 +11,7 @@ export const DATE_RANGES = {
     500: "All Time"
 }
 
-export const DATE_RANGES_DEFAULT = "60";
+export const DATE_RANGES_DEFAULT = "90";
 
 export const DATA_FIELD_COLORS = [
     'green',
@@ -95,6 +95,8 @@ export const US_STATES_DATA = {
 export const DATA_FIELD_DISPLAY_NAMES = {   
     new_case: "New Cases",
     new_death: "New Deaths",
+    inpatient_beds_covid: "Inpatient",
+    icu_beds_covid: "ICU"
 };
 
 
@@ -119,5 +121,9 @@ export const CDC_DATA_CHART_FIELD_GROUPS = {
     dailyTotals: [
         "new_case",
         "new_death"
+    ],
+    hospitalData: [
+        "inpatient_beds_covid",
+        "icu_beds_covid"
     ]
 }

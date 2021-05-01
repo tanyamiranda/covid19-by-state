@@ -2,8 +2,12 @@
 Population data taken from US Census estimates for July 2020. 
 https://www2.census.gov/programs-surveys/decennial/2020/data/apportionment/population-change-data-table.pdf
 
+This data changes approx every 18 months. No need to scrub every time.
+
+"USA" population = US Total in pdf + PR Total
+
 */
-export const STATE_INFO= [];
+export const STATE_INFO = [];
 STATE_INFO["AK"]={name:"Alaska", population:733391}
 STATE_INFO["AL"]={name:"Alabama", population:5024279}
 STATE_INFO["AR"]={name:"Arkansas", population:3011524}
@@ -56,4 +60,4 @@ STATE_INFO["WA"]={name:"Washington", population:7705281}
 STATE_INFO["WI"]={name:"Wisconsin", population:5893718}
 STATE_INFO["WV"]={name:"West Virginia", population:1793716}
 STATE_INFO["WY"]={name:"Wyoming", population:576851}
-STATE_INFO["USA"]={name:"United States", population:331449281}
+STATE_INFO["USA"]={name:"United States", population:334735155}

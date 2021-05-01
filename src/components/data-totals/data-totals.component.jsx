@@ -8,36 +8,61 @@ import {STATE_INFO} from '../../utilities/states-meta-data';
 
 const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
 
-    let jurisdictionData = cdcTotalsByJurisdiction.find(data => data.state===selectedState);
+    const dataFetchedSuccessfully = Array.isArray(cdcTotalsByJurisdiction) && cdcTotalsByJurisdiction.length > 0;
+
     let stateInfo = STATE_INFO[selectedState];
-        
-    const percentPositive =  getPercentage(jurisdictionData.total_cases,stateInfo.population);
-    const percentDeath =  getPercentage(jurisdictionData.total_deaths,stateInfo.population);
+
+    let jurisdictionData = [];        
+    let percentPositive =  0;
+    let percentDeath =  0
+    let percentHospitalization = 0;
+    let percentICU = 0;
+
+    if (dataFetchedSuccessfully) {
+        jurisdictionData = cdcTotalsByJurisdiction.find(data => data.state===selectedState);
+        percentPositive =  getPercentage(jurisdictionData.total_cases,stateInfo.population);
+        percentDeath =  getPercentage(jurisdictionData.total_deaths,stateInfo.population);
+        percentHospitalization =  getPercentage(jurisdictionData.inpatient_beds_covid,jurisdictionData.inpatient_beds);
+        percentICU =  getPercentage(jurisdictionData.icu_beds_covid,jurisdictionData.icu_beds);
+    }
     
     return (
         <div className="dashboard-component overview">
             <div className="dashboard-component-title">{stateInfo.name} Overview</div>
-            <div className="overview-data">
-                <div className="overview-data-row">
-                    <div className="data-label">Total Population</div>
-                    <div className="data-number">{getDisplayNumber(stateInfo.population)}</div>
-                </div>
-                <div className="overview-data-row">
-                    <div className="data-label">Total Cases</div>
-                    <div className="data-number">{getDisplayNumber(jurisdictionData.total_cases)}<span className="percent">({percentPositive})</span></div>
-                    
-                </div>
-                <div className="overview-data-row">
-                    <div className="data-label">Total Deaths</div>
-                    <div className="data-number">{getDisplayNumber(jurisdictionData.total_deaths)}<span className="percent">({percentDeath})</span></div>
-
-                </div>
-                
-            </div>            
-            <div className="data-sources">Data:&nbsp;
-                <span className="site-link" onClick={()=> window.open("https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36")}>Center For Disease Control</span>,&nbsp; 
-                <span className="site-link" onClick={()=> window.open("https://www.census.gov/programs-surveys/popest.html")}>U.S. Census Bureau</span>
+            {dataFetchedSuccessfully ? 
+                <div className="data-totals">
+                    <div className="data-row">
+                        <div className="data-label">Total Confirmed Cases</div>
+                        <div className="data-number">{getDisplayNumber(jurisdictionData.total_cases)}</div>
+                        <div className="percent">{percentPositive} of Est. Population**</div>
+                    </div>
+                    <div className="data-row">
+                        <div className="data-label">Total Confirmed Deaths</div>
+                        <div className="data-number">{getDisplayNumber(jurisdictionData.total_deaths)}</div>
+                        <div className="percent">{percentDeath} of Est. Population**</div>
+                    </div>
+                    <div className="data-row">
+                        <div className="data-label">Currently in Hospitals</div>
+                        <div className="data-number">{getDisplayNumber(jurisdictionData.inpatient_beds_covid)}</div>
+                        <div className="percent">{percentHospitalization} of {getDisplayNumber(jurisdictionData.inpatient_beds)}<br/>Total Inpatient Beds Available</div>
+                    </div>
+                    <div className="data-row">
+                        <div className="data-label">Currently in ICU</div>
+                        <div className="data-number">{getDisplayNumber(jurisdictionData.icu_beds_covid)}</div>
+                        <div className="percent">{percentICU} of {getDisplayNumber(jurisdictionData.icu_beds)}<br/>Total ICU Beds Available</div>
+                    </div>
+                </div>            
+            : 
+                <div>Problem fetching data from CDC site...</div>
+            }
+            <div className="data-sources">
+                <div>** Estimated population of {selectedState}: {getDisplayNumber(stateInfo.population)}</div>
+                Data:&nbsp;
+                <span className="site-link" onClick={()=> window.open("https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36")}>CDC</span>,&nbsp; 
+                <span className="site-link" onClick={()=> window.open("https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh")}>HealthData.gov</span>,&nbsp; 
+                <span className="site-link" onClick={()=> window.open("https://www2.census.gov/programs-surveys/decennial/2020/data/apportionment/population-change-data-table.pdf")}>U.S. Census Bureau</span>    
             </div>
+            
         </div>
     )
 }
@@ -45,7 +70,7 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
 const mapStateToProps = state => ({
     selectedState: state.chartConfig.selectedState,
     stateInformation: state.chartConfig.stateInformation,
-    cdcTotalsByJurisdiction: state.chartConfig.cdcTotalsByJurisdiction
+    cdcTotalsByJurisdiction: state.chartConfig.cdcTotalsByJurisdiction,
 });
 
 export default connect(mapStateToProps)(DataTotals);

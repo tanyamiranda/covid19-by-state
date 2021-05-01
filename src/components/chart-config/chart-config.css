@@ -3,3 +3,26 @@
     background-color: transparent;
     padding-bottom: 10px;
 }
+
+select {
+    text-transform: capitalize;
+    outline: none !important;
+    border: 0.5px solid silver;
+    padding: 3px 1px;
+    width: 45%;;
+    max-width: 170px; 
+    font-size: small;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px silver;
+    background-color: white;
+}
+
+select:focus {
+    outline: none !important;
+    border: 0.5px solid silver;
+}
+
+.field-label {
+    display: none;
+}

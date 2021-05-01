@@ -2,8 +2,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import './chart-config.css';
-import ConfigSection from '../config-section/config-section.component';
-import {DATE_RANGES,US_STATES_DATA,DATE_RANGES_DEFAULT} from '../../utilities/data-fields';
+//import ConfigSection from '../config-section/config-section.component';
+import {DATE_RANGES,DATE_RANGES_DEFAULT} from '../../utilities/data-fields';
+import {STATE_INFO} from '../../utilities/states-meta-data';
 import {setDateRangeSelection, setStateSelection} from '../../redux/chart-config/chart-config.actions';
 
 const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection, setDateRangeSelection}) => {
@@ -13,7 +14,9 @@ const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection
     //console.log("selectedDateRange=",selectedDateRange);
     //console.log("selectedFields=",selectedFields);
 
-
+    const dateRangeKeys = Object.keys(DATE_RANGES);
+    const statesKeys = Object.keys(STATE_INFO);
+    
     const handleStateSelection = (event) => {
         setStateSelection(event.target.value);
     }
@@ -24,18 +27,20 @@ const ChartConfiguration = ({selectedState, selectedDateRange, setStateSelection
     return (
         <div className="chart-configuration">
             <div className="top-section">
-                <ConfigSection 
-                    fieldName="stateSelection"
-                    fieldDefaultValue = {selectedState}
-                    fieldClickEvent= {handleStateSelection}
-                    fieldDataMap={US_STATES_DATA}
-                />
-                <ConfigSection 
-                    fieldName="dateRangeSelection"
-                    fieldDefaultValue = {!selectedDateRange ? DATE_RANGES_DEFAULT : selectedDateRange}
-                    fieldClickEvent= {handleDateRangeSelection}
-                    fieldDataMap={DATE_RANGES}
-                />
+                <span className="config-section">
+                    <select name="stateSelection" defaultValue={!selectedState ? "USA" : selectedState}  onChange={handleStateSelection}>
+                        {statesKeys.map ((item) => 
+                            <option key={item} value={item} >{STATE_INFO[item].name}</option>
+                        )}
+                    </select>
+                </span>
+                <span className="config-section">
+                    <select name="dateRangeSelection" defaultValue={!selectedDateRange ? DATE_RANGES_DEFAULT : selectedDateRange}  onChange={handleDateRangeSelection}>
+                        {dateRangeKeys.map ((item) => 
+                            <option key={item} value={item} >{DATE_RANGES[item]}</option>
+                        )}
+                    </select>
+                </span>
                 
             </div>            
         </div>

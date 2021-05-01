@@ -10,12 +10,13 @@ import ChartDisplay from '../chart-display/chart-display.component';
 import {
     getChartDataset, 
     getDateListFromCDCData,
-} from '../../utilities/data-processing';
+} from '../../utilities/chart-data-processing';
 
 import {STATE_INFO} from '../../utilities/states-meta-data';
 
-const CDCHistoryChart = ({dataSet, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId}) => {  
+const CDCHistoryChart = ({dataSet, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId, dataSourceURL, dataSourceLabel}) => {  
     
+    const dataFetchedSuccessfully = Array.isArray(dataSet) && dataSet.length > 0;
     const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
     const dateList = getDateListFromCDCData(dataSet);
 
@@ -24,16 +25,20 @@ const CDCHistoryChart = ({dataSet, selectedState, selectedDateRange, selectedFie
             <div className="dashboard-component-title chart-header">
                 <span>{stateChartTitle}</span> <span>for {STATE_INFO[selectedState].name}</span> <span>{DATE_RANGES[selectedDateRange]}</span>
             </div>
-            <ChartDisplay 
-            chartType="line"
-            chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
-            chartLabels = {dateList} 
-            chartDataSet = {chartDataSet}
-            chartId = {chartId}
-            />
+            {dataFetchedSuccessfully ? 
+                    <ChartDisplay 
+                    chartType="line"
+                    chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
+                    chartLabels = {dateList} 
+                    chartDataSet = {chartDataSet}
+                    chartId = {chartId}
+                    />
+            : 
+                <div>Problem fetching data from CDC site...</div>
+            }
 
             <div className="data-sources">Data:&nbsp;
-                <span className="site-link" onClick={()=> window.open("https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36")}>Center For Disease Control</span>
+                <span className="site-link" onClick={()=> window.open(dataSourceURL)}>{dataSourceLabel}</span>
             </div>
         </div>
     )

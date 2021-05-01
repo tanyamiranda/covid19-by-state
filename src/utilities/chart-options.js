@@ -1,5 +1,3 @@
-import {formatYAxisDisplay} from './data-processing';
-
 export const CHART_OPTIONS_FOR_STATE_HISTORY = {
     responsive: true,
     aspectRatio: 1,
@@ -113,5 +111,20 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
               }
             }
         ]
+    }
+}
+
+const formatYAxisDisplay = (labelText) => {
+
+    const label = Number(labelText);
+
+    if (label >= 1000000) {
+        return label / 1000000 + 'M';
+    }
+    else if (label >= 10000) {
+        return label / 1000 + 'K';
+    }
+    else {
+        return label;
     }
 }

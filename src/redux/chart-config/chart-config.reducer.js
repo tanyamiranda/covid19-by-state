@@ -25,7 +25,8 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
                 deathsByAgeGroups: action.payload.deathsByAgeGroups,
                 dataRefreshedTimestamp: (new Date()).toLocaleString(),
                 cdcHistoryByJurisdiction: action.payload.cdcHistoryByJurisdiction,
-                cdcTotalsByJurisdiction: action.payload.cdcTotalsByJurisdiction
+                cdcTotalsByJurisdiction: action.payload.cdcTotalsByJurisdiction,
+                cdcHospitalDataByJurisdiction : action.payload.cdcHospitalDataByJurisdiction
             }
             
         case ChartConfigTypes.SET_STATE_SELECTION:

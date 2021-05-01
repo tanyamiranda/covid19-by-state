@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import './demographics.css';
 
-import {getAgeGroupForState, getAgeGroupChartDataset, formatAgeGroupNames, combineAgeGroupValues} from '../../utilities/data-processing';
+import {getAgeGroupForState, getAgeGroupChartDataset, formatAgeGroupNames, combineAgeGroupValues} from '../../utilities/chart-data-processing';
 import {CHART_OPTIONS_FOR_AGE_GROUPS} from '../../utilities/chart-options';
 import {STATE_INFO} from '../../utilities/states-meta-data';
 import ChartDisplay from '../chart-display/chart-display.component';
