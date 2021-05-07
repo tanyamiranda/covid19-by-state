@@ -9,7 +9,9 @@ const URL_CDC_CASES_DEATHS_BY_STATE_TOTAL = "https://data.cdc.gov/resource/9mfq-
 const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY= "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,state,new_case,new_death&$order=submission_date,state" + CDC_TOKEN;
 const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date%20as%20date,%27USA%27%20as%20state,sum(new_case)%20as%20new_case,sum(new_death)%20as%20new_death&$group=submission_date&$order=submission_date" + CDC_TOKEN;
 
-const URL_CDC_ADULTS_VACCINATED_BY_STATE = "https://data.cdc.gov/resource/q9mh-h2tw.json?$select=state,avg(percent_adults_fully)%20as%20vaccinated,%20avg(estimated_hesitant)%20as%20hesitant,avg(estimated_strongly_hesitant)%20as%20strongly_hesitant&$group=state";
+//const URL_CDC_VACCINATIONS_JJ = "https://data.cdc.gov/resource/w9zu-fywh.json?$select=jurisdiction,%20sum(_1st_dose_allocations)%20as%20first_dose&$group=jurisdiction" + CDC_TOKEN;
+//const URL_CDC_VACCINATIONS_MODERNA = "https://data.cdc.gov/resource/b7pe-5nws.json?$select=jurisdiction,sum(_1st_dose_allocations)%20as%20first_dose,sum(_2nd_dose_allocations)%20as%20second_dose&$group=jurisdiction" + CDC_TOKEN;
+//const URL_CDC_VACCINATIONS_PFIZER = "https://data.cdc.gov/resource/saz5-9hgg.json?$select=jurisdiction,sum(_1st_dose_allocations)%20as%20first_dose,sum(_2nd_dose_allocations)%20as%20second_dose&$group=jurisdiction" + CDC_TOKEN;
 
 const URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,%20inpatient_beds_used_covid%20as%20inpatient_beds_covid,total_staffed_adult_icu_beds%20as%20icu_beds,%20staffed_icu_adult_patients_confirmed_covid%20as%20icu_beds_covid&$order=date,state not in ('AS','FM','GU','MH','MP','PW','VI')" + CDC_TOKEN;
 const URL_CDC_HOSPITAL_DATA_BY_STATE_TOTALS = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,%20inpatient_beds_used_covid%20as%20inpatient_beds_covid,total_staffed_adult_icu_beds%20as%20icu_beds,%20staffed_icu_adult_patients_confirmed_covid%20as%20icu_beds_covid&$where=state not in ('AS','FM','GU','MH','MP','PW','VI') and date=";
@@ -52,7 +54,13 @@ export const getFreshData = async() => {
 
         let dataHospitalTotals = await fetchJsonData(hospitalTotalsURL);
         let dataCasesDeathsByState = await fetchJsonData(URL_CDC_CASES_DEATHS_BY_STATE_TOTAL);
-        let dataVaccinatedAdultsByState = await fetchJsonData(URL_CDC_ADULTS_VACCINATED_BY_STATE);
+
+        //let dataModerna = await fetchJsonData(URL_CDC_VACCINATIONS_MODERNA);
+        //let dataPfizer = await fetchJsonData(URL_CDC_VACCINATIONS_PFIZER);
+        //let dataJJ = await fetchJsonData(URL_CDC_VACCINATIONS_JJ);
+        //let dataVaccinatedAdultsByState = mergeVaccinationsData(dataModerna, dataPfizer, dataJJ);
+        let dataVaccinatedAdultsByState =[];
+
         let dataReimbursements = [];
 
         cdcTotalsByJurisdiction = await getTotalsByJurisdiction(dataCasesDeathsByState, dataVaccinatedAdultsByState, dataReimbursements,dataHospitalTotals);
@@ -147,6 +155,8 @@ const getTotalsForUSA = (totalsByState) => {
     let inpatient_beds_covid = 0;
     let icu_beds = 0;
     let icu_beds_covid = 0;
+    let partiallyVaccinated = 0;
+    let fullyVaccinated = 0;
 
     totalsByState.forEach(data => {
         total_cases += Number(data.total_cases);
@@ -155,16 +165,20 @@ const getTotalsForUSA = (totalsByState) => {
         inpatient_beds_covid += Number(data.inpatient_beds_covid);
         icu_beds += Number(data.icu_beds);
         icu_beds_covid += Number(data.icu_beds_covid);
+        partiallyVaccinated += Number(data.partiallyVaccinated);
+        fullyVaccinated += Number(data.fullyVaccinated);
     })
 
     let totals = {
         state:"USA", 
-        total_cases: "" + total_cases, 
-        total_deaths: "" + total_deaths,
-        inpatient_beds: "" + inpatient_beds,
-        inpatient_beds_covid: "" + inpatient_beds_covid,
-        icu_beds: "" + icu_beds,
-        icu_beds_covid: "" + icu_beds_covid
+        total_cases: total_cases, 
+        total_deaths: total_deaths,
+        inpatient_beds: inpatient_beds,
+        inpatient_beds_covid: inpatient_beds_covid,
+        icu_beds: icu_beds,
+        icu_beds_covid: icu_beds_covid,
+        partiallyVaccinated: partiallyVaccinated,
+        fullyVaccinated: fullyVaccinated
     }
 
     return totals;
@@ -234,7 +248,6 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataVaccinatedAdul
     stateKeys.forEach((state) => {
 
         if (state !== "USA") {
-            let stateName = STATE_INFO[state].name.toUpperCase(); 
 
             let casesDeathsData =dataCasesDeathsByState.find(data => data.state===state);
             let hospitalData = dataHospitalTotals.find(data => data.state===state);
@@ -246,12 +259,11 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataVaccinatedAdul
                     icu_beds_covid: 0
                 }
 
-            let vaccineData = dataVaccinatedAdultsByState.find(data => data.state===stateName);
+            let vaccineData = dataVaccinatedAdultsByState.find(data => data.state===state);
             if (!vaccineData)
                 vaccineData = {
-                    vaccinated: 0,
-                    hesitant: 0,
-                    strongly_hesitant: 0
+                    partiallyVaccinated: 0,
+                    fullyVaccinated: 0
                 }
             
             let hhsData = totalReimbursements[state];
@@ -261,20 +273,18 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataVaccinatedAdul
                     payments: 0
                 }
 
+            
+
             totalsByState.push({
                 state: state,
-                total_cases: casesDeathsData.total_cases,
-                total_deaths: casesDeathsData.total_deaths,
-                inpatient_beds: hospitalData.inpatient_beds,
-                inpatient_beds_covid: hospitalData.inpatient_beds_covid,
-                icu_beds:hospitalData.icu_beds,
-                icu_beds_covid:hospitalData.icu_beds_covid,
-
-                hhs_providers: !hhsData.providers ? 0 : hhsData.providers,
-                hhs_payments: !hhsData.payments ? 0 : hhsData.payments,
-                vaccinated: vaccineData.vaccinated,
-                hesitant: vaccineData.hesitant,
-                strongly_hesitant: vaccineData.strongly_hesitant
+                total_cases: Number(casesDeathsData.total_cases),
+                total_deaths: Number(casesDeathsData.total_deaths),
+                inpatient_beds: Number(hospitalData.inpatient_beds),
+                inpatient_beds_covid: Number(hospitalData.inpatient_beds_covid),
+                icu_beds: Number(hospitalData.icu_beds),
+                icu_beds_covid: Number(hospitalData.icu_beds_covid),
+                partiallyVaccinated: Number(vaccineData.partiallyVaccinated),
+                fullyVaccinated: Number(vaccineData.fullyVaccinated)
             });
         }
     })
@@ -284,4 +294,48 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataVaccinatedAdul
     
 
     return totalsByState;
+}
+
+export const mergeVaccinationsData = (dataModerna, dataPfizer, dataJJ) => {
+
+    let vaccinesByState = [];
+
+    let stateKeys = Object.keys(STATE_INFO);
+    
+    stateKeys.forEach((state) => {
+
+        const stateName = STATE_INFO[state].name.toUpperCase();
+
+        let fullyVaccinated = 0;
+        let partiallyVaccinated = 0;
+
+        let moderna = dataModerna.find(data => data.jurisdiction.toUpperCase()===stateName);
+        let pfizer = dataPfizer.find(data => data.jurisdiction.toUpperCase()===stateName);
+        let jj = dataJJ.find(data => data.jurisdiction.toUpperCase()===stateName);
+
+        if (moderna) { 
+            partiallyVaccinated += Number(moderna.first_dose);
+            fullyVaccinated += Number(moderna.second_dose);
+        }
+
+        if (pfizer) { 
+            partiallyVaccinated += Number(pfizer.first_dose);
+            fullyVaccinated += Number(pfizer.second_dose);
+        }
+
+        //JJ only required 1 dose
+        if (jj) { 
+            fullyVaccinated += Number(jj.first_dose);
+        }
+
+        vaccinesByState.push({
+            state: state,
+            partiallyVaccinated: partiallyVaccinated,
+            fullyVaccinated: fullyVaccinated
+        })
+
+    });
+
+    return vaccinesByState;
+
 }
