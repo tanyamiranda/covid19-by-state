@@ -5,9 +5,9 @@ export const setStateSelection = (stateSelection) => ({
     payload: stateSelection
 });
 
-export const setDateRangeSelection = (dateRangeSelection) => ({
-    type : ChartConfigTypes.SET_DATE_RANGE_SELECTION,
-    payload: dateRangeSelection
+export const setYearSelection = (yearSelection) => ({
+    type : ChartConfigTypes.SET_YEAR_SELECTION,
+    payload: yearSelection
 });
 
 export const setCOVID19Data = (data) => ({

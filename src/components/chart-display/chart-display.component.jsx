@@ -1,11 +1,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
-import Chart from "chart.js";
-
+import Chart from 'chart.js';
 import './chart-display.css';
 
 // Necessary to be able to clear previous charts
 let currentLineChart = [];
+
 
 const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chartId}) => {
     const chartContainer = useRef(null);
@@ -14,9 +14,6 @@ const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chart
     useEffect(() => {
 
         if (chartContainer && chartContainer.current) {
-
-            //console.log("loading chart...");
-
             const chartConfig = {
                 type: chartType,
                 options: chartOptions,

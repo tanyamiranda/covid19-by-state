@@ -3,8 +3,7 @@ import {connect} from 'react-redux';
 
 import './cdc-history-chart.css';
 
-import {DATE_RANGES} from '../../utilities/data-fields';
-import {CHART_OPTIONS_FOR_STATE_HISTORY} from '../../utilities/chart-options';
+import {YEARS} from '../../utilities/data-fields';
 import ChartDisplay from '../chart-display/chart-display.component';
 
 import {
@@ -14,21 +13,23 @@ import {
 
 import {STATE_INFO} from '../../utilities/states-meta-data';
 
-const CDCHistoryChart = ({dataSet, selectedState, selectedDateRange, selectedFieldGroup, stateChartTitle, chartId, dataSourceURL, dataSourceLabel}) => {  
+const CDCHistoryChart = ({dataSet, selectedState, selectedYear, selectedFieldGroup, stateChartTitle, chartId, chartOptions, dataSourceURL, dataSourceLabel}) => {  
     
     const dataFetchedSuccessfully = Array.isArray(dataSet) && dataSet.length > 0;
     const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
     const dateList = getDateListFromCDCData(dataSet);
+    
+    //console.log("dateList = " + dateList);
 
     return (
         <div className="dashboard-component state-history-chart">
             <div className="dashboard-component-title chart-header">
-                <span>{stateChartTitle}</span> <span>for {STATE_INFO[selectedState].name}</span> <span>{DATE_RANGES[selectedDateRange]}</span>
+                <span>{stateChartTitle}</span> <span>for {STATE_INFO[selectedState].name}</span> <span>for {YEARS[selectedYear]}</span>
             </div>
             {dataFetchedSuccessfully ? 
                     <ChartDisplay 
                     chartType="line"
-                    chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
+                    chartOptions = {chartOptions}
                     chartLabels = {dateList} 
                     chartDataSet = {chartDataSet}
                     chartId = {chartId}
@@ -47,7 +48,7 @@ const CDCHistoryChart = ({dataSet, selectedState, selectedDateRange, selectedFie
 
 const mapStateToProps = state => ({
     selectedState: state.chartConfig.selectedState,
-    selectedDateRange: state.chartConfig.selectedDateRange,
+    selectedYear: state.chartConfig.selectedYear,
 });
 
 export default connect(mapStateToProps)(CDCHistoryChart);

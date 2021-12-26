@@ -17,8 +17,6 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
     let percentDeath =  0
     let percentHospitalization = 0;
     let percentICU = 0;
-    //let percentPartiallyVac = 0;
-    //let percentFullyVac = 0;
     let percentDeathOfPositive = 0;
 
     if (dataFetchedSuccessfully) {
@@ -27,14 +25,12 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
         percentDeath =  getPercentage(jurisdictionData.total_deaths,stateInfo.population);
         percentHospitalization =  getPercentage(jurisdictionData.inpatient_beds_covid,jurisdictionData.inpatient_beds);
         percentICU =  getPercentage(jurisdictionData.icu_beds_covid,jurisdictionData.icu_beds);
-        //percentPartiallyVac = getPercentage(jurisdictionData.partiallyVaccinated,stateInfo.population);
-        //percentFullyVac = getPercentage(jurisdictionData.fullyVaccinated,stateInfo.population);
         percentDeathOfPositive = getPercentage(jurisdictionData.total_deaths, jurisdictionData.total_cases);
     }
     
     return (
         <div className="dashboard-component overview">
-            <div className="dashboard-component-title">{stateInfo.name} Overview</div>
+            <div className="dashboard-component-title">{stateInfo.name} Current Overview</div>
             {dataFetchedSuccessfully ? 
                 <div className="data-totals">
                     <div className="data-row">

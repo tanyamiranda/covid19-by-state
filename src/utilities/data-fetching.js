@@ -1,17 +1,16 @@
 import {STATE_INFO} from './states-meta-data';
 
-const URL_DEATHS_BY_AGE_DATA = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=state,age_group,sum(covid_19_deaths),sum(total_deaths) where sex ='All Sexes' and `group`='By Total' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') group by state,age_group&$order=state, age_group";
+//const URL_DEATHS_BY_AGE_DATA = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=year,state,age_group,sum(covid_19_deaths),sum(total_deaths) where sex ='All Sexes' and `group`='By Year' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') group by year,state,age_group&$order=year,state,age_group"+ CDC_TOKEN;;
 const URL_COUNTY_LEVEL_DATA = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/live/us-counties.csv"
+
 
 /* New Data Sets from CDC */
 const CDC_TOKEN = "&$limit=500000&$$app_token=fz22RHPlELrzEw1j9vq91YH6N";
 const URL_CDC_CASES_DEATHS_BY_STATE_TOTAL = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=state,max(tot_cases) as total_cases,max(tot_death) as total_deaths&$group=state&$order=state" + CDC_TOKEN;
 const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY= "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,state,new_case,new_death&$order=submission_date,state" + CDC_TOKEN;
-const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date%20as%20date,%27USA%27%20as%20state,sum(new_case)%20as%20new_case,sum(new_death)%20as%20new_death&$group=submission_date&$order=submission_date" + CDC_TOKEN;
+const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,'USA' as state,sum(new_case) as new_case,sum(new_death) as new_death&$group=submission_date&$order=submission_date" + CDC_TOKEN;
 
-//const URL_CDC_VACCINATIONS_JJ = "https://data.cdc.gov/resource/w9zu-fywh.json?$select=jurisdiction,%20sum(_1st_dose_allocations)%20as%20first_dose&$group=jurisdiction" + CDC_TOKEN;
-//const URL_CDC_VACCINATIONS_MODERNA = "https://data.cdc.gov/resource/b7pe-5nws.json?$select=jurisdiction,sum(_1st_dose_allocations)%20as%20first_dose,sum(_2nd_dose_allocations)%20as%20second_dose&$group=jurisdiction" + CDC_TOKEN;
-//const URL_CDC_VACCINATIONS_PFIZER = "https://data.cdc.gov/resource/saz5-9hgg.json?$select=jurisdiction,sum(_1st_dose_allocations)%20as%20first_dose,sum(_2nd_dose_allocations)%20as%20second_dose&$group=jurisdiction" + CDC_TOKEN;
+const URL_CDC_DATA_AGE_GROUPS_PER_MONTH = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=year,month,state,age_group,sum(covid_19_deaths),sum(total_deaths) where sex ='All Sexes' and `group`='By Month' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') group by year,month,state,age_group&$order=year,month,state,age_group"+ CDC_TOKEN;
 
 const URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,%20inpatient_beds_used_covid%20as%20inpatient_beds_covid,total_staffed_adult_icu_beds%20as%20icu_beds,%20staffed_icu_adult_patients_confirmed_covid%20as%20icu_beds_covid&$order=date,state not in ('AS','FM','GU','MH','MP','PW','VI')" + CDC_TOKEN;
 const URL_CDC_HOSPITAL_DATA_BY_STATE_TOTALS = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,%20inpatient_beds_used_covid%20as%20inpatient_beds_covid,total_staffed_adult_icu_beds%20as%20icu_beds,%20staffed_icu_adult_patients_confirmed_covid%20as%20icu_beds_covid&$where=state not in ('AS','FM','GU','MH','MP','PW','VI') and date=";
@@ -55,17 +54,9 @@ export const getFreshData = async() => {
         let dataHospitalTotals = await fetchJsonData(hospitalTotalsURL);
         let dataCasesDeathsByState = await fetchJsonData(URL_CDC_CASES_DEATHS_BY_STATE_TOTAL);
 
-        //let dataModerna = await fetchJsonData(URL_CDC_VACCINATIONS_MODERNA);
-        //let dataPfizer = await fetchJsonData(URL_CDC_VACCINATIONS_PFIZER);
-        //let dataJJ = await fetchJsonData(URL_CDC_VACCINATIONS_JJ);
-        //let dataVaccinatedAdultsByState = mergeVaccinationsData(dataModerna, dataPfizer, dataJJ);
-        let dataVaccinatedAdultsByState =[];
-
-        let dataReimbursements = [];
-
-        cdcTotalsByJurisdiction = await getTotalsByJurisdiction(dataCasesDeathsByState, dataVaccinatedAdultsByState, dataReimbursements,dataHospitalTotals);
+        cdcTotalsByJurisdiction = await getTotalsByJurisdiction(dataCasesDeathsByState, dataHospitalTotals);
         
-        deathsByAgeGroups = await fetchJsonData(URL_DEATHS_BY_AGE_DATA);
+        deathsByAgeGroups = await fetchJsonData(URL_CDC_DATA_AGE_GROUPS_PER_MONTH);
 
         return {
             stateCountyInfo: stateCountyInfo,
@@ -82,7 +73,6 @@ export const getFreshData = async() => {
 
 export const fetchJsonData = async(url) => {
     try{
-
         let json = null;
 
         // U.S. States Historical Data
@@ -184,64 +174,8 @@ const getTotalsForUSA = (totalsByState) => {
     return totals;
 }
 
+const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataHospitalTotals) => {
 
-
-const getHealthcareReinbursementByState = (dataReimbursements) => {
-
-    let statesReinbursements = [];
-    let totalProviders = 0;
-    let totalPayments = 0;
-
-    dataReimbursements.forEach (data => {
-        let state = data.state;
-
-        if (!statesReinbursements[state]) {
-            statesReinbursements[state] = {
-                providers: 0,
-                payments:0
-            }
-        }
-
-        const payments = cleanTextNumber(data.payment);
-
-        statesReinbursements[state].providers += 1;
-        statesReinbursements[state].payments += payments;
-
-        totalProviders += 1;
-        totalPayments += payments;
-        
-    })
-
-    statesReinbursements["USA"] = {
-        providers: totalProviders,
-        payments: totalPayments
-    };
-
-    return statesReinbursements;
-}
-
-const cleanTextNumber = (dataFigure) => {
-        
-    let cleanedText = dataFigure
-        .replaceAll("$","")
-        .replaceAll("-","")
-        .replaceAll(",","")
-        .trim();
-
-    let value = Number (cleanedText);
-
-    if (isNaN(value)) {
-        console.log("dataFigure="+ dataFigure + ", cleanedText=" + cleanedText);
-        value = 0;
-    }
-    
-    return value;
-    
-}
-
-const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataVaccinatedAdultsByState, dataReimbursements,dataHospitalTotals) => {
-
-    let totalReimbursements = getHealthcareReinbursementByState(dataReimbursements);
     let totalsByState= [];
     let stateKeys = Object.keys(STATE_INFO);
     
@@ -259,22 +193,6 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataVaccinatedAdul
                     icu_beds_covid: 0
                 }
 
-            let vaccineData = dataVaccinatedAdultsByState.find(data => data.state===state);
-            if (!vaccineData)
-                vaccineData = {
-                    partiallyVaccinated: 0,
-                    fullyVaccinated: 0
-                }
-            
-            let hhsData = totalReimbursements[state];
-            if (!hhsData) 
-                hhsData = {
-                    providers: 0,
-                    payments: 0
-                }
-
-            
-
             totalsByState.push({
                 state: state,
                 total_cases: Number(casesDeathsData.total_cases),
@@ -282,9 +200,7 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataVaccinatedAdul
                 inpatient_beds: Number(hospitalData.inpatient_beds),
                 inpatient_beds_covid: Number(hospitalData.inpatient_beds_covid),
                 icu_beds: Number(hospitalData.icu_beds),
-                icu_beds_covid: Number(hospitalData.icu_beds_covid),
-                partiallyVaccinated: Number(vaccineData.partiallyVaccinated),
-                fullyVaccinated: Number(vaccineData.fullyVaccinated)
+                icu_beds_covid: Number(hospitalData.icu_beds_covid)
             });
         }
     })

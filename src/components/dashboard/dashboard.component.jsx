@@ -4,24 +4,26 @@ import {connect} from 'react-redux';
 import "./dashboard.css";
 
 import {getFreshData} from '../../utilities/data-fetching';
-import {getCDCDataSet} from '../../utilities/chart-data-processing';
+import {getCDCDataBySelection,getAgeGroupDataOverTime} from '../../utilities/chart-data-processing';
 import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
-import {CDC_DATA_CHART_FIELD_GROUPS} from '../../utilities/data-fields';
-import {URL_CDC_CASESDEATHS, URL_HEALTHDATA_HOSPITALDATA} from '../../utilities/urls';
+import {CDC_DATA_CHART_FIELD_GROUPS, AGE_GROUP_DATA_FIELDS} from '../../utilities/data-fields';
+import {CDC_LINKS, HEALTHDATA_LINKS} from '../../utilities/urls';
 import ChartConfiguration from '../chart-config/chart-config.component';
 import CDCHistoryChart from '../cdc-history-chart/cdc-history-chart.component';
 import Spinner from '../spinner/spinner.component';
 import DataTotals from '../data-totals/data-totals.component';
-import Demographics from '../demographics/demographics.component';
+import AgeGroupSummary from '../age-group-summary/age-group-summary.component';
+import {CHART_OPTIONS_FOR_STATE_HISTORY, getChartDisplayForAgeGroupSeries} from '../../utilities/chart-options';
 
-const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedState, selectedDateRange, cdcHistoryByJurisdiction,cdcHospitalDataByJurisdiction}) => {  
+
+const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, selectedState, selectedYear, cdcHistoryByJurisdiction,cdcHospitalDataByJurisdiction,deathsByAgeGroups}) => {  
 
     useEffect(() => {
 
         //console.log("useEffect()...");
         async function loadData() {
             try {   
-                if (!dataRefreshedTimestamp) {
+                if (!isDataLoaded) {
                     //console.log("retrievingData()...");
                     const freshData = await getFreshData();
                     setCOVID19Data(freshData);
@@ -34,13 +36,8 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
 
         loadData();
 
-    },[setCOVID19Data,dataRefreshedTimestamp]);
+    },[setCOVID19Data,isDataLoaded]);
     
-    //console.log("dataRefreshedTimestamp=",dataRefreshedTimestamp);
-    //console.log("selectedState=",selectedState);
-    //console.log("selectedFields=",selectedFields);
-    //console.log("selectedDateRange=",selectedDateRange);
-
     return (   
 
         <div className="dashboard">
@@ -49,27 +46,38 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 <div className="page-subtitle">50 U.S. States, D.C. and Puerto Rico</div>
                 <ChartConfiguration />
             </div>
-            { !dataRefreshedTimestamp ? ( 
+            { !isDataLoaded ? ( 
                 <Spinner />
             ) : (
                 <div className="page-layout">
                     <DataTotals/>                            
                     <CDCHistoryChart 
-                        dataSet={getCDCDataSet(selectedDateRange, cdcHistoryByJurisdiction, selectedState)} 
+                        dataSet={getCDCDataBySelection(cdcHistoryByJurisdiction, selectedState, selectedYear)} 
                         selectedFieldGroup={CDC_DATA_CHART_FIELD_GROUPS.dailyTotals} 
                         stateChartTitle="New Cases & Deaths" 
                         chartId="newCasesDeaths"
-                        dataSourceURL={URL_CDC_CASESDEATHS}
+                        chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
+                        dataSourceURL={CDC_LINKS.URL_CDC_CASESDEATHS}
                         dataSourceLabel="Center For Disease Control" />
                     <CDCHistoryChart 
-                        dataSet={getCDCDataSet(selectedDateRange, cdcHospitalDataByJurisdiction, selectedState)} 
+                        dataSet={getCDCDataBySelection(cdcHospitalDataByJurisdiction, selectedState, selectedYear)} 
                         selectedFieldGroup={CDC_DATA_CHART_FIELD_GROUPS.hospitalData} 
                         stateChartTitle="Hospital Inpatient & ICU" 
                         chartId="hospitalData"
-                        dataSourceURL={URL_HEALTHDATA_HOSPITALDATA}
-                        dataSourceLabel="Healdata.gov" />
-                    
-                    <Demographics/>
+                        chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
+                        dataSourceURL={HEALTHDATA_LINKS.hospitalData}
+                        dataSourceLabel="Healdata.gov" />                    
+
+                    <CDCHistoryChart 
+                        dataSet={getAgeGroupDataOverTime(deathsByAgeGroups, selectedState, selectedYear)} 
+                        selectedFieldGroup={AGE_GROUP_DATA_FIELDS} 
+                        stateChartTitle="Deaths BY Age Groups" 
+                        chartId="deathsByAgeGroupsOverTime"
+                        chartOptions = {getChartDisplayForAgeGroupSeries()}
+                        dataSourceURL={CDC_LINKS.URL_CDC_DEATHSBYAGE}
+                        dataSourceLabel="Center For Disease Control" />        
+
+                    <AgeGroupSummary/>
                 </div>
             )}
             <div className="page-footer">
@@ -81,16 +89,16 @@ const Covid19UsDashboard =({setCOVID19Data, dataRefreshedTimestamp, selectedStat
                 <span className="footer-site-link" onClick={()=> window.open("https://tanyamiranda.github.io/")}>Contact Developer</span><br/>
             </div>
         </div>
-    
     )
 };
 
 const mapStateToProps = state => ({
-    dataRefreshedTimestamp: state.chartConfig.dataRefreshedTimestamp,
+    isDataLoaded: state.chartConfig.isDataLoaded,
     selectedState: state.chartConfig.selectedState, 
-    selectedDateRange: state.chartConfig.selectedDateRange,
+    selectedYear: state.chartConfig.selectedYear,
     cdcHistoryByJurisdiction: state.chartConfig.cdcHistoryByJurisdiction,
-    cdcHospitalDataByJurisdiction: state.chartConfig.cdcHospitalDataByJurisdiction
+    cdcHospitalDataByJurisdiction: state.chartConfig.cdcHospitalDataByJurisdiction,
+    deathsByAgeGroups: state.chartConfig.deathsByAgeGroups
 });
 
 const mapDispatchToProps = dispatch => ({

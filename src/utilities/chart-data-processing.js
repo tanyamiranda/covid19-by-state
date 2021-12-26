@@ -1,10 +1,65 @@
 import {DATA_FIELD_COLORS, DATA_FIELD_DISPLAY_NAMES} from './data-fields';
+import {STATE_INFO} from './states-meta-data';
 import {getFormattedDateForFiltering} from './formatting';
 
-export const combineAgeGroupValues = (ageGroupSet1) => {
+export const getAgeGroupDataForState = (deathsByAgeGroups, selectedState, selectedYear) => {
+
+    const stateName = STATE_INFO[selectedState].name;
+    let ageGroupData = getCDCAgeGroupDataBySelection(deathsByAgeGroups, stateName, selectedYear);
+
+    /** CDC collects NYC separately from NY State. We are grouping them back into one number under NY state. **/
+    if(selectedState === "NY") 
+        ageGroupData = ageGroupData.concat(getCDCAgeGroupDataBySelection(deathsByAgeGroups,"New York City",selectedYear));
+
+    return ageGroupData;
+}
+
+export const getAgeGroupDataOverTime = (deathsByAgeGroups, selectedState, selectedYear) => {
+
+    const ageGroupData = getAgeGroupDataForState(deathsByAgeGroups, selectedState, selectedYear);
+
+    let newGroupData = [];
+
+    ageGroupData.forEach((ageGroupDataRec) => {
+
+        const date = (new Date(ageGroupDataRec.month + "/01/" + ageGroupDataRec.year)).toISOString().replace('Z', '').replace('T', '');
+        const ageGroup = "ages_" + formatAgeGroupName(ageGroupDataRec.age_group).replaceAll("-","_").replaceAll("+","").trim();
+        const deaths = Number(ageGroupDataRec.sum_covid_19_deaths);
+ 
+        //console.log("date=" + date + " | ageGroup=" + ageGroup + " | deaths=" + deaths);
+
+        let dateRecord = newGroupData.find(rec => rec.date === date);
+
+        if(!dateRecord) {
+            dateRecord = {
+                date: date,
+                ages_0_17: ageGroup === "ages_0_17" ? deaths : 0,
+                ages_18_29:ageGroup === "ages_18_29" ? deaths : 0,
+                ages_30_39:ageGroup === "ages_30_39" ? deaths : 0,
+                ages_40_49:ageGroup === "ages_40_49" ? deaths : 0,
+                ages_50_64:ageGroup === "ages_50_64" ? deaths : 0,
+                ages_65_74:ageGroup === "ages_65_74" ? deaths : 0,
+                ages_75_84:ageGroup === "ages_75_84" ? deaths : 0,
+                ages_85:ageGroup === "ages_85" ? deaths : 0
+            }
+            
+            newGroupData.push(dateRecord);
+        }
+        else {
+            dateRecord[ageGroup] = deaths; 
+        }      
+
+    });
+
+    //console.log("newGroupData=" + JSON.stringify(newGroupData));
+    
+    return newGroupData;
+}
+
+export const combineAgeGroupValues = (ageGroupData) => {
 
     var result = [];
-    ageGroupSet1.reduce(
+    ageGroupData.reduce(
         function(age_group_sum, value) {
             if (!age_group_sum[value.age_group]) {
                 age_group_sum[value.age_group] = {
@@ -26,15 +81,47 @@ export const combineAgeGroupValues = (ageGroupSet1) => {
 
 }
 
-export const getCDCDataSet = (selectedDateRange, cdcHistoryByJurisdiction, selectedState) =>{
-    const now = new Date();
-    const yesterday = new Date();
-    now.setDate(now.getDate() - Number(selectedDateRange));
-    const startDate = getFormattedDateForFiltering(now);
-    const endDate = getFormattedDateForFiltering(yesterday);
+export const getCDCDataBySelection = (cdcHistoryByJurisdiction, selectedState, selectedYear) => {
 
+    const monthsSelected = selectedYear.search("months-");
+
+    if (monthsSelected > -1) {
+        const monthsBack = selectedYear.substr(monthsSelected+7, selectedYear.lenth); 
+        const dateRange = getDateRangeValues(monthsBack);
+        return getCDCDataSetByDateRange(cdcHistoryByJurisdiction, selectedState, Number(getFormattedDateForFiltering(dateRange.startDate)), Number(getFormattedDateForFiltering(dateRange.endDate)))
+    }
+    else
+        return getCDCDataSetByYear(cdcHistoryByJurisdiction, selectedState, selectedYear);
+}
+
+export const getCDCDataSetByYear = (cdcHistoryByJurisdiction, selectedState, selectedYear) =>{
+    
+    let dataSet = [];
+
+    if(selectedYear === "0") {
+        dataSet = cdcHistoryByJurisdiction
+            .filter(stateData => stateData.state === selectedState);
+    }
+    else {
+        dataSet = cdcHistoryByJurisdiction
+            .filter(stateData => stateData.state === selectedState && stateData.date.substr(0,4) === selectedYear);  
+    }
+
+    return dataSet.sort(function (a, b) {
+            return a.date - b.date;
+        });
+}
+
+// The variables startDate and endDate are numerical format yyyymmdd
+export const getCDCDataSetByDateRange = (cdcHistoryByJurisdiction, selectedState, startDate, endDate) =>{
+    
     let dataSet = cdcHistoryByJurisdiction
-        .filter(stateData => stateData.state === selectedState && stateData.date.substr(0,10).replace('-','') >= startDate && stateData.date.substr(0,10).replace('-','') <= endDate)
+        .filter(function (stateData) {
+            const date = Number(stateData.date.substr(0,10).replaceAll('-',''));
+            return stateData.state === selectedState 
+                && date >= startDate 
+                && date <= endDate;
+        })
         .sort(function (a, b) {
             return a.date - b.date;
         });
@@ -42,39 +129,93 @@ export const getCDCDataSet = (selectedDateRange, cdcHistoryByJurisdiction, selec
     return dataSet;
 }
 
+export const getCDCAgeGroupDataByDateRange = (deathsByAgeGroups, stateName, dateRange) => {
+    
+    //console.log("dateRange.startDate = " + dateRange.startDate + " | dateRange.endDate = " + dateRange.endDate);
 
-export const getDateListFromData = (stateData) => {
-
-    const datesList = stateData.map(item => item.date)
-        .filter((value, index, self) => self.indexOf(value) === index);
-
-    const newDateList = [];
-
-    datesList.forEach(item => {
-        var dateString = String(item);
-        var month = Number(dateString.substring(4,6));
-        var day = Number(dateString.substring(6,8));
-
-        newDateList.push(month + "/" + day);
+    let temp = deathsByAgeGroups
+    .filter(function (stateData) {
+        const year = stateData.year;
+        const month = stateData.month;
+        const calcDate = new Date(month + "/1/" + year);
+        
+        return stateData.state.toLowerCase() === stateName.toLowerCase() 
+            && calcDate >= dateRange.startDate 
+            && calcDate <= dateRange.endDate;
     });
 
-    return newDateList;
+    return temp;
 }
 
-export const getAgeGroupForState = (deathsByAgeGroups, stateName) => {
+export const getCDCAgeGroupDataBySelection = (deathsByAgeGroups, stateName, selectedYear) => {
     
-    return deathsByAgeGroups
-        .filter(data => data.state.toLowerCase() === stateName.toLowerCase() && data.age_group.includes('year'))
-        .sort((a,b) => compareAgeGroupValues(a.age_group,b.age_group));
+    let ageGroupDataSet = [];
+    const monthsSelected = selectedYear.search("months-");
     
+    if (monthsSelected > -1) {
+        // Add a month to include current month since data is based monthly
+        const monthsBack = Number(selectedYear.substr(monthsSelected+7, selectedYear.lenth)) + 1;         
+        const dateRange = getDateRangeValues(monthsBack)
+        ageGroupDataSet = getCDCAgeGroupDataByDateRange(deathsByAgeGroups, stateName, dateRange)
+    }
+    else { 
+        if (selectedYear === "0"){
+            ageGroupDataSet = deathsByAgeGroups
+                .filter(data => data.state.toLowerCase() === stateName.toLowerCase())   
+        }
+        else {
+            const startDate = new Date("1/1/" + selectedYear);
+            const endDate = new Date("12/31/" + selectedYear);
+            const dateRange = {startDate: startDate, endDate: endDate}
+            ageGroupDataSet = getCDCAgeGroupDataByDateRange(deathsByAgeGroups, stateName, dateRange)
+        }
+    }
+
+    ageGroupDataSet.sort((a,b) => compareAgeGroupValues(a.age_group,b.age_group));
+
+    return ageGroupDataSet;
 }    
 
-export const formatAgeGroupNames = (ageGroups) => {
+export const getDateRangeValues = (monthsBack) => {
     
+    const startDate = new Date();
+    const endDate = new Date();
+
+    startDate.setMonth(startDate.getMonth() - monthsBack);
+    startDate.setDate(1);
+
+    return {startDate: startDate, endDate: endDate} 
+}
+
+export const getAgeGroupForState = (deathsByAgeGroups, stateName, selectedYear) => {
+    
+    let ageGroupDataSet = [];
+
+    if (selectedYear === "0"){
+        const temp = deathsByAgeGroups
+        .filter(data => data.state.toLowerCase() === stateName.toLowerCase())   
+        ageGroupDataSet = combineAgeGroupValues(temp);    
+    }
+    else {
+        ageGroupDataSet = deathsByAgeGroups
+        .filter(data => data.state.toLowerCase() === stateName.toLowerCase() && data.year === selectedYear)    
+    }
+
+    return ageGroupDataSet.sort((a,b) => compareAgeGroupValues(a.age_group,b.age_group));
+}    
+
+export const formatAgeGroupName = (ageGroupName) => {
+    
+    const newGroupName = ageGroupName.replace("years and over","+").replace("years","").replace("year","").replace("Under","<"); 
+
+    return newGroupName;
+}
+
+export const formatAgeGroupNames = (ageGroups) => {
     const shortNames = [];
 
     ageGroups.forEach(group => {
-        const groupName = group.replace("years and over","+").replace("years","").replace("year","").replace("Under","<"); 
+        const groupName = formatAgeGroupName(group); 
         shortNames.push(groupName);
     });
 
@@ -139,17 +280,18 @@ export const getAgeGroupChartDataset = (covidDeaths, allDeaths) => {
 
 export const getDateListFromCDCData = (dataSet) => {
 
-    const datesList = dataSet.map(item => item.date)
-        .filter((value, index, self) => self.indexOf(value) === index);
+    const datesList = dataSet.map(item => item.date);
 
     const newDateList = [];
 
     datesList.forEach(item => {
         var dateString = String(item);
+        var year = Number(dateString.substring(2,4));
         var month = Number(dateString.substring(5,7));
         var day = Number(dateString.substring(8,10));
-
-        newDateList.push(month + "/" + day);
+        
+        //newDateList.push(month + "/" + day + "/" + year);
+        newDateList.push(new Date(month + "/" + day + "/" + year));
     });
 
     return newDateList;

@@ -1,37 +1,39 @@
-export const DATE_RANGES = {
-    30: "Last 30 days",
-    45: "Last 45 days",
-    60: "Last 60 days",
-    90: "Last 3 months",
-    120: "Last 4 months",
-    150: "Last 5 months",
-    180: "Last 6 months",
-    270: "Last 9 months",
-    365: "Last 12 months",
-    500: "All Time"
+/*
+ This is needed to maintain descending year order.
+ Using Object.keys() to get keys from YEARS sorts
+ the years in ascending order.
+*/
+export const YEAR_KEYS = [
+    "months-6",
+    "months-9",
+    "months-12",
+    "2021", 
+    "2020",
+    "0"
+];
+
+export const YEARS = {
+    "months-6": "Last 6 months",
+    "months-9": "Last 9 months",
+    "months-12": "Last 12 months",
+    "2021": "All 2021",
+    "2020": "All 2020",
+    "0": "All Time",
 }
 
-export const DATE_RANGES_DEFAULT = "90";
+export const YEARS_DEFAULT = "months-6";
 
 export const DATA_FIELD_COLORS = [
     'green',
     'red',
     'blue',
-    '#146AD4',
-    '#A9D422',
-    '#18F8BB',
-    '#AFC044',
-    '#3B9793',
-    '#822611',
-    '#FB2E76',
-    '#A5CA71',
-    '#983538',
-    '#082BD9',
-    '#2E136A',
-    '#05BB78',
-    '#44A4AD',
-    '#28FD7E',
-    '#387862'
+    'orange',
+    'pink',
+    'lime',
+    'black',
+    'cyan',
+    'purple',
+    'brown'
 ];
 
 export const USA_IDENTIFIER = "USA";
@@ -96,7 +98,15 @@ export const DATA_FIELD_DISPLAY_NAMES = {
     new_case: "New Cases",
     new_death: "New Deaths",
     inpatient_beds_covid: "Inpatient",
-    icu_beds_covid: "ICU"
+    icu_beds_covid: "ICU",
+    ages_0_17:"0-17",
+    ages_18_29:"18-29",
+    ages_30_39:"30-39",
+    ages_40_49:"40-49",
+    ages_50_64:"50-64",
+    ages_65_74:"65-74",
+    ages_75_84:"75-84",
+    ages_85:"85+"
 };
 
 
@@ -127,3 +137,43 @@ export const CDC_DATA_CHART_FIELD_GROUPS = {
         "icu_beds_covid"
     ]
 }
+
+export const DATA_X_LABELS = [
+    "Jan 2020",
+    "Feb 2020",
+    "Mar 2020",
+    "Apr 2020",
+    "May 2020",
+    "Jun 2020",
+    "Jul 2020",
+    "Aug 2020",
+    "Sep 2020",
+    "Oct 2020",
+    "Nov 2020",
+    "Dec 2020",
+    "Jan 2021",
+    "Feb 2021",
+    "Mar 2021",
+    "Apr 2021",
+    "May 2021",
+    "Jun 2021",
+    "Jul 2021",
+    "Aug 2021",
+    "Sep 2021",
+    "Oct 2021",
+    "Nov 2021",
+    "Dec 2021",
+];
+
+
+export const CDC_AGE_GROUPS = ["0-17","18-29","30-39","40-49","50-64","65-74","75-84","85+"];
+
+export const AGE_GROUP_DATA_FIELDS = [
+    "ages_0_17",
+    "ages_18_29",
+    "ages_30_39",
+    "ages_40_49",
+    "ages_50_64",
+    "ages_65_74",
+    "ages_75_84",
+    "ages_85"]

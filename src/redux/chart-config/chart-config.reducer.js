@@ -1,5 +1,5 @@
 import ChartConfigTypes from './chart-config.types';
-import {USA_IDENTIFIER, DATE_RANGES_DEFAULT} from '../../utilities/data-fields';
+import {USA_IDENTIFIER, YEARS_DEFAULT} from '../../utilities/data-fields';
 
 const INITIAL_STATE = {
     statesHistoryData: null,
@@ -7,9 +7,9 @@ const INITIAL_STATE = {
     countryHistoryData: null,
     stateCountyInfo: null,
     deathsByAgeGroups: null,
-    dataRefreshedTimestamp: null,
+    isDataLoaded: false,
     selectedState: null,
-    selectedDateRange: null,   
+    selectedYear:null,   
     selectedFields: []    
 };
 
@@ -20,10 +20,10 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
         case ChartConfigTypes.SET_COVID19_DATA: 
             return {
                 selectedState: USA_IDENTIFIER,
-                selectedDateRange: DATE_RANGES_DEFAULT,    
+                selectedYear: YEARS_DEFAULT,
                 stateCountyInfo: action.payload.stateCountyInfo,
                 deathsByAgeGroups: action.payload.deathsByAgeGroups,
-                dataRefreshedTimestamp: (new Date()).toLocaleString(),
+                isDataLoaded: true,
                 cdcHistoryByJurisdiction: action.payload.cdcHistoryByJurisdiction,
                 cdcTotalsByJurisdiction: action.payload.cdcTotalsByJurisdiction,
                 cdcHospitalDataByJurisdiction : action.payload.cdcHospitalDataByJurisdiction
@@ -35,10 +35,10 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
                 selectedState: action.payload
             }
         
-        case ChartConfigTypes.SET_DATE_RANGE_SELECTION:
+        case ChartConfigTypes.SET_YEAR_SELECTION:
             return {
                 ...state,
-                selectedDateRange: action.payload
+                selectedYear: action.payload
             }
         
         default:
