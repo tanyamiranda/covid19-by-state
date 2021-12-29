@@ -1,0 +1,13 @@
+.spinner-page {
+    height: 60vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner-image {
+    width: 200px;
+    height: 100px;
+    object-fit: cover;
+}

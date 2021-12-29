@@ -63,7 +63,7 @@ contained in the dashboard component.
 .dashboard-component {
     display: inline-block;
     width: 97%;
-    max-width: 1200px;
+    max-width: 600px;
     text-align: center;
     line-height: 2em;
     border: 0.5px solid silver;

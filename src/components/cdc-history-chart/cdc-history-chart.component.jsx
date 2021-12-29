@@ -13,18 +13,16 @@ import {
 
 import {STATE_INFO} from '../../utilities/states-meta-data';
 
-const CDCHistoryChart = ({dataSet, selectedState, selectedYear, selectedFieldGroup, stateChartTitle, chartId, chartOptions, dataSourceURL, dataSourceLabel}) => {  
+const CDCHistoryChart = ({isDataLoaded, dataSet, selectedState, selectedYear, selectedFieldGroup, stateChartTitle, chartId, chartOptions, dataSourceURL, dataSourceLabel}) => {  
     
-    const dataFetchedSuccessfully = Array.isArray(dataSet) && dataSet.length > 0;
+    const dataFetchedSuccessfully = isDataLoaded && Array.isArray(dataSet) && dataSet.length > 0;
     const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
     const dateList = getDateListFromCDCData(dataSet);
     
-    //console.log("dateList = " + dateList);
-
     return (
         <div className="dashboard-component state-history-chart">
             <div className="dashboard-component-title chart-header">
-                <span>{stateChartTitle}</span> <span>for {STATE_INFO[selectedState].name}</span> <span>for {YEARS[selectedYear]}</span>
+                <span>{stateChartTitle}</span><br/><span>for {STATE_INFO[selectedState].name}</span> <span>for {YEARS[selectedYear]}</span>
             </div>
             {dataFetchedSuccessfully ? 
                     <ChartDisplay 
@@ -37,7 +35,6 @@ const CDCHistoryChart = ({dataSet, selectedState, selectedYear, selectedFieldGro
             : 
                 <div>Problem fetching data from CDC site...</div>
             }
-
             <div className="data-sources">Data:&nbsp;
                 <span className="site-link" onClick={()=> window.open(dataSourceURL)}>{dataSourceLabel}</span>
             </div>
@@ -49,6 +46,7 @@ const CDCHistoryChart = ({dataSet, selectedState, selectedYear, selectedFieldGro
 const mapStateToProps = state => ({
     selectedState: state.chartConfig.selectedState,
     selectedYear: state.chartConfig.selectedYear,
+    isDataLoaded: state.chartConfig.isDataLoaded
 });
 
 export default connect(mapStateToProps)(CDCHistoryChart);

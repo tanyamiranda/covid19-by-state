@@ -21,6 +21,7 @@ const ChartConfiguration = ({selectedState, selectedYear, setStateSelection, set
     return (
         <div className="chart-configuration">
             <div className="top-section">
+                
                 <span className="config-section">
                     <select name="stateSelection" defaultValue={!selectedState ? "USA" : selectedState}  onChange={handleStateSelection}>
                         {statesKeys.map ((item) => 

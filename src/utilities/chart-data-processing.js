@@ -51,6 +51,7 @@ export const getAgeGroupDataOverTime = (deathsByAgeGroups, selectedState, select
 
     });
 
+    //console.log("newGroupData.length=" + newGroupData.length)
     //console.log("newGroupData=" + JSON.stringify(newGroupData));
     
     return newGroupData;
@@ -137,7 +138,7 @@ export const getCDCAgeGroupDataByDateRange = (deathsByAgeGroups, stateName, date
     .filter(function (stateData) {
         const year = stateData.year;
         const month = stateData.month;
-        const calcDate = new Date(month + "/1/" + year);
+        const calcDate = new Date(month + "/01/" + year);
         
         return stateData.state.toLowerCase() === stateName.toLowerCase() 
             && calcDate >= dateRange.startDate 
@@ -153,8 +154,7 @@ export const getCDCAgeGroupDataBySelection = (deathsByAgeGroups, stateName, sele
     const monthsSelected = selectedYear.search("months-");
     
     if (monthsSelected > -1) {
-        // Add a month to include current month since data is based monthly
-        const monthsBack = Number(selectedYear.substr(monthsSelected+7, selectedYear.lenth)) + 1;         
+        const monthsBack = Number(selectedYear.substr(monthsSelected+7, selectedYear.lenth));        
         const dateRange = getDateRangeValues(monthsBack)
         ageGroupDataSet = getCDCAgeGroupDataByDateRange(deathsByAgeGroups, stateName, dateRange)
     }
@@ -178,8 +178,8 @@ export const getCDCAgeGroupDataBySelection = (deathsByAgeGroups, stateName, sele
 
 export const getDateRangeValues = (monthsBack) => {
     
-    const startDate = new Date();
-    const endDate = new Date();
+    const startDate = new Date(new Date().setHours(0, 0, 0, 0));
+    const endDate = new Date(new Date().setHours(0, 0, 0, 0));
 
     startDate.setMonth(startDate.getMonth() - monthsBack);
     startDate.setDate(1);

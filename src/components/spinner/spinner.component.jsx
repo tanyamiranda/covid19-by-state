@@ -1,11 +1,15 @@
 import React from 'react';
 
-import {SpinnerContainer, SpinnerOverlay} from './spinner.styles.jsx';
+import SpinnerImage from './skinny-spinner.gif';
+import './spinner.css';
 
 const Spinner = () => (
-    <SpinnerOverlay>
-        <SpinnerContainer/>
-    </SpinnerOverlay>
+    <div className='spinner-page'>
+        <div>
+            <div><img className='spinner-image' src={SpinnerImage} alt="Loading Data..."/></div>
+            <div>Loading Data...</div>
+        </div>
+    </div>
 );
 
 export default Spinner;

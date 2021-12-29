@@ -21,7 +21,7 @@ const AgeGroupSummary = ({deathsByAgeGroups, selectedState, selectedYear}) => {
 
     return(
         <div className="dashboard-component demographics">
-            <div className="dashboard-component-title">Deaths By Age Group Summary <span>for {STATE_INFO[selectedState].name}</span> <span>for {YEARS[selectedYear]}</span></div> 
+            <div className="dashboard-component-title">Deaths By Age Group Totals<br/><span>for {STATE_INFO[selectedState].name}</span> <span>for {YEARS[selectedYear]}</span></div> 
             <div>
                 {dataFetchedSuccessfully ? 
                     <div className="demographics">
