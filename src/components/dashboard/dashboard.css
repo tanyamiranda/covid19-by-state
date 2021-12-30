@@ -6,6 +6,9 @@
 }
 
 .page-header {
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
     line-height: normal;
     background: url(/covid19-by-state/network-4851119_1280.jpg);
 }

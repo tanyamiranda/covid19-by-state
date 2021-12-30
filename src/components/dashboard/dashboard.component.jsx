@@ -12,7 +12,7 @@ import ChartConfiguration from '../chart-config/chart-config.component';
 import CDCHistoryChart from '../cdc-history-chart/cdc-history-chart.component';
 import Spinner from '../spinner/spinner.component';
 import AgeGroupSummary from '../age-group-summary/age-group-summary.component';
-import {CHART_OPTIONS_FOR_STATE_HISTORY, getChartDisplayForAgeGroupSeries} from '../../utilities/chart-options';
+import {getTimeSeriesChartOptions} from '../../utilities/chart-options';
 
 
 const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, selectedState, selectedYear, cdcHistoryByJurisdiction,cdcHospitalDataByJurisdiction,deathsByAgeGroups}) => {  
@@ -55,24 +55,24 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, selectedState, selecte
                         selectedFieldGroup={CDC_DATA_CHART_FIELD_GROUPS.dailyTotals} 
                         stateChartTitle="New Cases & Deaths" 
                         chartId="newCasesDeaths"
-                        chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
+                        chartOptions = {getTimeSeriesChartOptions(false)}
                         dataSourceURL={CDC_LINKS.URL_CDC_CASESDEATHS}
                         dataSourceLabel="Center For Disease Control" />
                     <CDCHistoryChart 
                         dataSet={getCDCDataBySelection(cdcHospitalDataByJurisdiction, selectedState, selectedYear)} 
                         selectedFieldGroup={CDC_DATA_CHART_FIELD_GROUPS.hospitalData} 
-                        stateChartTitle="Hospital Inpatient & ICU" 
+                        stateChartTitle="New Hospital Inpatient & ICU" 
                         chartId="hospitalData"
-                        chartOptions = {CHART_OPTIONS_FOR_STATE_HISTORY}
+                        chartOptions = {getTimeSeriesChartOptions(false)}
                         dataSourceURL={HEALTHDATA_LINKS.HOSPITALDATA}
                         dataSourceLabel="Healdata.gov" />                    
 
                     <CDCHistoryChart 
                         dataSet={getAgeGroupDataOverTime(deathsByAgeGroups, selectedState, selectedYear)} 
                         selectedFieldGroup={AGE_GROUP_DATA_FIELDS} 
-                        stateChartTitle="Deaths Monthly By Age Groups" 
+                        stateChartTitle="Deaths By Age Groups Monthly" 
                         chartId="deathsByAgeGroupsOverTime"
-                        chartOptions = {getChartDisplayForAgeGroupSeries()}
+                        chartOptions = {getTimeSeriesChartOptions(true)}
                         dataSourceURL={CDC_LINKS.URL_CDC_DEATHSBYAGE}
                         dataSourceLabel="Center For Disease Control" />        
 
@@ -81,7 +81,6 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, selectedState, selecte
             )}
             <div className="page-footer">
                 Data Sources:<br/>
-                <span className="footer-site-link" onClick={()=> window.open("https://www.census.gov/programs-surveys/popest.html")}>U.S. Census Bureau</span><br/>
                 <span className="footer-site-link" onClick={()=> window.open("https://data.cdc.gov")}>Center For Disease Control</span><br/>
                 <span className="footer-site-link" onClick={()=> window.open("https://healthdata.gov/")}>Healthdata.gov</span><br/>
                 ~ ~ ~<br/>

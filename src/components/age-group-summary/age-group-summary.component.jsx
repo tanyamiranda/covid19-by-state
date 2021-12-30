@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 
 import './age-group-summary.css';
 import {getAgeGroupChartDataset, combineAgeGroupValues, getAgeGroupDataForState, formatAgeGroupNames} from '../../utilities/chart-data-processing';
-import {YEARS} from '../../utilities/data-fields';
-import {STATE_INFO} from '../../utilities/states-meta-data';
 import {CHART_OPTIONS_FOR_AGE_GROUPS} from '../../utilities/chart-options';
 import ChartDisplay from '../chart-display/chart-display.component';
 
@@ -21,7 +19,7 @@ const AgeGroupSummary = ({deathsByAgeGroups, selectedState, selectedYear}) => {
 
     return(
         <div className="dashboard-component demographics">
-            <div className="dashboard-component-title">Deaths By Age Group Totals<br/><span>for {STATE_INFO[selectedState].name}</span> <span>for {YEARS[selectedYear]}</span></div> 
+            <div className="dashboard-component-title">Deaths By Age Group Totals</div> 
             <div>
                 {dataFetchedSuccessfully ? 
                     <div className="demographics">

@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 
 import './cdc-history-chart.css';
 
-import {YEARS} from '../../utilities/data-fields';
 import ChartDisplay from '../chart-display/chart-display.component';
 
 import {
@@ -11,9 +10,7 @@ import {
     getDateListFromCDCData,
 } from '../../utilities/chart-data-processing';
 
-import {STATE_INFO} from '../../utilities/states-meta-data';
-
-const CDCHistoryChart = ({isDataLoaded, dataSet, selectedState, selectedYear, selectedFieldGroup, stateChartTitle, chartId, chartOptions, dataSourceURL, dataSourceLabel}) => {  
+const CDCHistoryChart = ({isDataLoaded, dataSet, selectedFieldGroup, stateChartTitle, chartId, chartOptions, dataSourceURL, dataSourceLabel}) => {  
     
     const dataFetchedSuccessfully = isDataLoaded && Array.isArray(dataSet) && dataSet.length > 0;
     const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
@@ -22,7 +19,7 @@ const CDCHistoryChart = ({isDataLoaded, dataSet, selectedState, selectedYear, se
     return (
         <div className="dashboard-component state-history-chart">
             <div className="dashboard-component-title chart-header">
-                <span>{stateChartTitle}</span><br/><span>for {STATE_INFO[selectedState].name}</span> <span>for {YEARS[selectedYear]}</span>
+                <span>{stateChartTitle}</span>
             </div>
             {dataFetchedSuccessfully ? 
                     <ChartDisplay 

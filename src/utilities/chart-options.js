@@ -1,68 +1,66 @@
-export const CHART_OPTIONS_FOR_STATE_HISTORY = {
-    responsive: true,
-    aspectRatio: 1,
-    maintainAspectRatio: false,
-    title: { display: false},
-    tooltips: {
-        mode: 'index', 
-        intersect: false,
-        bodyAlign: 'left',
-        position: 'nearest',
-        callbacks: {
-            label: function(tooltipItem, data) {
-                var type = data.datasets[tooltipItem.datasetIndex].label;
-                var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                return type + " : " + parseInt(value).toLocaleString();
-            }
-        }
-    },
-    interaction: {
-        intersect: false,
-        axis: 'x'
-    },
-    legend: {position:'top', labels: {boxWidth:5, fontSize:14, usePointStyle:true, padding:15}},
-    elements: {
-        point:{
-            radius: 0
-        }
-    },
-    layout: {padding: {left: 0, right: 0, top: 0, bottom: 0}},
-   
-    scales: {
-        xAxes: [{
-            display: true,
-            type: 'time',
-            gridLines: {
-              display:true
-            },
-            time: {
-              minUnit: 'month',
-              tooltipFormat:'MM/DD/YYYY'
-            },
-            scaleLabel: {
-                display: true
-            }
-        }],
-        yAxes: [{
-            display: true,
-            scaleLabel: {
-                display: false
-            },
-            ticks: {
-                min: 0,
-                beginAtZero:true,
-                callback: function(label) {
-                    return formatYAxisDisplay(label);
-                }                
-            }
-        }]
-    }
-}
+export const getTimeSeriesChartOptions = (displayMonthFormat) => {
 
-export const getChartDisplayForAgeGroupSeries = () => {
-    let chartOptions =JSON.parse(JSON.stringify(CHART_OPTIONS_FOR_STATE_HISTORY));
-    chartOptions["scales"]["xAxes"][0]["time"]["tooltipFormat"] = "MMM YYYY";
-    return chartOptions;
+    return {
+        responsive: true,
+        aspectRatio: 1,
+        maintainAspectRatio: false,
+        title: { display: false},
+        tooltips: {
+            mode: 'index', 
+            intersect: false,
+            bodyAlign: 'left',
+            position: 'nearest',
+            bodySpacing: 5
+        },
+        interaction: {
+            intersect: false,
+            axis: 'x'
+        },
+        legend: {
+            position:'top', 
+            labels: {
+                boxWidth:5, 
+                fontSize:14,
+                usePointStyle:true, 
+                padding:15
+            }
+        },
+        elements: {
+            point:{
+                radius: 0
+            }
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                type: 'time',
+                gridLines: {
+                    display:true
+                },
+                time: {
+                    minUnit: 'month',
+                    tooltipFormat: displayMonthFormat ? "MMM YYYY" : 'MM/DD/YYYY'
+                },
+                scaleLabel: {
+                    display: true
+                }
+            }],
+            yAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: false
+                },
+                ticks: {
+                    min: 0,
+                    beginAtZero:true,
+                    callback: function(label) {
+                        return formatYAxisDisplay(label);
+                    }                
+                }
+            }]
+        }
+    }
+
 }
 
 export const CHART_OPTIONS_FOR_AGE_GROUPS = {
@@ -74,12 +72,22 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
         mode: 'index', 
         intersect: false,
         bodyAlign: 'left',
+        footerFontStyle: 'normal',
+        bodySpacing: 5,
+        titleMarginBottom: 10,
+        footerMarginTop: 10,
         callbacks: {
-            label: function(tooltipItem, data) {
-              var type = data.datasets[tooltipItem.datasetIndex].label;
-              var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-              return type + " : " + parseInt(value).toLocaleString();
+            title: function(tooltipItem) {
+                return "Ages " + tooltipItem[0].label 
+            },
+
+            footer: function(tooltipItem) {
+                const covidDeaths = tooltipItem[0].value;
+                const allDeaths = tooltipItem[1].value;
+                const percent = parseFloat((covidDeaths/allDeaths) * 100).toFixed(1)+"%";
+                return [percent + " of all deaths","due to COVID-19"] ;
             }
+
           }
     },
     hover: {mode: 'nearest', intersect: true},
@@ -89,13 +97,7 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
             radius: 0
         }
     },
-    layout: {
-        padding: {
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0
-        }},
+    
     scales: {
         xAxes:[{
             stacked: true,
@@ -123,15 +125,15 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
 // Instead of 1900000 display 1M
 const formatYAxisDisplay = (labelText) => {
 
-    const label = Number(labelText);
+    let label = Number(labelText);
+    let newLabel = "";
 
-    if (label >= 1000000) {
-        return label / 1000000 + 'M';
-    }
-    else if (label >= 10000) {
-        return label / 1000 + 'K';
-    }
-    else {
-        return label;
-    }
+    if (label >= 1000000) 
+        newLabel = label / 1000000 + 'M';
+    else if (label >= 10000) 
+        newLabel = label / 1000 + 'K';
+    else 
+        newLabel = label;
+
+    return newLabel;
 }
