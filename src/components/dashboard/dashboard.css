@@ -68,7 +68,7 @@ contained in the dashboard component.
     display: inline-block;
     width: 45%;
     max-width: 600px;
-    min-width: 450px;
+    min-width: 350px;
     text-align: center;
     line-height: 2em;
     border: 0.5px solid silver;

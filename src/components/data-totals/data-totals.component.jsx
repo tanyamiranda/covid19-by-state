@@ -31,33 +31,32 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
     return (
         <div className="data-totals-component">
             {dataFetchedSuccessfully ? 
-                <div className="data-totals">
+                <div>
                     <div className='data-totals-title'>Current Totals</div>
-                    <span className='data-row-group'>
-                    <div className="data-row">
-                        <div className="data-label">Total Cases</div>
-                        <div className="data-number">{getDisplayNumber(jurisdictionData.total_cases)}</div>
-                        <div className="percent">{percentPositive} of Est. Population**</div>
-                    </div>
-                    <div className="data-row">
-                        <div className="data-label">Total Deaths</div>
-                        <div className="data-number">{getDisplayNumber(jurisdictionData.total_deaths)}</div>
-                        <div className="percent">{percentDeath} of Est. Population** <br/>{percentDeathOfPositive} of Total Cases</div>
-                    </div>
-                    </span>
-                    <span className='data-row-group'>
-                    <div className="data-row">
-                        <div className="data-label">Hospitalizations</div>
-                        <div className="data-number">{getDisplayNumber(jurisdictionData.inpatient_beds_covid)}</div>
-                        <div className="percent">{percentHospitalization} of {getDisplayNumber(jurisdictionData.inpatient_beds)}<br/>Total Inpatient Beds Available</div>
-                    </div>
-                    <div className="data-row">
-                        <div className="data-label">Intensive Care (ICU)</div>
-                        <div className="data-number">{getDisplayNumber(jurisdictionData.icu_beds_covid)}</div>
-                        <div className="percent">{percentICU} of {getDisplayNumber(jurisdictionData.icu_beds)}<br/>Total ICU Beds Available</div>
-                    </div>
-                    </span>
-                </div>            
+                    <div className="data-totals">
+                            <div className="data-row">
+                                <div className="data-label">Total Cases</div>
+                                <div className="data-number">{getDisplayNumber(jurisdictionData.total_cases)}</div>
+                                <div className="percent">{percentPositive} of Est. Population**</div>
+                            </div>
+                            <div className="data-row">
+                                <div className="data-label">Total Deaths</div>
+                                <div className="data-number">{getDisplayNumber(jurisdictionData.total_deaths)}</div>
+                                <div className="percent">{percentDeath} of Est. Population** <br/>{percentDeathOfPositive} of Total Cases</div>
+                            </div>
+                        
+                            <div className="data-row">
+                                <div className="data-label">Hospitalizations</div>
+                                <div className="data-number">{getDisplayNumber(jurisdictionData.inpatient_beds_covid)}</div>
+                                <div className="percent">{percentHospitalization} of {getDisplayNumber(jurisdictionData.inpatient_beds)}<br/>Inpatient Beds Available</div>
+                            </div>
+                            <div className="data-row">
+                                <div className="data-label">Intensive Care (ICU)</div>
+                                <div className="data-number">{getDisplayNumber(jurisdictionData.icu_beds_covid)}</div>
+                                <div className="percent">{percentICU} of {getDisplayNumber(jurisdictionData.icu_beds)}<br/>ICU Beds Available</div>
+                            </div>
+                    </div>        
+                </div>    
             : 
                 <div>Problem fetching data from CDC site...</div>
             }

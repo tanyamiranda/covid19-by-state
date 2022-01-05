@@ -17,13 +17,12 @@
 }
 
 .data-row-group {
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 .data-row {
     display: inline-block;
     text-align: left;
-    width: 25%;
     height: 100px;
     max-width: 200px;
     min-width: 160px;
