@@ -6,7 +6,6 @@ import './chart-display.css';
 // Necessary to be able to clear previous charts
 let currentLineChart = [];
 
-
 const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chartId}) => {
     const chartContainer = useRef(null);
     const [chartInstance, setChartInstance] = useState(null);

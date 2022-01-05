@@ -5,9 +5,9 @@ const INITIAL_STATE = {
     statesHistoryData: null,
     stateInformation: null,
     countryHistoryData: null,
-    stateCountyInfo: null,
     deathsByAgeGroups: null,
     isDataLoaded: false,
+    dataTimestamp: null,
     selectedState: null,
     selectedYear:null,   
     selectedFields: []    
@@ -21,7 +21,6 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
             return {
                 selectedState: USA_IDENTIFIER,
                 selectedYear: YEARS_DEFAULT,
-                stateCountyInfo: action.payload.stateCountyInfo,
                 deathsByAgeGroups: action.payload.deathsByAgeGroups,
                 isDataLoaded: true,
                 cdcHistoryByJurisdiction: action.payload.cdcHistoryByJurisdiction,

@@ -8,3 +8,23 @@
     text-align: center;
     font-weight: bold;
 }
+
+.chart-summary {
+
+}
+
+.chart-summary-row {
+    display: inline-block;
+    width: 100%;
+    max-width: 140px;
+    min-width: 100px;
+    border: 0.5px solid silver;
+    margin: 3px;
+    border-radius: 10px;
+    background-color: #e8e8e8;
+    vertical-align: top;
+}
+
+.label {
+    font-weight: bold;
+}

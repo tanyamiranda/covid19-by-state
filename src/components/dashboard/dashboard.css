@@ -3,6 +3,7 @@
     text-align: center;
     font-family: "open sans", Arial, Helvetica, sans-serif;
     font-size: 12px;
+    background-color: #E8E8E8;
 }
 
 .page-header {
@@ -14,7 +15,9 @@
 }
 
 .page-layout {
-    background-color: #E8E8E8;
+    width: 100%;
+    max-width: 1250px;
+    margin: auto;
 }
 .page-title {
     text-align: center;
@@ -35,21 +38,19 @@
 }
 
 .page-footer {
+    margin-top: 20px;
     padding:20px;
     border-top: 0.5px solid silver;
     font-size: 10px;
     line-height: 2em;
+    background-color: black;
+    color: #cacaca;
 }
 
 .site-link {
     cursor: pointer;
     color: blue;
     white-space: nowrap;
-}
-
-.page-footer {
-    background-color: black;
-    color: #cacaca;
 }
 
 .footer-site-link {
@@ -65,8 +66,9 @@ contained in the dashboard component.
 */
 .dashboard-component {
     display: inline-block;
-    width: 97%;
+    width: 45%;
     max-width: 600px;
+    min-width: 450px;
     text-align: center;
     line-height: 2em;
     border: 0.5px solid silver;
@@ -106,5 +108,8 @@ contained in the dashboard component.
 @media only screen and (max-width: 500px) {
     .dashboard-component {
         margin: 10px 0px;
+        padding: 2px;
+        max-width: 95%;
+        min-width: 95%;
     }
 }

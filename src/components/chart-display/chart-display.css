@@ -1,13 +1,7 @@
 .chart-display {
     width: 99%;
-    height: 60vh;
+    height: 50vh;
     background: white;
     margin: 0 0;
-    padding-top: 20px;
 }
 
-@media only screen and (max-width: 400px) {
-    .chart-display {
-        height: 60vh;
-    }
-}

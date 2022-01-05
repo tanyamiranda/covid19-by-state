@@ -10,7 +10,14 @@ export const getTimeSeriesChartOptions = (displayMonthFormat) => {
             intersect: false,
             bodyAlign: 'left',
             position: 'nearest',
-            bodySpacing: 5
+            bodySpacing: 5,
+            callbacks: {
+                label: function(tooltipItem, data) {
+                    var type = data.datasets[tooltipItem.datasetIndex].label;
+                    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                    return type + " : " + parseInt(value).toLocaleString();
+                }
+            }
         },
         interaction: {
             intersect: false,
@@ -81,11 +88,17 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
                 return "Ages " + tooltipItem[0].label 
             },
 
+            label: function(tooltipItem, data) {
+                var type = data.datasets[tooltipItem.datasetIndex].label;
+                var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                return type + " : " + parseInt(value).toLocaleString();
+            },
+
             footer: function(tooltipItem) {
                 const covidDeaths = tooltipItem[0].value;
                 const allDeaths = tooltipItem[1].value;
                 const percent = parseFloat((covidDeaths/allDeaths) * 100).toFixed(1)+"%";
-                return [percent + " of all deaths","due to COVID-19"] ;
+                return [percent + " of deaths","due to COVID-19"] ;
             }
 
           }

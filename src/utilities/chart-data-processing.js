@@ -14,7 +14,7 @@ export const getAgeGroupDataForState = (deathsByAgeGroups, selectedState, select
     return ageGroupData;
 }
 
-export const getAgeGroupDataOverTime = (deathsByAgeGroups, selectedState, selectedYear) => {
+export const getCDCHistoryDataByAgeGroups = (deathsByAgeGroups, selectedState, selectedYear) => {
 
     const ageGroupData = getAgeGroupDataForState(deathsByAgeGroups, selectedState, selectedYear);
 
@@ -26,8 +26,6 @@ export const getAgeGroupDataOverTime = (deathsByAgeGroups, selectedState, select
         const ageGroup = "ages_" + formatAgeGroupName(ageGroupDataRec.age_group).replaceAll("-","_").replaceAll("+","").trim();
         const deaths = Number(ageGroupDataRec.sum_covid_19_deaths);
  
-        //console.log("date=" + date + " | ageGroup=" + ageGroup + " | deaths=" + deaths);
-
         let dateRecord = newGroupData.find(rec => rec.date === date);
 
         if(!dateRecord) {
@@ -50,10 +48,7 @@ export const getAgeGroupDataOverTime = (deathsByAgeGroups, selectedState, select
         }      
 
     });
-
-    //console.log("newGroupData.length=" + newGroupData.length)
-    //console.log("newGroupData=" + JSON.stringify(newGroupData));
-    
+   
     return newGroupData;
 }
 
@@ -82,7 +77,7 @@ export const combineAgeGroupValues = (ageGroupData) => {
 
 }
 
-export const getCDCDataBySelection = (cdcHistoryByJurisdiction, selectedState, selectedYear) => {
+export const getCDCHistoryDataBySelection = (cdcHistoryByJurisdiction, selectedState, selectedYear) => {
 
     const monthsSelected = selectedYear.search("months-");
 
@@ -148,7 +143,7 @@ export const getCDCAgeGroupDataByDateRange = (deathsByAgeGroups, stateName, date
     return temp;
 }
 
-export const getCDCAgeGroupDataBySelection = (deathsByAgeGroups, stateName, selectedYear) => {
+const getCDCAgeGroupDataBySelection = (deathsByAgeGroups, stateName, selectedYear) => {
     
     let ageGroupDataSet = [];
     const monthsSelected = selectedYear.search("months-");
@@ -246,18 +241,26 @@ export const getChartDataset = (data, fieldNames) => {
             backgroundColor: DATA_FIELD_COLORS[index],
             borderColor: DATA_FIELD_COLORS[index],
             borderWidth: 1.5,
+            dataTotal: 0,
             data: []
+            
         })
     })
 
     data.forEach(row => {
         fieldNames.forEach (fieldName => {
             const fieldData = fieldDatasets.find((data => data.fieldName === fieldName))    
-            fieldData.data.push(!row[fieldName] || row[fieldName] < 0 ? 0 : row[fieldName]);
+            const data = !row[fieldName] || row[fieldName] < 0 ? 0 : row[fieldName];
+            fieldData.dataTotal += Number(data);
+            fieldData.data.push(data);
         })
     });
 
     return fieldDatasets;
+}
+
+export const getChartDatasetSummary = () => {
+
 }
 
 export const getAgeGroupChartDataset = (covidDeaths, allDeaths) => {
@@ -290,7 +293,6 @@ export const getDateListFromCDCData = (dataSet) => {
         var month = Number(dateString.substring(5,7));
         var day = Number(dateString.substring(8,10));
         
-        //newDateList.push(month + "/" + day + "/" + year);
         newDateList.push(new Date(month + "/" + day + "/" + year));
     });
 
