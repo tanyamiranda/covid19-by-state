@@ -5,10 +5,27 @@ export const getDisplayNumber = (num) => {
 }
 
 export const getPercentage = (partialNum, totalNum) => {
+
+    if (totalNum===0)
+        return "0";
+
     var percent = ((partialNum / totalNum) * 100).toFixed(2);
     if (percent === "0.00")
         percent = "< 0.01"
+
     return percent + "%";
+}
+
+export const getPercentageText = (partialNum, totalNum) => {
+
+    if (totalNum===0)
+        return partialNum;
+
+    var percent = ((partialNum / totalNum) * 100).toFixed(2);
+    if (percent === "0.00")
+        percent = "< 0.01"
+        
+    return percent + "% of " + getDisplayNumber(totalNum);
 }
 
 export const getFormattedDateForFiltering = (dateValue) => {

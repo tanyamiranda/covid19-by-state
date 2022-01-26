@@ -1,0 +1,9 @@
+.site-link {
+    cursor: pointer;
+    color: blue;
+    white-space: nowrap;
+}
+
+.comment {
+    font-size: smaller;
+}

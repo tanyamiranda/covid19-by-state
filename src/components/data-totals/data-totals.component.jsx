@@ -13,7 +13,7 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
     let stateInfo = STATE_INFO[selectedState];
 
     let jurisdictionData = [];        
-    let percentPositive =  0;
+    
     let percentDeath =  0
     let percentHospitalization = 0;
     let percentICU = 0;
@@ -21,7 +21,7 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
 
     if (dataFetchedSuccessfully) {
         jurisdictionData = cdcTotalsByJurisdiction.find(data => data.state===selectedState);
-        percentPositive =  getPercentage(jurisdictionData.total_cases,stateInfo.population);
+
         percentDeath =  getPercentage(jurisdictionData.total_deaths,stateInfo.population);
         percentHospitalization =  getPercentage(jurisdictionData.inpatient_beds_covid,jurisdictionData.inpatient_beds);
         percentICU =  getPercentage(jurisdictionData.icu_beds_covid,jurisdictionData.icu_beds);
@@ -32,12 +32,12 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
         <div className="data-totals-component">
             {dataFetchedSuccessfully ? 
                 <div>
-                    <div className='data-totals-title'>Current Totals</div>
+                    <div className='data-totals-title'>Current Totals for<br/>{stateInfo.name + (stateInfo.extra != null ? stateInfo.extra : "")}</div>
                     <div className="data-totals">
                             <div className="data-row">
                                 <div className="data-label">Total Cases</div>
                                 <div className="data-number">{getDisplayNumber(jurisdictionData.total_cases)}</div>
-                                <div className="percent">{percentPositive} of Est. Population**</div>
+                                <div className="percent">Confirmed &amp; Probable Cases</div>
                             </div>
                             <div className="data-row">
                                 <div className="data-label">Total Deaths</div>
@@ -46,12 +46,12 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
                             </div>
                         
                             <div className="data-row">
-                                <div className="data-label">Hospitalizations</div>
+                                <div className="data-label">Currently Hospitalized</div>
                                 <div className="data-number">{getDisplayNumber(jurisdictionData.inpatient_beds_covid)}</div>
                                 <div className="percent">{percentHospitalization} of {getDisplayNumber(jurisdictionData.inpatient_beds)}<br/>Inpatient Beds Available</div>
                             </div>
                             <div className="data-row">
-                                <div className="data-label">Intensive Care (ICU)</div>
+                                <div className="data-label">Currently in ICU</div>
                                 <div className="data-number">{getDisplayNumber(jurisdictionData.icu_beds_covid)}</div>
                                 <div className="percent">{percentICU} of {getDisplayNumber(jurisdictionData.icu_beds)}<br/>ICU Beds Available</div>
                             </div>

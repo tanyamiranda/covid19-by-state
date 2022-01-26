@@ -1,18 +1,3 @@
-.research-notes-details{
-    display: none;
-}
-
-.research-notes {
-    display: block;
-    line-break: strict;
-    text-align: center;
-    font-weight: bold;
-}
-
-.chart-summary {
-
-}
-
 .chart-summary-row {
     display: inline-block;
     width: 100%;

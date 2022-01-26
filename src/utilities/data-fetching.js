@@ -4,15 +4,18 @@ import {STATE_INFO} from './states-meta-data';
 const CDC_QUERY_ACCESS_TOKEN = "&$limit=500000&$$app_token=fz22RHPlELrzEw1j9vq91YH6N";
 
 // Cases and Deaths over time
-const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,state,new_case,new_death&$order=submission_date";
+const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,state,new_case,new_death&$order=submission_date, state";
 const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,'USA' as state,sum(new_case) as new_case,sum(new_death) as new_death&$group=submission_date&$order=submission_date";
 
 // Cases and Deaths by age groups
 const URL_CDC_DATA_AGE_GROUPS_PER_MONTH = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=year,month,state,age_group,sum(covid_19_deaths),sum(total_deaths) where sex ='All Sexes' and `group`='By Month' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') group by year,month,state,age_group&$order=year,month";
 
 // Hospital Data over time
-const URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,inpatient_beds_used_covid as inpatient_beds_covid,total_staffed_adult_icu_beds as icu_beds, staffed_icu_adult_patients_confirmed_covid as icu_beds_covid&$order=date";
+const URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,inpatient_beds_used_covid as inpatient_beds_covid,total_staffed_adult_icu_beds as icu_beds, staffed_icu_adult_patients_confirmed_covid as icu_beds_covid&$order=date, state";
 const URL_CDC_HOSPTIAL_DATA_USA_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,'USA' as state,sum(inpatient_beds)as inpatient_beds,sum(inpatient_beds_used_covid) as inpatient_beds_covid,sum(total_staffed_adult_icu_beds) as icu_beds,sum(staffed_icu_adult_patients_confirmed_covid) as icu_beds_covid&$group=date&$order=date";
+
+const URL_NYC_HOSPITAL_DATA = "https://health.data.ny.gov/resource/jw46-jpb7.json?$select=as_of_date as date,'NYC' as state, sum(total_staffed_acute_care) as inpatient_beds, sum(patients_currently) as inpatient_beds_covid, sum(total_staffed_icu_beds_1) as icu_beds, sum(patients_currently_in_icu) as icu_beds_covid where ny_forward_region = 'NEW YORK CITY' group by date, state order by date desc";
+
 
 export const getFreshData = async() => {
     
@@ -23,15 +26,23 @@ export const getFreshData = async() => {
         const cdcHistoryByJurisdiction = dataHistoryByState.concat(dataHistoryUSA);
 
         // Get cases and deaths TOTALS from history
-        const dataCasesDeathsTotals = getCaseDeathTotalsFromHistoryData(cdcHistoryByJurisdiction);
+        //const dataCasesDeathsTotals = getCaseDeathTotalsFromHistoryData(cdcHistoryByJurisdiction);
 
-        // Get hospital data history for each state and USA and merge
+        const dataCasesDeathsTotals = getTotalsForEachState(cdcHistoryByJurisdiction);
+
+        // Get hospital data history for each state, NYC, USA and then merge
         const dataHospitalByState = await fetchJsonData(URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY + CDC_QUERY_ACCESS_TOKEN);
         const dataHospitalUSA =await fetchJsonData(URL_CDC_HOSPTIAL_DATA_USA_HISTORY + CDC_QUERY_ACCESS_TOKEN);
-        const cdcHospitalDataByJurisdiction = dataHospitalByState.concat(dataHospitalUSA);
+        const dataHospitalNYCOnly = await fetchJsonData(URL_NYC_HOSPITAL_DATA + CDC_QUERY_ACCESS_TOKEN);
+        const cdcHospitalDataByJurisdiction = dataHospitalByState.concat(dataHospitalUSA).concat(dataHospitalNYCOnly);
 
-        // Get last sumbission date to use for getting TOTALS
-        const lastDate = (cdcHospitalDataByJurisdiction.reduce(function(prev, current) {
+        // Get last sumbission date to use for getting totals
+        const lastDate = (dataHospitalByState.reduce(function(prev, current) {
+            return (prev.date > current.date) ? prev : current
+        })).date
+
+        // Get NYC last date
+        const nycLastDate = (dataHospitalNYCOnly.reduce(function(prev, current) {
             return (prev.date > current.date) ? prev : current
         })).date
 
@@ -39,7 +50,7 @@ export const getFreshData = async() => {
         const dataHospitalTotals = cdcHospitalDataByJurisdiction
             .filter(function (data) {
                 const date = data.date;
-                return date === lastDate;
+                return (data.state==='NYC' && date===nycLastDate) || date === lastDate;
             });    
         
         // Merge TOTALS for cases and deaths and hospitals into one object 
@@ -60,6 +71,7 @@ export const getFreshData = async() => {
         console.log(error);
     }
 }
+
 
 export const fetchJsonData = async(url) => {
     try{
@@ -127,58 +139,61 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataHospitalTotals
     
     stateKeys.forEach((state) => {
 
-        //if (state !== "USA") {
+        let casesDeathsData =dataCasesDeathsByState.find(data => data.state===state);
+        let hospitalData = dataHospitalTotals.find(data => data.state===state);
+        if (!hospitalData)
+            hospitalData = {
+                inpatient_beds: 0,
+                inpatient_beds_covid: 0,
+                icu_beds: 0,
+                icu_beds_covid: 0
+            }
 
-            let casesDeathsData =dataCasesDeathsByState.find(data => data.state===state);
-            let hospitalData = dataHospitalTotals.find(data => data.state===state);
-            if (!hospitalData)
-                hospitalData = {
-                    inpatient_beds: 0,
-                    inpatient_beds_covid: 0,
-                    icu_beds: 0,
-                    icu_beds_covid: 0
-                }
-
-            totalsByState.push({
-                state: state,
-                total_cases: Number(casesDeathsData.total_cases),
-                total_deaths: Number(casesDeathsData.total_deaths),
-                inpatient_beds: Number(hospitalData.inpatient_beds),
-                inpatient_beds_covid: Number(hospitalData.inpatient_beds_covid),
-                icu_beds: Number(hospitalData.icu_beds),
-                icu_beds_covid: Number(hospitalData.icu_beds_covid)
-            });
-       // }
+        totalsByState.push({
+            state: state,
+            total_cases: Number(casesDeathsData.total_cases),
+            total_deaths: Number(casesDeathsData.total_deaths),
+            inpatient_beds: Number(hospitalData.inpatient_beds),
+            inpatient_beds_covid: Number(hospitalData.inpatient_beds_covid),
+            icu_beds: Number(hospitalData.icu_beds),
+            icu_beds_covid: Number(hospitalData.icu_beds_covid)
+        });
+      
     })
-
-    //let dataTotalsUSA = getTotalsForUSA(totalsByState);
-    //totalsByState.push(dataTotalsUSA);
-    
 
     return totalsByState;
 }
 
-export const getCaseDeathTotalsFromHistoryData = (stateHistoryData) => {
 
-    var result = [];
-    stateHistoryData.reduce(
-        function(state_totals, value) {
-            if (!state_totals[value.state]) {
-                state_totals[value.state] = {
-                    state: value.state,
-                    total_cases: !Number(value.new_case) ? 0 : Number(value.new_case),
-                    total_deaths: !Number(value.new_death) ? 0 : Number(value.new_death)
-                };
-                result.push(state_totals[value.state]);
+const getTotalsForEachState = (stateHistoryData) => {
+    var totals = [];
+    stateHistoryData.forEach((record) => {
+                
+        const new_case = Number(record.new_case);
+        const new_death = Number(record.new_death);
+        const state = record.state;
+
+        // Debugging - CDC records have negative values, was affecting totals
+        // if (new_case < 0 || new_death < 0)
+        //    console.log("negative values found: " + JSON.stringify(record)); 
+
+        const stateTotal = totals.find(data => data.state===state);
+
+        if (!stateTotal) {
+            const newStateTotal = {
+                state: state,
+                total_cases: new_case,
+                total_deaths: new_death
             }
-            else {
-                state_totals[value.state].total_cases += !Number(value.new_case) ? 0 : Number(value.new_case);
-                state_totals[value.state].total_deaths += !Number(value.new_death) ? 0 : Number(value.new_death);
-            }
-            return state_totals;
+
+            totals.push(newStateTotal);
         }
-    , {});
+        else {
+            stateTotal.total_cases += new_case;
+            stateTotal.total_deaths += new_death;
+        }
+    });
 
-    return result;
-
+    return totals;
 }
+

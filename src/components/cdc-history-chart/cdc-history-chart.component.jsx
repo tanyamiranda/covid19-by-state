@@ -9,15 +9,15 @@ import {YEARS} from '../../utilities/data-fields';
 import {STATE_INFO} from '../../utilities/states-meta-data';
 import {getDisplayNumber} from '../../utilities/formatting';
 import {getChartDataset, getDateListFromCDCData,} from '../../utilities/chart-data-processing';
+import ChartFooter from '../chart-footer/chart-footer.component';
 
-const CDCHistoryChart = ({isDataLoaded, dataSet, selectedFieldGroup, stateChartTitle, chartId, chartOptions, dataSourceURL, dataSourceLabel, selectedState, selectedYear, displaySummary}) => {  
+const CDCHistoryChart = ({selectedState, selectedYear, isDataLoaded, 
+    dataSet, selectedFieldGroup, stateChartTitle, chartId, chartOptions, displaySummary, dataSource}) => {  
     
     const dataFetchedSuccessfully = isDataLoaded && Array.isArray(dataSet) && dataSet.length > 0;
     const chartDataSet = getChartDataset(dataSet, selectedFieldGroup);
     const dateList = getDateListFromCDCData(dataSet);
-
-    //console.log("chartDataSet=" + JSON.stringify(chartDataSet))
-    
+   
     return (
         <div className="dashboard-component state-history-chart">
             <div className="dashboard-component-title">
@@ -40,18 +40,18 @@ const CDCHistoryChart = ({isDataLoaded, dataSet, selectedFieldGroup, stateChartT
             {displaySummary ?
                 <div className='chart-summary'>
                     <div className='summary-title'>Totals for Selection</div>
-                {chartDataSet.map((item) =>
-                    <div className='chart-summary-row' key={item.label}> 
-                        <div className='label'>{item.label}</div>
-                        <div className='value'>{getDisplayNumber(item.dataTotal)}</div>
-                    </div>    
-                )}
+                    {chartDataSet.map((item) =>
+                        <div className='chart-summary-row' key={item.label}> 
+                            <div className='label'>{item.label}</div>
+                            <div className='value'>{getDisplayNumber(item.dataTotal)}</div>
+                        </div>    
+                    )}
                 </div>
             :
                 <div></div>
             }
-            <div className="data-sources">Data:&nbsp;
-                <span className="site-link" onClick={()=> window.open(dataSourceURL)}>{dataSourceLabel}</span>
+            <div>
+                <ChartFooter dataSource = {dataSource}/>
             </div>
         </div>
     )

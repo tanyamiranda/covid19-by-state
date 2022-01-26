@@ -43,9 +43,12 @@
     padding-top: 2px;
     line-height: normal;
     height: 30px;
-    white-space: nowrap;
+    
 }
 
+.data-label span {
+    white-space: nowrap;
+}
 .data-number {
     font-size: 22px;
 }

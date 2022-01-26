@@ -7,10 +7,6 @@ export const getAgeGroupDataForState = (deathsByAgeGroups, selectedState, select
     const stateName = STATE_INFO[selectedState].name;
     let ageGroupData = getCDCAgeGroupDataBySelection(deathsByAgeGroups, stateName, selectedYear);
 
-    /** CDC collects NYC separately from NY State. We are grouping them back into one number under NY state. **/
-    if(selectedState === "NY") 
-        ageGroupData = ageGroupData.concat(getCDCAgeGroupDataBySelection(deathsByAgeGroups,"New York City",selectedYear));
-
     return ageGroupData;
 }
 
@@ -84,10 +80,19 @@ export const getCDCHistoryDataBySelection = (cdcHistoryByJurisdiction, selectedS
     if (monthsSelected > -1) {
         const monthsBack = selectedYear.substr(monthsSelected+7, selectedYear.lenth); 
         const dateRange = getDateRangeValues(monthsBack);
-        return getCDCDataSetByDateRange(cdcHistoryByJurisdiction, selectedState, Number(getFormattedDateForFiltering(dateRange.startDate)), Number(getFormattedDateForFiltering(dateRange.endDate)))
+
+        const startDate = Number(getFormattedDateForFiltering(dateRange.startDate));
+        const endDate = Number(getFormattedDateForFiltering(dateRange.endDate));
+
+        let dataSet = getCDCDataSetByDateRange(cdcHistoryByJurisdiction, selectedState, startDate, endDate);
+        return dataSet; 
     }
-    else
-        return getCDCDataSetByYear(cdcHistoryByJurisdiction, selectedState, selectedYear);
+    else {
+
+        let dataSet = getCDCDataSetByYear(cdcHistoryByJurisdiction, selectedState, selectedYear);
+        return dataSet;
+
+    }
 }
 
 export const getCDCDataSetByYear = (cdcHistoryByJurisdiction, selectedState, selectedYear) =>{
@@ -250,7 +255,7 @@ export const getChartDataset = (data, fieldNames) => {
     data.forEach(row => {
         fieldNames.forEach (fieldName => {
             const fieldData = fieldDatasets.find((data => data.fieldName === fieldName))    
-            const data = !row[fieldName] || row[fieldName] < 0 ? 0 : row[fieldName];
+            const data = !row[fieldName] ? 0 : row[fieldName];
             fieldData.dataTotal += Number(data);
             fieldData.data.push(data);
         })

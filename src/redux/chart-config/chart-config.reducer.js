@@ -2,12 +2,8 @@ import ChartConfigTypes from './chart-config.types';
 import {USA_IDENTIFIER, YEARS_DEFAULT} from '../../utilities/data-fields';
 
 const INITIAL_STATE = {
-    statesHistoryData: null,
-    stateInformation: null,
-    countryHistoryData: null,
-    deathsByAgeGroups: null,
+    dataRefreshTimestamp: null,
     isDataLoaded: false,
-    dataTimestamp: null,
     selectedState: null,
     selectedYear:null,   
     selectedFields: []    
