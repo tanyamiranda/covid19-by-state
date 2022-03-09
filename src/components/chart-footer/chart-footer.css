@@ -4,6 +4,6 @@
     white-space: nowrap;
 }
 
-.comment {
-    font-size: smaller;
+.footer-comment {
+    font-weight: bold;
 }

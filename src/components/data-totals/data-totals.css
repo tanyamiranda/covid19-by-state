@@ -11,6 +11,9 @@
     text-transform: uppercase;
 }
 
+.data-totals-title span {
+    white-space: nowrap;
+}
 .data-totals {
     width: 95%;
     margin: auto;

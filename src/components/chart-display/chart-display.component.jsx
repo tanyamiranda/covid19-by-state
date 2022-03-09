@@ -6,7 +6,7 @@ import './chart-display.css';
 // Necessary to be able to clear previous charts
 let currentLineChart = [];
 
-const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chartId}) => {
+const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chartId, isTallChart}) => {
     const chartContainer = useRef(null);
     const [chartInstance, setChartInstance] = useState(null);
 
@@ -32,7 +32,7 @@ const ChartDisplay = ({chartType, chartOptions, chartLabels, chartDataSet, chart
     }, [chartContainer, chartType, chartOptions, chartLabels, chartDataSet, chartId]);
     
     return (
-        <div className="chart-display">
+        <div className={"chart-display" + (isTallChart ? " tall-chart-display" : "") }>
             <canvas id={!chartInstance ? "0" : chartId } ref={chartContainer} />
         </div>
     );

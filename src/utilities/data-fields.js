@@ -1,3 +1,7 @@
+export const YEARS_DEFAULT = "months-6";
+export const USA_IDENTIFIER = "USA";
+export const NYC_IDENTIFIER = "NYC";
+
 /*
  This is needed to maintain descending year order.
  Using Object.keys() to get keys from YEARS sorts
@@ -21,8 +25,6 @@ export const YEARS = {
     "0": "All Time",
 }
 
-export const YEARS_DEFAULT = "months-6";
-
 export const DATA_FIELD_COLORS = [
     'green',
     'red',
@@ -33,147 +35,136 @@ export const DATA_FIELD_COLORS = [
     'black',
     'cyan',
     'purple',
-    'brown'
+    'brown',
+    'voilet',
+    'chartreuse',
+    'CadetBlue',
+    'darkgreen',
+    'DarkGoldenRod',
+    'darkslategray',
+    'crimson',
+    'Turquoise',
+    'steelblue',
+    'sand',
+    'salmon'
 ];
 
-export const USA_IDENTIFIER = "USA";
-
-export const US_STATES_DATA = {
-    USA:"United States",
-    AL:"Alabama",
-    AK:"Alaska",
-    AR:"Arkansas",
-    AZ:"Arizona",
-    CA:"California", 
-    CO:"Colorado", 
-    CT:"Connecticut", 
-    DE:"Delaware",
-    DC:"District Of Columbia", 
-    FL:"Florida", 
-    GA:"Georgia",
-    HI:"Hawaii", 
-    ID:"Idaho", 
-    IL:"Illinois", 
-    IA:"Iowa", 
-    IN:"Indiana", 
-    KS:"Kansas", 
-    KY:"Kentucky", 
-    LA:"Louisiana",
-    ME:"Maine",  
-    MD:"Maryland",
-    MA:"Massachusetts", 
-    MI:"Michigan",
-    MN:"Minnesota",
-    MS:"Mississippi", 
-    MO:"Missouri", 
-    MT:"Montana", 
-    NC:"North Carolina", 
-    ND:"North Dakota", 
-    NE:"Nebraska", 
-    NV:"Nevada",
-    NH:"New Hampshire", 
-    NJ:"New Jersey", 
-    NM:"New Mexico",  
-    NY:"New York", 
-    OH:"Ohio", 
-    OK:"Oklahoma", 
-    OR:"Oregon", 
-    PA:"Pennsylvania", 
-    PR:"Puerto Rico", 
-    RI:"Rhode Island",
-    SC:"South Carolina", 
-    SD:"South Dakota", 
-    TN:"Tennessee", 
-    TX:"Texas", 
-    UT:"Utah", 
-    VT:"Vermont", 
-    VA:"Virginia",
-    WA:"Washington", 
-    WI:"Wisconsin", 
-    WV:"West Virginia", 
-    WY:"Wyoming"
-}
-
+/**
+ * User-friendly display names for specific fields from CDC
+ */
 export const DATA_FIELD_DISPLAY_NAMES = {   
     new_case: "New Cases",
     new_death: "New Deaths",
     inpatient_beds_covid: "Inpatient",
-    icu_beds_covid: "ICU",
-    ages_0_17:"0-17",
-    ages_18_29:"18-29",
-    ages_30_39:"30-39",
-    ages_40_49:"40-49",
-    ages_50_64:"50-64",
-    ages_65_74:"65-74",
-    ages_75_84:"75-84",
-    ages_85:"85+"
+    icu_beds_covid: "ICU"
 };
 
-
-export const COUNTY_SORT_FIELDS = {
-    SORT_BY_DEATHS : "deaths",
-    SORT_BY_CASES : "cases",
-    SORT_BY_COUNTY : "county"
-};
-
-
-export const CDC_DATA_FIELDS_DAILY = [
-    "new_case",
-    "new_death",
-];
-
-export const CDC_DATA_FIELDS_TOTALS = [
-    "max_tot_cases",
-    "max_tot_death",
-];
-
-export const CDC_DATA_CHART_FIELD_GROUPS = {
-    dailyTotals: [
-        "new_case",
-        "new_death"
-    ],
-    hospitalData: [
-        "inpatient_beds_covid",
-        "icu_beds_covid"
-    ]
+/**
+ * Each Chart has an identifier that is used throught the code
+ */
+export const CHART_IDENTIFIER = {
+    DEATHS_BY_AGE: "DEATHS_BY_AGE",
+    VAX_FIRST_DOSE: "VAX_FIRST_DOSE",
+    VAX_COMPLETE_DOSE: "VAX_COMPLETE_DOSE",
+    EXCESS_DEATHS: "EXCESS_DEATHS",
+    EXCESS_DEATHS_PCT: "EXCESS_DEATHS_PCT",
+    HOSPITAL_DATA: "HOSPITAL_DATA",
+    AGE_GROUP_SUMMARY: "AGE_GROUP_SUMMARY",
+    CASES_DEATHS: "CASES_DEATHS" 
 }
 
-export const DATA_X_LABELS = [
-    "Jan 2020",
-    "Feb 2020",
-    "Mar 2020",
-    "Apr 2020",
-    "May 2020",
-    "Jun 2020",
-    "Jul 2020",
-    "Aug 2020",
-    "Sep 2020",
-    "Oct 2020",
-    "Nov 2020",
-    "Dec 2020",
-    "Jan 2021",
-    "Feb 2021",
-    "Mar 2021",
-    "Apr 2021",
-    "May 2021",
-    "Jun 2021",
-    "Jul 2021",
-    "Aug 2021",
-    "Sep 2021",
-    "Oct 2021",
-    "Nov 2021",
-    "Dec 2021",
-];
+/**
+ * List of fields used in time series charts.
+ * Date grouped by age will only show first field per age group.
+ */
+export const CDC_FIELDS_FOR_CHART = {
+    DEATHS_BY_AGE: ["covid_19_deaths"],
+    VAX_FIRST_DOSE: ["first_dose_pct"],
+    VAX_COMPLETE_DOSE: ["completed_pct"],
+    EXCESS_DEATHS: ["covid19_weighted"],
+    EXCESS_DEATHS_PCT: ["percent_above_average_weighted"],
+    HOSPITAL_DATA: ["inpatient_beds_covid","icu_beds_covid"],
+    CASES_DEATHS: ["new_case","new_death"],
+    AGE_GROUP_SUMMARY: []
+}
 
-
-export const CDC_AGE_GROUPS = ["0-17","18-29","30-39","40-49","50-64","65-74","75-84","85+"];
-
-export const AGE_GROUP_DATA_FIELDS = [
-    "ages_0_17",
-    "ages_18_29",
-    "ages_30_39",
-    "ages_40_49",
-    "ages_50_64",
-    "ages_65_74",
-    "ages_75_84",
-    "ages_85"]
+/**
+ * Data grouped by age must have age groups predefined.
+ * Key matches value from CHART_IDENTIFIER
+ */
+export const CDC_AGE_GROUP_VALUES = {
+    DEATHS_BY_AGE : [
+        '0-17 years', 
+        '18-29 years', 
+        '30-39 years',
+        '40-49 years',
+        '50-64 years',
+        '65-74 years',
+        '75-84 years',
+        '85 years and over'],
+    AGE_GROUP_SUMMARY : [
+        '0-17 years', 
+        '18-29 years', 
+        '30-39 years',
+        '40-49 years',
+        '50-64 years',
+        '65-74 years',
+        '75-84 years',
+        '85 years and over'],
+    VAX_FIRST_DOSE: [
+        "5 - 11 Years",
+        "12 - 17 Years",
+        "18 - 24 Years",
+        "25 - 39 Years",
+        "40 - 49 Years",
+        "50 - 64 Years",
+        "65 - 74 Years",
+        "75+ Years"
+    ],
+    VAX_COMPLETE_DOSE: [
+        "5 - 11 Years",
+        "12 - 17 Years",
+        "18 - 24 Years",
+        "25 - 39 Years",
+        "40 - 49 Years",
+        "50 - 64 Years",
+        "65 - 74 Years",
+        "75+ Years"
+    ],
+    EXCESS_DEATHS: [
+        "0-14 Years",
+        "15-19 Years",
+        "20-24 Years",
+        "25-29 Years",
+        "30-34 Years",
+        "35-39 Years",
+        "40-44 Years",
+        "45-49 Years",
+        "50-54 Years",
+        "55-59 Years",
+        "60-64 Years",
+        "65-69 Years",
+        "70-74 Years",
+        "75-79 Years",
+        "80-84 Years",
+        "85+"
+    ],
+    EXCESS_DEATHS_PCT: [
+        "0-14 Years",
+        "15-19 Years",
+        "20-24 Years",
+        "25-29 Years",
+        "30-34 Years",
+        "35-39 Years",
+        "40-44 Years",
+        "45-49 Years",
+        "50-54 Years",
+        "55-59 Years",
+        "60-64 Years",
+        "65-69 Years",
+        "70-74 Years",
+        "75-79 Years",
+        "80-84 Years",
+        "85+"
+    ]
+};

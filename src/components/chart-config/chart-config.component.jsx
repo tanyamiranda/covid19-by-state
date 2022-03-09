@@ -3,12 +3,12 @@ import {connect} from 'react-redux'
 
 import './chart-config.css';
 import {YEARS, YEARS_DEFAULT, YEAR_KEYS} from '../../utilities/data-fields';
-import {STATE_INFO} from '../../utilities/states-meta-data';
+import {getStateCodes, getStateData } from '../../utilities/states-data';
 import {setStateSelection, setYearSelection} from '../../redux/chart-config/chart-config.actions';
 
 const ChartConfiguration = ({selectedState, selectedYear, setStateSelection, setYearSelection}) => {
 
-    const statesKeys = Object.keys(STATE_INFO);
+    const statesKeys = getStateCodes();
     
     const handleStateSelection = (event) => {
         setStateSelection(event.target.value);
@@ -25,7 +25,7 @@ const ChartConfiguration = ({selectedState, selectedYear, setStateSelection, set
                 <span className="config-section">
                     <select name="stateSelection" defaultValue={!selectedState ? "USA" : selectedState}  onChange={handleStateSelection}>
                         {statesKeys.map ((item) => 
-                            <option key={item} value={item} >{STATE_INFO[item].name + (STATE_INFO[item].extra != null ? STATE_INFO[item].extra : "")}</option>
+                            <option key={item} value={item} >{getStateData(item).name + (getStateData(item).extra != null ? getStateData(item).extra : "")}</option>
                         )}
                     </select>
                 </span>

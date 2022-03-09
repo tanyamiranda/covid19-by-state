@@ -13,3 +13,9 @@
 .label {
     font-weight: bold;
 }
+
+.full-width-component {
+    width: 100%;
+    max-width: 92%;
+    height: 650px;
+}

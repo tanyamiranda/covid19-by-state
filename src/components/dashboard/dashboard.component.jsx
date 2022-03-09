@@ -3,19 +3,23 @@ import {connect} from 'react-redux';
 
 import "./dashboard.css";
 
-import {getFreshData} from '../../utilities/data-fetching';
-import {getCDCHistoryDataBySelection,getCDCHistoryDataByAgeGroups} from '../../utilities/chart-data-processing';
-import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
-import {CDC_DATA_CHART_FIELD_GROUPS, AGE_GROUP_DATA_FIELDS} from '../../utilities/data-fields';
-import {getDataSourceForAgeGroupData, getDataSourceForCasesDeathsData, getDataSourceForHospitalData} from '../../utilities/urls';
+import CDCChart from '../cdc-chart/cdc-chart.component';
 import ChartConfiguration from '../chart-config/chart-config.component';
-import CDCHistoryChart from '../cdc-history-chart/cdc-history-chart.component';
 import Spinner from '../spinner/spinner.component';
-import AgeGroupSummary from '../age-group-summary/age-group-summary.component';
-import {getTimeSeriesChartOptions} from '../../utilities/chart-options';
 import DataTotals from '../data-totals/data-totals.component';
 
-const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, selectedState, selectedYear, cdcHistoryByJurisdiction,cdcHospitalDataByJurisdiction,deathsByAgeGroups}) => {  
+import {getFreshData} from '../../utilities/data-fetching';
+import {getChartObjectForVaxFirstByAgeGroup, 
+    getChartObjectForDeathsByAgeGroup, 
+    getChartObjectForVaxCompleteByAgeGroup,
+    getChartObjectForExcessDeathsAgeGroup,
+    getChartObjectForDeathsAndCases,
+    getChartObjectForHospitalData,
+    getChartObjectForExcessDeathsAgeGroupPercentage,
+    getChartObjectDeathsByAgeGroupSummary} from '../../utilities/chart-data-processing';
+import {setCOVID19Data} from '../../redux/chart-config/chart-config.actions';
+
+const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, chartConfig}) => {  
 
     useEffect(() => {
 
@@ -51,35 +55,23 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, selectedState, selecte
             ) : (
                 <div className="page-layout">
                     <DataTotals/>
-                    <CDCHistoryChart 
-                        dataSet={getCDCHistoryDataBySelection(cdcHistoryByJurisdiction, selectedState, selectedYear)} 
-                        selectedFieldGroup={CDC_DATA_CHART_FIELD_GROUPS.dailyTotals} 
-                        stateChartTitle="New Cases & Deaths" 
-                        chartId="newCasesDeaths"
-                        chartOptions = {getTimeSeriesChartOptions(false)}
-                        displaySummary={true}
-                        dataSource={getDataSourceForCasesDeathsData(selectedState)}/>
-
-                    <CDCHistoryChart 
-                        dataSet={getCDCHistoryDataBySelection(cdcHospitalDataByJurisdiction, selectedState, selectedYear)} 
-                        selectedFieldGroup={CDC_DATA_CHART_FIELD_GROUPS.hospitalData} 
-                        stateChartTitle="New Hospital Inpatient & ICU" 
-                        chartId="hospitalData"
-                        chartOptions = {getTimeSeriesChartOptions(false)}
-                        displaySummary={true} 
-                        dataSource={getDataSourceForHospitalData(selectedState)} />                    
-
-                    <CDCHistoryChart 
-                        dataSet={getCDCHistoryDataByAgeGroups(deathsByAgeGroups, selectedState, selectedYear)} 
-                        selectedFieldGroup={AGE_GROUP_DATA_FIELDS} 
-                        stateChartTitle="Deaths By Age Groups Monthly" 
-                        chartId="deathsByAgeGroupsOverTime"
-                        chartOptions = {getTimeSeriesChartOptions(true)}
-                        footerComment="Note: CDC Data Updated Weekly" 
-                        dataSource={getDataSourceForAgeGroupData(selectedState)} />
                     
-                    <AgeGroupSummary/>
-                    
+                    <CDCChart chartObjects={getChartObjectForDeathsAndCases(chartConfig)} displaySummary={true}/>   
+
+                    <CDCChart chartObjects={getChartObjectForHospitalData(chartConfig)} displaySummary={true}/> 
+
+                    <CDCChart chartObjects={getChartObjectForDeathsByAgeGroup(chartConfig)}/>
+              
+                    <CDCChart chartObjects={getChartObjectDeathsByAgeGroupSummary(chartConfig)} />
+
+                    <CDCChart chartObjects={getChartObjectForVaxFirstByAgeGroup(chartConfig)}/>
+
+                    <CDCChart chartObjects={getChartObjectForVaxCompleteByAgeGroup(chartConfig)}/>
+
+                    <CDCChart chartObjects={getChartObjectForExcessDeathsAgeGroup(chartConfig)} isFullWidthChart={true}/>
+                
+                    <CDCChart chartObjects={getChartObjectForExcessDeathsAgeGroupPercentage(chartConfig)} isFullWidthChart={true}/>
+            
                 </div>
             )}
             <div className="page-footer">
@@ -94,12 +86,8 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, selectedState, selecte
 };
 
 const mapStateToProps = state => ({
-    isDataLoaded: state.chartConfig.isDataLoaded,
-    selectedState: state.chartConfig.selectedState, 
-    selectedYear: state.chartConfig.selectedYear,
-    cdcHistoryByJurisdiction: state.chartConfig.cdcHistoryByJurisdiction,
-    cdcHospitalDataByJurisdiction: state.chartConfig.cdcHospitalDataByJurisdiction,
-    deathsByAgeGroups: state.chartConfig.deathsByAgeGroups
+    chartConfig: state.chartConfig,
+    isDataLoaded: state.chartConfig.isDataLoaded
 });
 
 const mapDispatchToProps = dispatch => ({

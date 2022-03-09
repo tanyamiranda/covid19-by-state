@@ -17,11 +17,13 @@ const chartConfigReducer = (state = INITIAL_STATE, action) => {
             return {
                 selectedState: USA_IDENTIFIER,
                 selectedYear: YEARS_DEFAULT,
-                deathsByAgeGroups: action.payload.deathsByAgeGroups,
                 isDataLoaded: true,
                 cdcHistoryByJurisdiction: action.payload.cdcHistoryByJurisdiction,
                 cdcTotalsByJurisdiction: action.payload.cdcTotalsByJurisdiction,
-                cdcHospitalDataByJurisdiction : action.payload.cdcHospitalDataByJurisdiction
+                cdcHospitalDataByJurisdiction : action.payload.cdcHospitalDataByJurisdiction,
+                cdcVaxByAgeGroup: action.payload.cdcVaxByAgeGroup,
+                cdcExcessDeathsByAgeGroup: action.payload.cdcExcessDeathsByAgeGroup,
+                cdcDeathsByAgeGroup: action.payload.cdcDeathsByAgeGroup
             }
             
         case ChartConfigTypes.SET_STATE_SELECTION:

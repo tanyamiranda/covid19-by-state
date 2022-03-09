@@ -4,13 +4,12 @@ import {connect} from 'react-redux';
 import './data-totals.css';
 
 import {getDisplayNumber, getPercentage} from '../../utilities/formatting'
-import {STATE_INFO} from '../../utilities/states-meta-data';
-
+import {getStateData} from '../../utilities/states-data';
 const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
 
     const dataFetchedSuccessfully = Array.isArray(cdcTotalsByJurisdiction) && cdcTotalsByJurisdiction.length > 0;
 
-    let stateInfo = STATE_INFO[selectedState];
+    let stateInfo = getStateData(selectedState);
 
     let jurisdictionData = [];        
     
@@ -32,7 +31,7 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
         <div className="data-totals-component">
             {dataFetchedSuccessfully ? 
                 <div>
-                    <div className='data-totals-title'>Current Totals for<br/>{stateInfo.name + (stateInfo.extra != null ? stateInfo.extra : "")}</div>
+                    <div className='data-totals-title'>Current Totals for <span>{stateInfo.name}</span> <span>{stateInfo.extra != null ? stateInfo.extra : ""}</span></div>
                     <div className="data-totals">
                             <div className="data-row">
                                 <div className="data-label">Total Cases</div>
@@ -62,6 +61,7 @@ const DataTotals = ({selectedState, cdcTotalsByJurisdiction}) => {
             }
             <div className="more-data">
                 <div>** Estimated population of {selectedState}: {getDisplayNumber(stateInfo.population)}</div>
+                
             </div>
             
         </div>

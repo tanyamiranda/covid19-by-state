@@ -1,4 +1,4 @@
-export const getTimeSeriesChartOptions = (displayMonthFormat) => {
+export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPercentageValue=false, displayNegativeValues=false) => {
 
     return {
         responsive: true,
@@ -15,7 +15,13 @@ export const getTimeSeriesChartOptions = (displayMonthFormat) => {
                 label: function(tooltipItem, data) {
                     var type = data.datasets[tooltipItem.datasetIndex].label;
                     var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                    return type + " : " + parseInt(value).toLocaleString();
+                    var displayText = ""; 
+                    if (displayPercentageValue)
+                        displayText = type + " : " + parseFloat(value) + "%"
+                    else   
+                        displayText = type + " : " + parseInt(value).toLocaleString()
+
+                    return displayText;
                 }
             }
         },
@@ -58,8 +64,7 @@ export const getTimeSeriesChartOptions = (displayMonthFormat) => {
                     display: false
                 },
                 ticks: {
-                    min: 0,
-                    beginAtZero:true,
+                    min: displayNegativeValues ? undefined : 0, 
                     callback: function(label) {
                         return formatYAxisDisplay(label);
                     }                
@@ -67,7 +72,6 @@ export const getTimeSeriesChartOptions = (displayMonthFormat) => {
             }]
         }
     }
-
 }
 
 export const CHART_OPTIONS_FOR_AGE_GROUPS = {
@@ -113,17 +117,13 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
     
     scales: {
         xAxes:[{
-            stacked: true,
-            ticks: {
-                beginAtZero: true,
-            }
+            stacked: true
         }],
         yAxes:[{
             // stacked:false - places bars in FRONT of each other instead of on TOP of each other
             // if set to true, the two bars are combined into one bar with a aggregate total.
             stacked: false, 
             ticks: {
-                beginAtZero: true,
                 callback: function(label) {
                     return formatYAxisDisplay(label);
                 }

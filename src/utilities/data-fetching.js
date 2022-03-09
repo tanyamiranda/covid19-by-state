@@ -1,4 +1,4 @@
-import {STATE_INFO} from './states-meta-data';
+import {getStateCodes} from './states-data';
 
 // CDC Access Token to be allowed to pull more than 5k worth of records
 const CDC_QUERY_ACCESS_TOKEN = "&$limit=500000&$$app_token=fz22RHPlELrzEw1j9vq91YH6N";
@@ -8,7 +8,7 @@ const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/9mf
 const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,'USA' as state,sum(new_case) as new_case,sum(new_death) as new_death&$group=submission_date&$order=submission_date";
 
 // Cases and Deaths by age groups
-const URL_CDC_DATA_AGE_GROUPS_PER_MONTH = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=year,month,state,age_group,sum(covid_19_deaths),sum(total_deaths) where sex ='All Sexes' and `group`='By Month' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') group by year,month,state,age_group&$order=year,month";
+const URL_CDC_DEATHS_BY_AGE = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=start_date as date,state,age_group,covid_19_deaths,total_deaths where sex ='All Sexes' and `group`='By Month' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') order by start_date,state,age_group";
 
 // Hospital Data over time
 const URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,inpatient_beds_used_covid as inpatient_beds_covid,total_staffed_adult_icu_beds as icu_beds, staffed_icu_adult_patients_confirmed_covid as icu_beds_covid&$order=date, state";
@@ -16,6 +16,11 @@ const URL_CDC_HOSPTIAL_DATA_USA_HISTORY = "https://healthdata.gov/resource/g62h-
 
 const URL_NYC_HOSPITAL_DATA = "https://health.data.ny.gov/resource/jw46-jpb7.json?$select=as_of_date as date,'NYC' as state, sum(total_staffed_acute_care) as inpatient_beds, sum(patients_currently) as inpatient_beds_covid, sum(total_staffed_icu_beds_1) as icu_beds, sum(patients_currently_in_icu) as icu_beds_covid where ny_forward_region = 'NEW YORK CITY' group by date, state order by date desc";
 
+// Vaccinations over time
+const URL_CDC_VACCINATIONS_BY_AGE = "https://data.cdc.gov/resource/gxj9-t96f.json?$select=cdc_case_earliest_dt as date,'USA' as state,agegroupvacc as age_group,administered_dose1_pct * 100 as first_dose_pct,series_complete_pop_pct * 100 as completed_pct&$order=cdc_case_earliest_dt";
+
+// Excess Deaths by Age Group
+const URL_CDC_EXCESS_DEATHS_BY_AGE = "https://data.cdc.gov/resource/m74n-4hbs.json?$select=weekending as date, 'USA' as state, agegroup as age_group, percent_above_average_weighted, covid19_weighted where RaceEthnicity='All Race/Ethnicity Groups' and Sex='All Sexes' and agegroup not in ('All Ages', 'Not stated') and MMWRyear in ('2020','2021','2022','2023') order by date";
 
 export const getFreshData = async() => {
     
@@ -57,14 +62,22 @@ export const getFreshData = async() => {
         const cdcTotalsByJurisdiction = await getTotalsByJurisdiction(dataCasesDeathsTotals, dataHospitalTotals);
         
         // Get CDC Monthly Death Totals by Age Groups 
-        const deathsByAgeGroups = await fetchJsonData(URL_CDC_DATA_AGE_GROUPS_PER_MONTH + CDC_QUERY_ACCESS_TOKEN);
+        const deathsByAgeGroups = await fetchJsonData(URL_CDC_DEATHS_BY_AGE + CDC_QUERY_ACCESS_TOKEN);
         
+        // Get Vaccinations by Age Groups   
+        const cdcVaxByAgeGroup = await fetchJsonData(URL_CDC_VACCINATIONS_BY_AGE + CDC_QUERY_ACCESS_TOKEN);
+
+        // Get CDC Excess Deaths by Age Groups
+        const cdcExcessDeathsByAgeGroups = await fetchJsonData(URL_CDC_EXCESS_DEATHS_BY_AGE + CDC_QUERY_ACCESS_TOKEN);
+
         return {
             dataRefreshTimestamp: new Date(),
-            deathsByAgeGroups: deathsByAgeGroups,
             cdcTotalsByJurisdiction: cdcTotalsByJurisdiction,
             cdcHistoryByJurisdiction: cdcHistoryByJurisdiction,
-            cdcHospitalDataByJurisdiction: cdcHospitalDataByJurisdiction
+            cdcHospitalDataByJurisdiction: cdcHospitalDataByJurisdiction,
+            cdcVaxByAgeGroup: cdcVaxByAgeGroup,
+            cdcExcessDeathsByAgeGroup: cdcExcessDeathsByAgeGroups,
+            cdcDeathsByAgeGroup : deathsByAgeGroups
         }
 
     } catch (error) {
@@ -135,7 +148,7 @@ export const getTotalsForUSA = (totalsByState) => {
 const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataHospitalTotals) => {
 
     let totalsByState= [];
-    let stateKeys = Object.keys(STATE_INFO);
+    let stateKeys = getStateCodes();
     
     stateKeys.forEach((state) => {
 
@@ -196,4 +209,3 @@ const getTotalsForEachState = (stateHistoryData) => {
 
     return totals;
 }
-

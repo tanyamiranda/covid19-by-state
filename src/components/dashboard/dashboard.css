@@ -12,6 +12,7 @@
     top: 0;
     line-height: normal;
     background: url(/covid19-by-state/network-4851119_1280.jpg);
+    z-index: 100;
 }
 
 .page-layout {
@@ -57,6 +58,15 @@
     cursor: pointer;
     color: lightgreen;
 }
+
+.page-section-title {
+    padding: 10px 0px;
+    font-size: 14pt;
+    text-transform: uppercase;
+    margin: 0;
+    background: darkgray;
+}
+
 /*
 ***********************************************************
 This style below this line are used across several components 
@@ -108,6 +118,13 @@ contained in the dashboard component.
     .dashboard-component {
         margin: 10px 0px;
         padding: 2px;
+        max-width: 95%;
+        min-width: 95%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .dashboard-component {
         max-width: 95%;
         min-width: 95%;
     }
