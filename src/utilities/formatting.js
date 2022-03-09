@@ -44,23 +44,6 @@ export const getFormattedDateForFiltering = (dateValue) => {
     return Number(year + month + day);
 }
 
-export const getFormattedDateForQuery = (dateValue) => {
-
-    const date = new Date(dateValue);
-
-    let month = "" + (date.getMonth() + 1);
-    let day = "" + date.getDate();
-    let year = "" + date.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return year + "-" + month + "-" +  day;
-
-}
-
 export const formatISODate = (dateValue) => {
 
     const date = new Date(dateValue);
@@ -78,19 +61,14 @@ export const formatISODate = (dateValue) => {
 
 }
 
-
-export const formatAgeGroupName = (ageGroupName) => {
-    
-    const newGroupName = ageGroupName.toLowerCase().replace("years and over","").replace("years","").replace("year","").replace("Under","<").replaceAll("-","_").replaceAll(" ",""); 
-
-    return newGroupName;
-}
-
 export const shrinkAgeGroupName = (ageGroupName) => {
     
-    const newGroupName = ageGroupName.toLowerCase().replace("years and over","+").replace("years","").replace("year","").replace("Under","<").replaceAll(" ",""); 
-
-    return newGroupName;
+    return ageGroupName.toLowerCase()
+        .replace("years and over","+")
+        .replace("years","")
+        .replace("year","")
+        .replace("Under","<")
+        .replaceAll(" ",""); 
 }
 
 export const shrinkAgeGroupNameList = (ageGroupNameList) => {
@@ -98,7 +76,7 @@ export const shrinkAgeGroupNameList = (ageGroupNameList) => {
     const newList = [];
 
     ageGroupNameList.forEach(rec => {
-        const newGroupName = rec.toLowerCase().replace("years and over","+").replace("years","").replace("year","").replace("Under","<").replaceAll(" ",""); 
+        const newGroupName = shrinkAgeGroupName(rec)
         newList.push(newGroupName);
     });
 

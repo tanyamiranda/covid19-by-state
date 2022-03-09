@@ -64,9 +64,9 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, chartConfig}) => {
               
                     <CDCChart chartObjects={getChartObjectDeathsByAgeGroupSummary(chartConfig)} />
 
-                    <CDCChart chartObjects={getChartObjectForVaxFirstByAgeGroup(chartConfig)}/>
+                    <CDCChart chartObjects={getChartObjectForVaxFirstByAgeGroup(chartConfig)} isFullWidthChart={true}/>
 
-                    <CDCChart chartObjects={getChartObjectForVaxCompleteByAgeGroup(chartConfig)}/>
+                    <CDCChart chartObjects={getChartObjectForVaxCompleteByAgeGroup(chartConfig)} isFullWidthChart={true}/>
 
                     <CDCChart chartObjects={getChartObjectForExcessDeathsAgeGroup(chartConfig)} isFullWidthChart={true}/>
                 
