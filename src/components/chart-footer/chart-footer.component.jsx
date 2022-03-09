@@ -7,7 +7,7 @@ const ChartFooter = ({dataSource}) => {
     return (
         <div>
             {dataSource != null ?
-                <div className="data-sources"><b>Source:</b>&nbsp; 
+                <div className="data-sources">Source:&nbsp; 
                     <span className="site-link" onClick={()=> window.open(dataSource.url)}>{dataSource.label}</span>
                     <span className="footer-comment"><br/>{dataSource.comment}</span>
                 </div>

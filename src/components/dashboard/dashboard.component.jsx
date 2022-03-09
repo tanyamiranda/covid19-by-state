@@ -48,8 +48,8 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, chartConfig}) => {
             <div className="page-header">
                 <div className="page-title"><span>COVID-19 Data Charts</span> <span>For United States</span></div>
                 <div className="page-subtitle">50 U.S. States, D.C. and Puerto Rico</div>
-                <ChartConfiguration />
             </div>
+            <ChartConfiguration />
             { !isDataLoaded ? ( 
                 <Spinner/>
             ) : (

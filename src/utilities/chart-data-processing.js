@@ -167,7 +167,7 @@ export const getChartObjectForVaxCompleteByAgeGroup = (chartConfig) => {
 export const getChartObjectForExcessDeathsAgeGroup = (chartConfig) => {
 
     const chartId = CHART_IDENTIFIER.EXCESS_DEATHS;
-    const chartTitle = "Excess Deaths By Age Group - Weighted";
+    const chartTitle = "Excess Deaths - Weighted";
 
     const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcExcessDeathsByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear);
     const chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
@@ -241,7 +241,7 @@ export const getChartObjectForHospitalData = (chartConfig) => {
 export const getChartObjectDeathsByAgeGroupSummary = (chartConfig) => {
 
     const chartId = CHART_IDENTIFIER.AGE_GROUP_SUMMARY;
-    const chartTitle = "Deaths by Age Group 2";
+    const chartTitle = "Deaths by Age Group";
 
     // This data set uses state name instead of the 2-digit code.
     const state = STATIC_STATE_DATA.find(rec => rec.state === chartConfig.selectedState);

@@ -48,15 +48,31 @@ export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPerce
                 display: true,
                 type: 'time',
                 gridLines: {
-                    display:true
+                    display:true,
+                    lineWidth: 1,
+                    zeroLineWidth: 1,
+                    zeroLineColor: '#e8e8e8',
+                    color: '#e8e8e8'
                 },
                 time: {
                     minUnit: 'month',
-                    tooltipFormat: displayMonthFormat ? "MMM YYYY" : 'MM/DD/YYYY'
+                    tooltipFormat: displayMonthFormat ? "MMM YYYY" : 'MM/DD/YYYY',
+                    displayFormats: {
+                        month: 'MMM YYYY'
+                    }
                 },
                 scaleLabel: {
                     display: true
+                },
+                /*
+                ticks: {
+                    // Display Month & Year with carriage return in between
+                    callback: function(label) {
+                        const labelText = label.split(" ");
+                        return labelText;
+                    }                
                 }
+                */
             }],
             yAxes: [{
                 display: true,
@@ -66,7 +82,14 @@ export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPerce
                 ticks: {
                     min: displayNegativeValues ? undefined : 0, 
                     callback: function(label) {
-                        return formatYAxisDisplay(label);
+
+                        let text = label;
+                        if (displayPercentageValue)
+                            text = text +"%"
+                        else 
+                            text = formatYAxisDisplay(label)
+
+                        return text;
                     }                
                 }
             }]
