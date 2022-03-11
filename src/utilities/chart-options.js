@@ -1,3 +1,5 @@
+import { CHART_IDENTIFIER } from "./data-fields";
+
 export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPercentageValue=false, displayNegativeValues=false) => {
 
     return {
@@ -97,7 +99,7 @@ export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPerce
     }
 }
 
-export const CHART_OPTIONS_FOR_AGE_GROUPS = {
+export const CHART_OPTIONS_FOR_AGE_GROUP_SUMMARY = {
     aspectRatio: 1,
     maintainAspectRatio: false,
     responsive: true,
@@ -125,7 +127,7 @@ export const CHART_OPTIONS_FOR_AGE_GROUPS = {
                 const covidDeaths = tooltipItem[0].value;
                 const allDeaths = tooltipItem[1].value;
                 const percent = parseFloat((covidDeaths/allDeaths) * 100).toFixed(1)+"%";
-                return [percent + " of deaths","due to COVID-19"] ;
+                return [percent + " of all deaths","due to COVID-19"] ;
             }
 
           }
@@ -172,4 +174,33 @@ const formatYAxisDisplay = (labelText) => {
         newLabel = label;
 
     return newLabel;
+}
+
+
+export const getChartOptions = (chartId) => {
+
+    if (chartId === CHART_IDENTIFIER.AGE_GROUP_SUMMARY)
+        return CHART_OPTIONS_FOR_AGE_GROUP_SUMMARY;
+    else {
+
+        let displayTooltipMonthsFormat= false;
+        let displayPercentValues= false;
+        let displayNegativeValuesOnChart= false;
+
+        if (chartId === CHART_IDENTIFIER.VAX_FIRST_DOSE || chartId===CHART_IDENTIFIER.VAX_COMPLETE_DOSE || chartId === CHART_IDENTIFIER.EXCESS_DEATHS_PCT)
+            displayPercentValues = true;
+        
+        if (chartId === CHART_IDENTIFIER.EXCESS_DEATHS_PCT || chartId === CHART_IDENTIFIER.EXCESS_DEATHS)
+            displayNegativeValuesOnChart = true;
+
+        if (chartId === CHART_IDENTIFIER.DEATHS_BY_AGE) 
+            displayTooltipMonthsFormat=true;
+
+        
+        const chartOptions = getTimeSeriesChartOptions(displayTooltipMonthsFormat,displayPercentValues,displayNegativeValuesOnChart);
+
+        return chartOptions;
+
+    }
+
 }

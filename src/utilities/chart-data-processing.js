@@ -1,14 +1,10 @@
-import {DATA_FIELD_COLORS,  
-    CDC_AGE_GROUP_VALUES,
-    CDC_FIELDS_FOR_CHART,
-    CHART_IDENTIFIER,
-    DATA_FIELD_DISPLAY_NAMES,
-    NYC_IDENTIFIER
-} from './data-fields';
-import {getDataSource} from './data-sources';
-import {getFormattedDateForFiltering,formatISODate,shrinkAgeGroupName,formatDateListForChart, shrinkAgeGroupNameList} from './formatting';
 import {STATIC_STATE_DATA} from './states-data';
-import {getTimeSeriesChartOptions, CHART_OPTIONS_FOR_AGE_GROUPS} from './chart-options';
+
+import {DATA_FIELD_COLORS, CDC_AGE_GROUP_VALUES, CDC_FIELDS_FOR_CHART, 
+    CHART_IDENTIFIER, CHART_META_DATA,DATA_FIELD_DISPLAY_NAMES} from './data-fields';
+
+import {getFormattedDateForFiltering,formatISODate,shrinkAgeGroupName,
+    formatDateListForChart, shrinkAgeGroupNameList} from './formatting';
 
 export const getDeathsByAgeGroupSummary = (ageGroupData) => {
 
@@ -106,147 +102,58 @@ export const getDateRangeValues = (monthsBack) => {
     return {startDate: formatISODate(startDate), endDate: formatISODate(endDate)} 
 }
 
-export const getChartObjectForDeathsByAgeGroup = (chartConfig) => {
 
-    const chartId = CHART_IDENTIFIER.DEATHS_BY_AGE;
-    const chartTitle = "Deaths By Age Group";
+export const getChartObjectByChartId = (chartId, cdcDataSet, selectedState, selectedYear) => {
 
-    // This data set uses state name instead of the 2-digit code.
-    const state = STATIC_STATE_DATA.find(rec => rec.state === chartConfig.selectedState);
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcDeathsByAgeGroup, state.name, chartConfig.selectedYear);
+    let filteredData = null;
+    let chartObject = null;
+
+    // Get data filtered by selection
+    if (chartId === CHART_IDENTIFIER.AGE_GROUP_SUMMARY || chartId===CHART_IDENTIFIER.DEATHS_BY_AGE) {
+        
+        // This data set uses state name instead of the 2-digit code.
+        const state = STATIC_STATE_DATA.find(rec => rec.state === selectedState);
+        filteredData = getCDCHistoryDataBySelection(cdcDataSet, state.name, selectedYear);
+    }
+    else {
+        filteredData = getCDCHistoryDataBySelection(cdcDataSet, selectedState, selectedYear);
+    }
+
+    // Get chartObject based on type of data
+    if (chartId === CHART_IDENTIFIER.AGE_GROUP_SUMMARY)
+        chartObject = getChartObjectForAgeGroupSummary(chartId, filteredData);
+    else if (CHART_META_DATA[chartId].isGroupedByAge) 
+        chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
+    else
+        chartObject = getChartObjectForData(chartId, filteredData)
     
-    const chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
-
-    chartObject.type = "line";
-    chartObject.chartTitle = chartTitle;
-    chartObject.chartOptions = getTimeSeriesChartOptions(true, false);
-    chartObject.dataSource = getDataSource(chartId);
     chartObject.isDataAvailable = filteredData.length > 0;
-    
-    return chartObject;
 
-}
-
-
-export const getChartObjectForVaxFirstByAgeGroup = (chartConfig) => {
-
-    const chartId = CHART_IDENTIFIER.VAX_FIRST_DOSE;
-    const chartTitle = "Percent Vaxed - First Dose";
-
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcVaxByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear);
-    const chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
-       
-    chartObject.type = "line";
-    chartObject.chartTitle = chartTitle;
-    chartObject.chartOptions = getTimeSeriesChartOptions(false, true);
-    chartObject.dataSource = getDataSource(chartId);
-    chartObject.isDataAvailable = filteredData.length > 0;
+    //console.log("------chartId=" + chartId);
+    //console.log("chartObject=" + JSON.stringify(chartObject))
 
     return chartObject;
 
 }
 
-export const getChartObjectForVaxCompleteByAgeGroup = (chartConfig) => {
-
-    const chartId = CHART_IDENTIFIER.VAX_COMPLETE_DOSE;
-    const chartTitle = "Percent Vaxed - Completed Dose";
-
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcVaxByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear);
-    const chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
-
-    chartObject.type = "line";
-    chartObject.chartTitle = chartTitle;
-    chartObject.chartOptions = getTimeSeriesChartOptions(false, true);
-    chartObject.dataSource = getDataSource(chartId);
-    chartObject.isDataAvailable = filteredData.length > 0;
-    
-    return chartObject;
-
-}
-
-export const getChartObjectForExcessDeathsAgeGroup = (chartConfig) => {
-
-    const chartId = CHART_IDENTIFIER.EXCESS_DEATHS;
-    const chartTitle = "Excess Deaths - Weighted";
-
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcExcessDeathsByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear);
-    const chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
-
-    chartObject.type = "line";
-    chartObject.chartTitle = chartTitle;
-    chartObject.chartOptions = getTimeSeriesChartOptions();
-    chartObject.dataSource = getDataSource(chartId);
-    chartObject.isDataAvailable = filteredData.length > 0;
-
-    return chartObject;
-}
-
-export const getChartObjectForExcessDeathsAgeGroupPercentage = (chartConfig) => {
-
-    const chartId = CHART_IDENTIFIER.EXCESS_DEATHS_PCT;
-    const chartTitle = "Percent Excess Deaths - Weighted";
-
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcExcessDeathsByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear);
-    const chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
-
-    chartObject.type = "line";
-    chartObject.chartTitle = chartTitle;
-    chartObject.chartOptions = getTimeSeriesChartOptions(false, true, true);
-    chartObject.dataSource = getDataSource(chartId);
-    chartObject.isDataAvailable = filteredData.length > 0;
-
-    return chartObject;
-
-}
-
-export const getChartObjectForDeathsAndCases = (chartConfig) => {
-
-    const chartId = CHART_IDENTIFIER.CASES_DEATHS;
-    const chartTitle = "New Cases & Deaths";
-
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcHistoryByJurisdiction, chartConfig.selectedState, chartConfig.selectedYear);
-    const chartObject = getChartObjectForData(chartId, filteredData);
-
-    chartObject.type = "line";
-    chartObject.chartTitle = chartTitle;
-    chartObject.chartOptions = getTimeSeriesChartOptions();
-    chartObject.dataSource = getDataSource(chartId);
-    chartObject.isDataAvailable = filteredData.length > 0;
-
-    return chartObject;
-
-}
-
-export const getChartObjectForHospitalData = (chartConfig) => {
-
-    const chartId = CHART_IDENTIFIER.HOSPITAL_DATA;
-    const chartTitle = "New Hospital Inpatient & ICU";
-
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcHospitalDataByJurisdiction, chartConfig.selectedState, chartConfig.selectedYear);
-    const chartObject = getChartObjectForData(chartId, filteredData);
-
-    // NYC gets its hospital data from a different source.
-    const dataSourceId = chartConfig.selectedState === NYC_IDENTIFIER ? NYC_IDENTIFIER : chartId;
-
-    chartObject.type = "line"; 
-    chartObject.chartTitle = chartTitle;
-    chartObject.chartOptions = getTimeSeriesChartOptions();
-    chartObject.dataSource = getDataSource(dataSourceId);
-    chartObject.isDataAvailable = filteredData.length > 0;
-
-    return chartObject;
-}
-
-
-export const getChartObjectDeathsByAgeGroupSummary = (chartConfig) => {
-
-    const chartId = CHART_IDENTIFIER.AGE_GROUP_SUMMARY;
-    const chartTitle = "Deaths by Age Group";
-
-    // This data set uses state name instead of the 2-digit code.
-    const state = STATIC_STATE_DATA.find(rec => rec.state === chartConfig.selectedState);
-    const filteredData = getCDCHistoryDataBySelection(chartConfig.cdcDeathsByAgeGroup, state.name, chartConfig.selectedYear);
-
+/**
+ * Generates a chartObject SPECIFICALLY for a bar chart for data grouped by age. 
+ * This chartObject is different from the time series line chart.
+ * Expects data to be grouped by date, age group for example
+ * 
+ * date         age_group   field1  field2 
+ * 1/1/2022     0-17        55      33
+ * 1/1/2022     18-24       55      33
+ * 1/1/2022     25-34       55      33
+ * 1/1/2022     35-44       55      33
+ * 
+ * Sample cdc data with miltiple fields 
+ * [{date: '2020-01-01T00:00:00.000', state: 'Alabama', age_group: '0-17 years', covid_19_deaths: '0', total_deaths: '71}
+ * {date: '2020-01-01T00:00:00.000',  state: 'Alabama', age_group: '18-29 years', covid_19_deaths: '0', total_deaths: '71}
+ * {date: '2020-01-01T00:00:00.000',  state: 'Alabama', age_group: '30-39 years', covid_19_deaths: '0', total_deaths: '71}
+ * {date: '2020-01-01T00:00:00.000',  state: 'Alabama', age_group: '40-49 years', covid_19_deaths: '0', total_deaths: '71}]
+ */
+const getChartObjectForAgeGroupSummary = (chartId, filteredData) => {
     const dataSet = getDeathsByAgeGroupSummary(filteredData);
     const covid19Deaths = dataSet.map(item => item.sum_covid_19_deaths == null ? 0 : item.sum_covid_19_deaths);
     const totalDeaths = dataSet.map(item => item.sum_total_deaths == null ? 0 : item.sum_total_deaths);
@@ -266,23 +173,18 @@ export const getChartObjectDeathsByAgeGroupSummary = (chartConfig) => {
         }
     ];
 
-
     const chartObject = {
-        type: "bar",
         chartId: chartId,
         chartDataSet: chartDataSet,
         chartLabels: ageGroupsInData,
-        chartTitle: chartTitle,
-        chartOptions: CHART_OPTIONS_FOR_AGE_GROUPS,
-        dataSource: getDataSource(chartId),
-        isDataAvailable: filteredData.length > 0
     }
 
     return chartObject;
 }
 
+
 /**
- * Generates a chartObject set for a timeseries chart for data grouped by age. 
+ * Generates a chartObject set for a timeseries line chart for data grouped by age. 
  * Expects data to be grouped by date, age group for example
  * 
  * date         age_group   field1  field2 
@@ -346,7 +248,7 @@ const getChartObjectForDataGroupedByAge = (chartId, filteredData) => {
 }
 
 /**
- * Generates a chartObject set for a timeseries chart for data by date.
+ * Generates a chartObject set for a timeseries line chart for data by date.
  * 
  * Sample cdc data with miltiple fields 
  * [{date: '2021-11-18T00:00:00.000', state: 'OH', new_case: '6615.0', new_death: '0.0'}

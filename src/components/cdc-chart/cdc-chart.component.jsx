@@ -5,42 +5,55 @@ import './cdc-chart.css';
 
 import ChartDisplay from '../chart-display/chart-display.component';
 
-import {YEARS} from '../../utilities/data-fields';
-import {getStateData} from '../../utilities/states-data';
 import {getDisplayNumber} from '../../utilities/formatting';
 import ChartFooter from '../chart-footer/chart-footer.component';
+import { getChartOptions } from '../../utilities/chart-options';
+import { getDataSource } from '../../utilities/data-sources';
+import { CHART_IDENTIFIER, CHART_META_DATA, NYC_IDENTIFIER } from '../../utilities/data-fields';
 
-const CDCChart = ({chartConfig, chartObjects, displaySummary=false, isFullWidthChart=false}) => {  
+const CDCChart = ({chartConfig, chartObject, displaySummary=false, isFullWidthChart=false}) => {  
     
     const dataFetchedSuccessfully = chartConfig.isDataLoaded;
-    const isDataAvailable = chartObjects.isDataAvailable;
-    const stateData = getStateData(chartConfig.selectedState);
-
+    const isDataAvailable = chartObject.isDataAvailable;
+    
     let errorMessage = "";
 
     if (dataFetchedSuccessfully && isDataAvailable) {
         errorMessage = "Problem fetching data from CDC site."
     }
     else if (!isDataAvailable) {
-        isFullWidthChart = false;
-        errorMessage = "Data is unavailable for selection."
+            isFullWidthChart = false;
+            errorMessage = "Data is unavailable for selection."
+    }
+    
+    const chartType = CHART_META_DATA[chartObject.chartId].chartType;
+    const chartTitle = CHART_META_DATA[chartObject.chartId].title;
+    const chartOptions= getChartOptions(chartObject.chartId);
+    const dataSourceId = chartObject.chartId === CHART_IDENTIFIER.HOSPITAL_DATA && chartConfig.selectedState === NYC_IDENTIFIER ? NYC_IDENTIFIER : chartObject.chartId;
+    const dataSource = getDataSource(dataSourceId);
+    
+    const handleClickInfo = () => {
+        var popup = document.getElementById("myPopup");
+        popup.classList.toggle("show");    
     }
 
     return (
         <div className={"dashboard-component state-history-chart" + (isFullWidthChart ? " full-width-component" : "") }>
             <div className="dashboard-component-title">
-                <span>{chartObjects.chartTitle}</span>
-            </div>
-            <div className="dashboard-component-subtitle">
-                <span>{stateData.name} | {YEARS[chartConfig.selectedYear]}</span>
+                <span>{chartTitle}</span>
+                <br/>
+                <div className="info-popup" onClick={handleClickInfo}>
+                    <div className='chart-info-popup'>(details)</div>
+                    <div className="popuptext" id="myPopup">A Simple Popup with lots of information!</div>
+                </div>
             </div>
             {dataFetchedSuccessfully && isDataAvailable ? 
                     <ChartDisplay
-                    chartType= {chartObjects.type}
-                    chartOptions = {chartObjects.chartOptions}
-                    chartLabels = {chartObjects.chartLabels} 
-                    chartDataSet = {chartObjects.chartDataSet}
-                    chartId = {chartObjects.chartId}
+                    chartType= {chartType}
+                    chartOptions = {chartOptions}
+                    chartLabels = {chartObject.chartLabels} 
+                    chartDataSet = {chartObject.chartDataSet}
+                    chartId = {chartObject.chartId}
                     isTallChart = {isFullWidthChart}
                     />
             : 
@@ -49,7 +62,7 @@ const CDCChart = ({chartConfig, chartObjects, displaySummary=false, isFullWidthC
             {displaySummary ?
                 <div className='chart-summary'>
                     <div className='summary-title'>Totals for Selection</div>
-                    {chartObjects.chartDataSet.map((item) =>
+                    {chartObject.chartDataSet.map((item) =>
                         <div className='chart-summary-row' key={item.label}> 
                             <div className='label'>{item.label}</div>
                             <div className='value'>{getDisplayNumber(item.dataTotal)}</div>
@@ -60,7 +73,7 @@ const CDCChart = ({chartConfig, chartObjects, displaySummary=false, isFullWidthC
                 <div></div>
             }
             <div>
-                <ChartFooter dataSource = {chartObjects.dataSource}/>
+                <ChartFooter dataSource = {dataSource}/>
             </div>
         </div>
     )

@@ -118,11 +118,28 @@ contained in the dashboard component.
         max-width: 95%;
         min-width: 95%;
     }
+    .page-title {
+        padding: 10px 0px;
+        font-size: 14pt;
+    }
+    .page-subtitle {
+        padding: 0 0 8px;
+    }
 }
 
 @media only screen and (max-width: 800px) {
     .dashboard-component {
         max-width: 95%;
         min-width: 95%;
+    }
+}
+
+@media only screen and (max-height: 400px) {
+    .page-title {
+        padding: 8px 0px;
+        font-size: 12pt;
+    }
+    .page-subtitle {
+        padding: 0 0 8px 0px;
     }
 }

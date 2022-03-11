@@ -73,6 +73,56 @@ export const CHART_IDENTIFIER = {
     CASES_DEATHS: "CASES_DEATHS" 
 }
 
+export const CHART_META_DATA = {
+    DEATHS_BY_AGE: {
+        title: "Covid Deaths By Age",
+        description: "Deaths involving Covid-19 by age group.",
+        chartType: "line",
+        isGroupedByAge: true
+    },
+    VAX_FIRST_DOSE: {
+        title:"% Vaxed By Age - First Dose",
+        description: "Percent of people vaccinated with first dosage by age group.",
+        chartType: "line",
+        isGroupedByAge: true
+    },
+    VAX_COMPLETE_DOSE: {
+        title: "% Vaxed By Age - Completed",
+        description: "Percent of people vaccinated with complete dosage by age group.",
+        chartType: "line",
+        isGroupedByAge: true
+    },
+    EXCESS_DEATHS: {
+        title: "Excess Deaths By Age - Weighted",
+        description: "All excess Deaths above or below expected range by age group.",
+        chartType: "line",
+        isGroupedByAge: true
+    },
+    EXCESS_DEATHS_PCT: {
+        title: "% Excess Deaths By Age - Weighted",
+        description: "Weighted percentage of all excess Deaths above or below expected range by age group.",
+        chartType: "line",
+        isGroupedByAge: true
+    },
+    HOSPITAL_DATA: {
+        title: "New Hospital Inpatient & ICU",
+        description: "Patients admitted to inpatient care and ICU to treat Covid-19 symptoms.",
+        chartType: "line",
+        isGroupedByAge: false
+    },
+    AGE_GROUP_SUMMARY: {
+        title: "All Deaths by Age Summary",
+        description: "Summary of all deaths by age group alongside Covid-19 deaths for comparison.",
+        chartType: "bar"
+    },
+    CASES_DEATHS: {
+        title:"New Cases & Deaths",
+        description: "New confirmed and probable Covid-19 cases and deaths.",
+        chartType: "line",
+        isGroupedByAge: false
+    } 
+}
+
 /**
  * List of fields used in time series charts.
  * Date grouped by age will only show first field per age group.
