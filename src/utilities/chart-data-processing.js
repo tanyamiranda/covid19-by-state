@@ -120,20 +120,66 @@ export const getChartObjectByChartId = (chartId, cdcDataSet, selectedState, sele
     }
 
     // Get chartObject based on type of data
-    if (chartId === CHART_IDENTIFIER.AGE_GROUP_SUMMARY)
+    if (chartId === CHART_IDENTIFIER.AGE_GROUP_SUMMARY) {
         chartObject = getChartObjectForAgeGroupSummary(chartId, filteredData);
-    else if (CHART_META_DATA[chartId].isGroupedByAge) 
+        chartObject.isDataAvailable = filteredData.length > 0;
+    }
+    else if (CHART_META_DATA[chartId].isGroupedByAge) {
         chartObject = getChartObjectForDataGroupedByAge(chartId, filteredData);
-    else
-        chartObject = getChartObjectForData(chartId, filteredData)
-    
-    chartObject.isDataAvailable = filteredData.length > 0;
-
-    //console.log("------chartId=" + chartId);
-    //console.log("chartObject=" + JSON.stringify(chartObject))
-
+        chartObject.isDataAvailable = isDataAvailableByAgeGroup(chartObject.chartDataSet)
+    }
+    else {
+        chartObject = getChartObjectForData(chartId, filteredData);
+        chartObject.isDataAvailable = filteredData.length > 0;
+        
+    }
+   
+    //console.log("chartid=" + chartId);
+     
+    if (chartId !== CHART_IDENTIFIER.AGE_GROUP_SUMMARY) {
+        chartObject.dateFormatForXAxis = isDateRangeMoreThanOneMonth(chartObject.chartLabels) ? "month" : "week";
+    }
     return chartObject;
 
+}
+
+const isDataAvailableByAgeGroup =(chartDataSet) => {
+
+    let dataHasValues = false;
+
+    chartDataSet.forEach(ageGroupRec => {
+
+        const data = ageGroupRec.data;
+        data.forEach((rec) => {
+            if (!dataHasValues && Number(rec) !== 0)
+                dataHasValues = true;
+        });
+        
+    });
+    
+    return dataHasValues;
+
+}
+
+const isDateRangeMoreThanOneMonth = (chartLabels) => {
+
+    let monthsInData = 0;
+
+    // Array of 12 zeros to keep count of months in data
+    const monthCount = [0,0,0,0,0,0,0,0,0,0,0,0]
+
+    chartLabels.forEach(date => {
+        const month = date.getMonth();
+        monthCount[month] += 1;
+    });
+
+    monthCount.forEach (monthCountRec => {
+        if (monthCountRec > 0)
+            monthsInData += 1;
+    })
+
+    return monthsInData > 1;
+    
 }
 
 /**
@@ -219,7 +265,7 @@ const getChartObjectForDataGroupedByAge = (chartId, filteredData) => {
         // Create array of the data of the field
         const dataValues = ageGroupData.map(item => !item[fieldName] ? 0 : item[fieldName]);
         const labelText = shrinkAgeGroupName(ageGroupId);
-        const dataTotal = dataValues.reduce((a, b) => a + b, 0);
+        const dataTotal = dataValues.reduce((a, b) => Number(a) + Number(b), 0);
 
         const chartRec = {
             fieldName: fieldName,

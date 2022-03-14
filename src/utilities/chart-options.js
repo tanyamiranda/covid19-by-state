@@ -1,7 +1,7 @@
 import { CHART_IDENTIFIER } from "./data-fields";
 
-export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPercentageValue=false, displayNegativeValues=false) => {
-
+export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPercentageValue=false, displayNegativeValues=false, dateFormatForXAxis) => {
+    
     return {
         responsive: true,
         aspectRatio: 1,
@@ -45,7 +45,7 @@ export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPerce
                 radius: 0
             }
         },
-        scales: {
+        scales: {          
             xAxes: [{
                 display: true,
                 type: 'time',
@@ -57,24 +57,19 @@ export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPerce
                     color: '#e8e8e8'
                 },
                 time: {
-                    minUnit: 'month',
+                    unit: dateFormatForXAxis ,
                     tooltipFormat: displayMonthFormat ? "MMM YYYY" : 'MM/DD/YYYY',
                     displayFormats: {
-                        month: 'MMM YYYY'
+                        month: 'MMM YYYY',
+                        week : 'MM/DD/YYYY'
                     }
                 },
                 scaleLabel: {
                     display: true
                 },
-                /*
                 ticks: {
-                    // Display Month & Year with carriage return in between
-                    callback: function(label) {
-                        const labelText = label.split(" ");
-                        return labelText;
-                    }                
+                    min: 0
                 }
-                */
             }],
             yAxes: [{
                 display: true,
@@ -177,27 +172,27 @@ const formatYAxisDisplay = (labelText) => {
 }
 
 
-export const getChartOptions = (chartId) => {
+export const getChartOptions = (chartId,dateFormatForXAxis) => {
 
     if (chartId === CHART_IDENTIFIER.AGE_GROUP_SUMMARY)
         return CHART_OPTIONS_FOR_AGE_GROUP_SUMMARY;
     else {
 
-        let displayTooltipMonthsFormat= false;
-        let displayPercentValues= false;
+        let displayMonthsFormatInToolTip= false;
+        let displayPercentValuesOnChart= false;
         let displayNegativeValuesOnChart= false;
 
         if (chartId === CHART_IDENTIFIER.VAX_FIRST_DOSE || chartId===CHART_IDENTIFIER.VAX_COMPLETE_DOSE || chartId === CHART_IDENTIFIER.EXCESS_DEATHS_PCT)
-            displayPercentValues = true;
+            displayPercentValuesOnChart = true;
         
         if (chartId === CHART_IDENTIFIER.EXCESS_DEATHS_PCT || chartId === CHART_IDENTIFIER.EXCESS_DEATHS)
             displayNegativeValuesOnChart = true;
 
         if (chartId === CHART_IDENTIFIER.DEATHS_BY_AGE) 
-            displayTooltipMonthsFormat=true;
+            displayMonthsFormatInToolTip=true;
 
         
-        const chartOptions = getTimeSeriesChartOptions(displayTooltipMonthsFormat,displayPercentValues,displayNegativeValuesOnChart);
+        const chartOptions = getTimeSeriesChartOptions(displayMonthsFormatInToolTip,displayPercentValuesOnChart,displayNegativeValuesOnChart,dateFormatForXAxis);
 
         return chartOptions;
 

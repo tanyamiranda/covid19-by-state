@@ -21,31 +21,17 @@ const CDCChart = ({chartConfig, chartObject, displaySummary=false, isFullWidthCh
     if (dataFetchedSuccessfully && isDataAvailable) {
         errorMessage = "Problem fetching data from CDC site."
     }
-    else if (!isDataAvailable) {
-            isFullWidthChart = false;
-            errorMessage = "Data is unavailable for selection."
-    }
     
     const chartType = CHART_META_DATA[chartObject.chartId].chartType;
     const chartTitle = CHART_META_DATA[chartObject.chartId].title;
-    const chartOptions= getChartOptions(chartObject.chartId);
+    const chartOptions= getChartOptions(chartObject.chartId,chartObject.dateFormatForXAxis);
     const dataSourceId = chartObject.chartId === CHART_IDENTIFIER.HOSPITAL_DATA && chartConfig.selectedState === NYC_IDENTIFIER ? NYC_IDENTIFIER : chartObject.chartId;
     const dataSource = getDataSource(dataSourceId);
-    
-    const handleClickInfo = () => {
-        var popup = document.getElementById("myPopup");
-        popup.classList.toggle("show");    
-    }
 
     return (
         <div className={"dashboard-component state-history-chart" + (isFullWidthChart ? " full-width-component" : "") }>
             <div className="dashboard-component-title">
                 <span>{chartTitle}</span>
-                <br/>
-                <div className="info-popup" onClick={handleClickInfo}>
-                    <div className='chart-info-popup'>(details)</div>
-                    <div className="popuptext" id="myPopup">A Simple Popup with lots of information!</div>
-                </div>
             </div>
             {dataFetchedSuccessfully && isDataAvailable ? 
                     <ChartDisplay
