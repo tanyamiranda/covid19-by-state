@@ -18,8 +18,11 @@ const CDCChart = ({chartConfig, chartObject, displaySummary=false, isFullWidthCh
     
     let errorMessage = "";
 
-    if (dataFetchedSuccessfully && isDataAvailable) {
+    if (!dataFetchedSuccessfully) {
         errorMessage = "Problem fetching data from CDC site."
+    }
+    else if (!isDataAvailable) {
+        errorMessage = "Data is unavailable for your selection."
     }
     
     const chartType = CHART_META_DATA[chartObject.chartId].chartType;
@@ -29,7 +32,7 @@ const CDCChart = ({chartConfig, chartObject, displaySummary=false, isFullWidthCh
     const dataSource = getDataSource(dataSourceId);
 
     return (
-        <div className={"dashboard-component state-history-chart" + (isFullWidthChart ? " full-width-component" : "") }>
+        <div className={"dashboard-component state-history-chart" + (isDataAvailable && isFullWidthChart ? " full-width-component" : "") }>
             <div className="dashboard-component-title">
                 <span>{chartTitle}</span>
             </div>
