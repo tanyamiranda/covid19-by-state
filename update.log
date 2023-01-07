@@ -1,0 +1,9 @@
+-------------------------------------------------------------
+2023-01-07
+
+-Removed totals section on top. It's no longer relevant.
+-Removed Vaxination % charts since CDC is no longer recording this data. 
+-Changed the source for the New Cases and Deaths because CDC archived the daily dataset and moved to a weekly dataset. 
+-Updated chart titles to reflect daily/weekly/monthly totals. 
+-Fixed percentage calculation bugs pertaining to 0 cases or 0 deaths by age group reported by states now that numbers are low.
+
