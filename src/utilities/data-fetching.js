@@ -4,8 +4,12 @@ import {getStateCodes} from './states-data';
 const CDC_QUERY_ACCESS_TOKEN = "&$limit=500000&$$app_token=fz22RHPlELrzEw1j9vq91YH6N";
 
 // Cases and Deaths over time
-const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,state,new_case,new_death&$order=submission_date, state";
-const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,'USA' as state,sum(new_case) as new_case,sum(new_death) as new_death&$group=submission_date&$order=submission_date";
+//const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,state,new_case,new_death&$order=submission_date, state";
+//const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,'USA' as state,sum(new_case) as new_case,sum(new_death) as new_death&$group=submission_date&$order=submission_date";
+
+const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/pwn4-m3yp.json?$select=end_date as date,state,new_cases as new_case,new_deaths as new_death&$order=date,state";
+const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/pwn4-m3yp.json?$select=end_date as date,'USA' as state,sum(new_cases) as new_case,sum(new_deaths) as new_death&$group=date&$order=date";
+
 
 // Cases and Deaths by age groups
 const URL_CDC_DEATHS_BY_AGE = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=start_date as date,state,age_group,covid_19_deaths,total_deaths where sex ='All Sexes' and `group`='By Month' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') order by start_date,state,age_group";
@@ -17,7 +21,7 @@ const URL_CDC_HOSPTIAL_DATA_USA_HISTORY = "https://healthdata.gov/resource/g62h-
 const URL_NYC_HOSPITAL_DATA = "https://health.data.ny.gov/resource/jw46-jpb7.json?$select=as_of_date as date,'NYC' as state, sum(total_staffed_acute_care) as inpatient_beds, sum(patients_currently) as inpatient_beds_covid, sum(total_staffed_icu_beds_1) as icu_beds, sum(patients_currently_in_icu) as icu_beds_covid where ny_forward_region = 'NEW YORK CITY' group by date, state order by date desc";
 
 // Vaccinations over time
-const URL_CDC_VACCINATIONS_BY_AGE = "https://data.cdc.gov/resource/gxj9-t96f.json?$select=cdc_case_earliest_dt as date,'USA' as state,agegroupvacc as age_group,administered_dose1_pct * 100 as first_dose_pct,series_complete_pop_pct * 100 as completed_pct&$order=cdc_case_earliest_dt";
+//const URL_CDC_VACCINATIONS_BY_AGE = "https://data.cdc.gov/resource/gxj9-t96f.json?$select=cdc_case_earliest_dt as date,'USA' as state,agegroupvacc as age_group,administered_dose1_pct * 100 as first_dose_pct,series_complete_pop_pct * 100 as completed_pct&$order=cdc_case_earliest_dt";
 
 // Excess Deaths by Age Group
 const URL_CDC_EXCESS_DEATHS_BY_AGE = "https://data.cdc.gov/resource/m74n-4hbs.json?$select=weekending as date, 'USA' as state, agegroup as age_group, percent_above_average_weighted, covid19_weighted where RaceEthnicity='All Race/Ethnicity Groups' and Sex='All Sexes' and agegroup not in ('All Ages', 'Not stated') and MMWRyear in ('2020','2021','2022','2023') order by date";
@@ -30,16 +34,17 @@ export const getFreshData = async() => {
         const dataHistoryUSA = await fetchJsonData(URL_CDC_CASES_DEATHS_USA_HISTORY + CDC_QUERY_ACCESS_TOKEN);
         const cdcHistoryByJurisdiction = dataHistoryByState.concat(dataHistoryUSA);
 
-        // Get cases and deaths TOTALS from history
-        //const dataCasesDeathsTotals = getCaseDeathTotalsFromHistoryData(cdcHistoryByJurisdiction);
-
-        const dataCasesDeathsTotals = getTotalsForEachState(cdcHistoryByJurisdiction);
-
         // Get hospital data history for each state, NYC, USA and then merge
         const dataHospitalByState = await fetchJsonData(URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY + CDC_QUERY_ACCESS_TOKEN);
         const dataHospitalUSA =await fetchJsonData(URL_CDC_HOSPTIAL_DATA_USA_HISTORY + CDC_QUERY_ACCESS_TOKEN);
         const dataHospitalNYCOnly = await fetchJsonData(URL_NYC_HOSPITAL_DATA + CDC_QUERY_ACCESS_TOKEN);
         const cdcHospitalDataByJurisdiction = dataHospitalByState.concat(dataHospitalUSA).concat(dataHospitalNYCOnly);
+
+        /* **********************************
+        Removed Totals Sections from Dashboard.
+
+        // Get cases and deaths TOTALS from history
+        const dataCasesDeathsTotals = getTotalsForEachState(cdcHistoryByJurisdiction);
 
         // Get last sumbission date to use for getting totals
         const lastDate = (dataHospitalByState.reduce(function(prev, current) {
@@ -60,22 +65,23 @@ export const getFreshData = async() => {
         
         // Merge TOTALS for cases and deaths and hospitals into one object 
         const cdcTotalsByJurisdiction = await getTotalsByJurisdiction(dataCasesDeathsTotals, dataHospitalTotals);
-        
+        */
+
         // Get CDC Monthly Death Totals by Age Groups 
         const deathsByAgeGroups = await fetchJsonData(URL_CDC_DEATHS_BY_AGE + CDC_QUERY_ACCESS_TOKEN);
         
         // Get Vaccinations by Age Groups   
-        const cdcVaxByAgeGroup = await fetchJsonData(URL_CDC_VACCINATIONS_BY_AGE + CDC_QUERY_ACCESS_TOKEN);
+        //const cdcVaxByAgeGroup = await fetchJsonData(URL_CDC_VACCINATIONS_BY_AGE + CDC_QUERY_ACCESS_TOKEN);
 
         // Get CDC Excess Deaths by Age Groups
         const cdcExcessDeathsByAgeGroups = await fetchJsonData(URL_CDC_EXCESS_DEATHS_BY_AGE + CDC_QUERY_ACCESS_TOKEN);
 
         return {
             dataRefreshTimestamp: new Date(),
-            cdcTotalsByJurisdiction: cdcTotalsByJurisdiction,
+            //cdcTotalsByJurisdiction: cdcTotalsByJurisdiction,
             cdcHistoryByJurisdiction: cdcHistoryByJurisdiction,
             cdcHospitalDataByJurisdiction: cdcHospitalDataByJurisdiction,
-            cdcVaxByAgeGroup: cdcVaxByAgeGroup,
+            //cdcVaxByAgeGroup: cdcVaxByAgeGroup,
             cdcExcessDeathsByAgeGroup: cdcExcessDeathsByAgeGroups,
             cdcDeathsByAgeGroup : deathsByAgeGroups
         }
@@ -145,7 +151,7 @@ export const getTotalsForUSA = (totalsByState) => {
     return totals;
 }
 
-const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataHospitalTotals) => {
+export const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataHospitalTotals) => {
 
     let totalsByState= [];
     let stateKeys = getStateCodes();
@@ -178,7 +184,7 @@ const getTotalsByJurisdiction = async(dataCasesDeathsByState, dataHospitalTotals
 }
 
 
-const getTotalsForEachState = (stateHistoryData) => {
+export const getTotalsForEachState = (stateHistoryData) => {
     var totals = [];
     stateHistoryData.forEach((record) => {
                 

@@ -48,6 +48,7 @@ export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPerce
         scales: {          
             xAxes: [{
                 display: true,
+                bounds: 'ticks',
                 type: 'time',
                 gridLines: {
                     display:true,
@@ -66,10 +67,8 @@ export const getTimeSeriesChartOptions = (displayMonthFormat=false, displayPerce
                 },
                 scaleLabel: {
                     display: true
-                },
-                ticks: {
-                    min: 0
                 }
+                
             }],
             yAxes: [{
                 display: true,
@@ -119,10 +118,25 @@ export const CHART_OPTIONS_FOR_AGE_GROUP_SUMMARY = {
             },
 
             footer: function(tooltipItem) {
-                const covidDeaths = tooltipItem[0].value;
-                const allDeaths = tooltipItem[1].value;
-                const percent = parseFloat((covidDeaths/allDeaths) * 100).toFixed(1)+"%";
-                return [percent + " of all deaths","due to COVID-19"] ;
+
+
+                let covidDeaths = 0 //tooltipItem[0]===null || isNaN(tooltipItem[0].value) ? 0 : tooltipItem[0].value;
+                let allDeaths = 0 // tooltipItem[1]=== null || isNaN(tooltipItem[1].value) ? 0 : tooltipItem[1].value;
+                let percent = 0;
+                
+                if (tooltipItem[0] != null && !Number.isNaN(tooltipItem[0].value))
+                    covidDeaths = Number(tooltipItem[0].value);
+
+                if (tooltipItem[1] != null && !Number.isNaN(tooltipItem[1].value))
+                    allDeaths = Number(tooltipItem[1].value);
+
+                if (covidDeaths > 0 && allDeaths > 0)
+                    percent = parseFloat((covidDeaths/allDeaths) * 100).toFixed(1)+"%";
+                
+                if (allDeaths > 0)
+                    return [percent + " of all deaths","due to COVID-19"] ;
+                else    
+                    return "";
             }
 
           }

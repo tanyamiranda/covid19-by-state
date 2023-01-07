@@ -5,7 +5,7 @@ export const getDataSource = (chartId) => {
     switch (chartId){
         case CHART_IDENTIFIER.CASES_DEATHS : {
             return {
-                url: "https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36",
+                url: "https://data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/pwn4-m3yp",
                 label: "Center for Disease Control",
                 comment: ""
             }

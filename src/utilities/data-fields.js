@@ -11,6 +11,7 @@ export const YEAR_KEYS = [
     "months-6",
     "months-9",
     "months-12",
+    "2022",
     "2021", 
     "2020",
     "0"
@@ -20,6 +21,7 @@ export const YEARS = {
     "months-6": "Last 6 months",
     "months-9": "Last 9 months",
     "months-12": "Last 12 months",
+    "2022": "All 2022",
     "2021": "All 2021",
     "2020": "All 2020",
     "0": "All Time",
@@ -75,7 +77,7 @@ export const CHART_IDENTIFIER = {
 
 export const CHART_META_DATA = {
     DEATHS_BY_AGE: {
-        title: "Covid Deaths By Age",
+        title: "Covid Deaths By Age (Monthly)",
         description: "Deaths involving Covid-19 by age group.",
         chartType: "line",
         isGroupedByAge: true
@@ -105,7 +107,7 @@ export const CHART_META_DATA = {
         isGroupedByAge: true
     },
     HOSPITAL_DATA: {
-        title: "New Hospital Inpatient & ICU",
+        title: "Hospital Inpatient & ICU (Daily)",
         description: "Patients admitted to inpatient care and ICU to treat Covid-19 symptoms.",
         chartType: "line",
         isGroupedByAge: false
@@ -116,7 +118,7 @@ export const CHART_META_DATA = {
         chartType: "bar"
     },
     CASES_DEATHS: {
-        title:"New Cases & Deaths",
+        title:"New Cases & Deaths (Weekly)",
         description: "New confirmed and probable Covid-19 cases and deaths.",
         chartType: "line",
         isGroupedByAge: false

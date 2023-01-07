@@ -6,6 +6,7 @@ import {DATA_FIELD_COLORS, CDC_AGE_GROUP_VALUES, CDC_FIELDS_FOR_CHART,
 import {getFormattedDateForFiltering,formatISODate,shrinkAgeGroupName,
     formatDateListForChart, shrinkAgeGroupNameList} from './formatting';
 
+
 export const getDeathsByAgeGroupSummary = (ageGroupData) => {
 
     var summary = [];

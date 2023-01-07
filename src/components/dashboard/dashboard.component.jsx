@@ -6,7 +6,7 @@ import "./dashboard.css";
 import CDCChart from '../cdc-chart/cdc-chart.component';
 import ChartConfiguration from '../chart-config/chart-config.component';
 import Spinner from '../spinner/spinner.component';
-import DataTotals from '../data-totals/data-totals.component';
+//import DataTotals from '../data-totals/data-totals.component';
 
 import {getFreshData} from '../../utilities/data-fetching';
 import {getChartObjectByChartId} from '../../utilities/chart-data-processing';
@@ -48,8 +48,7 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, chartConfig}) => {
                 <Spinner/>
             ) : (
                 <div className="page-layout">
-                    <DataTotals/>
-                    
+
                     <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.CASES_DEATHS, chartConfig.cdcHistoryByJurisdiction, chartConfig.selectedState, chartConfig.selectedYear)} displaySummary={true}/>
               
                     <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.HOSPITAL_DATA, chartConfig.cdcHospitalDataByJurisdiction, chartConfig.selectedState, chartConfig.selectedYear)} displaySummary={true}/>
@@ -57,16 +56,11 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, chartConfig}) => {
                     <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.DEATHS_BY_AGE, chartConfig.cdcDeathsByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear)} />
               
                     <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.AGE_GROUP_SUMMARY, chartConfig.cdcDeathsByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear)} />
-                    
-                    <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.VAX_FIRST_DOSE, chartConfig.cdcVaxByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear)} isFullWidthChart={true}/>
-                    
-                    <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.VAX_COMPLETE_DOSE, chartConfig.cdcVaxByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear)} isFullWidthChart={true}/>
-                    
+
                     <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.EXCESS_DEATHS, chartConfig.cdcExcessDeathsByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear)} isFullWidthChart={true}/>
                     
                     <CDCChart chartObject={getChartObjectByChartId(CHART_IDENTIFIER.EXCESS_DEATHS_PCT, chartConfig.cdcExcessDeathsByAgeGroup, chartConfig.selectedState, chartConfig.selectedYear)} isFullWidthChart={true}/>
                     
-            
                 </div>
             )}
             <div className="page-footer">
