@@ -119,9 +119,8 @@ export const CHART_OPTIONS_FOR_AGE_GROUP_SUMMARY = {
 
             footer: function(tooltipItem) {
 
-
-                let covidDeaths = 0 //tooltipItem[0]===null || isNaN(tooltipItem[0].value) ? 0 : tooltipItem[0].value;
-                let allDeaths = 0 // tooltipItem[1]=== null || isNaN(tooltipItem[1].value) ? 0 : tooltipItem[1].value;
+                let covidDeaths = 0;
+                let allDeaths = 0;
                 let percent = 0;
                 
                 if (tooltipItem[0] != null && !Number.isNaN(tooltipItem[0].value))
