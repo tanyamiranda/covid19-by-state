@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/covid19-by-state/static/css/main.a8ca109d.chunk.css",
-    "main.js": "/covid19-by-state/static/js/main.3aafa9b5.chunk.js",
-    "main.js.map": "/covid19-by-state/static/js/main.3aafa9b5.chunk.js.map",
-    "runtime-main.js": "/covid19-by-state/static/js/runtime-main.b9b50c05.js",
-    "runtime-main.js.map": "/covid19-by-state/static/js/runtime-main.b9b50c05.js.map",
-    "static/js/2.3aaafa8d.chunk.js": "/covid19-by-state/static/js/2.3aaafa8d.chunk.js",
-    "static/js/2.3aaafa8d.chunk.js.map": "/covid19-by-state/static/js/2.3aaafa8d.chunk.js.map",
+    "main.css": "/covid19-by-state/static/css/main.53668188.chunk.css",
+    "main.js": "/covid19-by-state/static/js/main.b062286f.chunk.js",
+    "main.js.map": "/covid19-by-state/static/js/main.b062286f.chunk.js.map",
+    "runtime-main.js": "/covid19-by-state/static/js/runtime-main.c9c4b0df.js",
+    "runtime-main.js.map": "/covid19-by-state/static/js/runtime-main.c9c4b0df.js.map",
+    "static/js/2.538e164a.chunk.js": "/covid19-by-state/static/js/2.538e164a.chunk.js",
+    "static/js/2.538e164a.chunk.js.map": "/covid19-by-state/static/js/2.538e164a.chunk.js.map",
     "index.html": "/covid19-by-state/index.html",
-    "precache-manifest.0ff645e8b78a023405053364b9c54289.js": "/covid19-by-state/precache-manifest.0ff645e8b78a023405053364b9c54289.js",
+    "precache-manifest.a70c3d1834779b989a0f4319ac6f3213.js": "/covid19-by-state/precache-manifest.a70c3d1834779b989a0f4319ac6f3213.js",
     "service-worker.js": "/covid19-by-state/service-worker.js",
-    "static/css/main.a8ca109d.chunk.css.map": "/covid19-by-state/static/css/main.a8ca109d.chunk.css.map",
-    "static/js/2.3aaafa8d.chunk.js.LICENSE.txt": "/covid19-by-state/static/js/2.3aaafa8d.chunk.js.LICENSE.txt",
+    "static/css/main.53668188.chunk.css.map": "/covid19-by-state/static/css/main.53668188.chunk.css.map",
+    "static/js/2.538e164a.chunk.js.LICENSE.txt": "/covid19-by-state/static/js/2.538e164a.chunk.js.LICENSE.txt",
     "static/media/spinning-blue-circle.gif": "/covid19-by-state/static/media/spinning-blue-circle.cbcc3646.gif"
   },
   "entrypoints": [
-    "static/js/runtime-main.b9b50c05.js",
-    "static/js/2.3aaafa8d.chunk.js",
-    "static/css/main.a8ca109d.chunk.css",
-    "static/js/main.3aafa9b5.chunk.js"
+    "static/js/runtime-main.c9c4b0df.js",
+    "static/js/2.538e164a.chunk.js",
+    "static/css/main.53668188.chunk.css",
+    "static/js/main.b062286f.chunk.js"
   ]
 }
