@@ -7,3 +7,12 @@
 -Updated chart titles to reflect daily/weekly/monthly totals. 
 -Fixed percentage calculation bugs pertaining to 0 cases or 0 deaths by age group reported by states now that numbers are low.
 
+
+-------------------------------------------------------------
+2023-01-08
+
+- Upgraded the following packages as per security requests from Dependabot.
+shell-quote@^1.7.3
+loader-utils@^2.0.3
+ansi-regex@^3.0.1
+json5@^1.0.2
