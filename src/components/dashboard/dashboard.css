@@ -51,6 +51,12 @@
     white-space: nowrap;
 }
 
+.footer-message {
+    max-width: 550px;
+    margin: auto;
+    font-size: 12px;
+}
+
 .footer-site-link {
     cursor: pointer;
     color: lightgreen;

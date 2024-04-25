@@ -1,5 +1,9 @@
 import {getStateCodes} from './states-data';
 
+// Added to queries because CDC decided to stop keeping track of data. 
+// This way the app will only show valid data until the date of collection and not show any emopty charts.
+const DATASET_CUTOFF_DATE = "2023-05-01";
+
 // CDC Access Token to be allowed to pull more than 5k worth of records
 const CDC_QUERY_ACCESS_TOKEN = "&$limit=500000&$$app_token=fz22RHPlELrzEw1j9vq91YH6N";
 
@@ -7,24 +11,25 @@ const CDC_QUERY_ACCESS_TOKEN = "&$limit=500000&$$app_token=fz22RHPlELrzEw1j9vq91
 //const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,state,new_case,new_death&$order=submission_date, state";
 //const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/9mfq-cb36.json?$select=submission_date as date,'USA' as state,sum(new_case) as new_case,sum(new_death) as new_death&$group=submission_date&$order=submission_date";
 
-const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/pwn4-m3yp.json?$select=end_date as date,state,new_cases as new_case,new_deaths as new_death&$order=date,state";
-const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/pwn4-m3yp.json?$select=end_date as date,'USA' as state,sum(new_cases) as new_case,sum(new_deaths) as new_death&$group=date&$order=date";
-
+const URL_CDC_CASES_DEATHS_BY_STATE_HISTORY = "https://data.cdc.gov/resource/pwn4-m3yp.json?$select=end_date as date,state,new_cases as new_case,new_deaths as new_death&$order=date,state&$where=date<'" + DATASET_CUTOFF_DATE + "'";
+const URL_CDC_CASES_DEATHS_USA_HISTORY = "https://data.cdc.gov/resource/pwn4-m3yp.json?$select=end_date as date,'USA' as state,sum(new_cases) as new_case,sum(new_deaths) as new_death&$group=date&$order=date&$where=date<'" + DATASET_CUTOFF_DATE + "'";
 
 // Cases and Deaths by age groups
-const URL_CDC_DEATHS_BY_AGE = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=start_date as date,state,age_group,covid_19_deaths,total_deaths where sex ='All Sexes' and `group`='By Month' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') order by start_date,state,age_group";
+const URL_CDC_DEATHS_BY_AGE = "https://data.cdc.gov/resource/9bhg-hcku.json?$select=start_date as date,state,age_group,covid_19_deaths,total_deaths where start_date < '"+ DATASET_CUTOFF_DATE + "' and sex ='All Sexes' and `group`='By Month' and age_group in ('0-17 years', '18-29 years', '30-39 years','40-49 years','50-64 years','65-74 years','75-84 years','85 years and over') order by start_date,state,age_group ";
 
 // Hospital Data over time
-const URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,inpatient_beds_used_covid as inpatient_beds_covid,total_staffed_adult_icu_beds as icu_beds, staffed_icu_adult_patients_confirmed_covid as icu_beds_covid&$order=date, state";
-const URL_CDC_HOSPTIAL_DATA_USA_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,'USA' as state,sum(inpatient_beds)as inpatient_beds,sum(inpatient_beds_used_covid) as inpatient_beds_covid,sum(total_staffed_adult_icu_beds) as icu_beds,sum(staffed_icu_adult_patients_confirmed_covid) as icu_beds_covid&$group=date&$order=date";
+const URL_CDC_HOSPITAL_DATA_BY_STATE_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,state,inpatient_beds,inpatient_beds_used_covid as inpatient_beds_covid,total_staffed_adult_icu_beds as icu_beds, staffed_icu_adult_patients_confirmed_covid as icu_beds_covid&$order=date, state&$where=date<'" + DATASET_CUTOFF_DATE + "'";
+const URL_CDC_HOSPTIAL_DATA_USA_HISTORY = "https://healthdata.gov/resource/g62h-syeh.json?$select=date,'USA' as state,sum(inpatient_beds)as inpatient_beds,sum(inpatient_beds_used_covid) as inpatient_beds_covid,sum(total_staffed_adult_icu_beds) as icu_beds,sum(staffed_icu_adult_patients_confirmed_covid) as icu_beds_covid&$group=date&$order=date&$where=date<'" + DATASET_CUTOFF_DATE + "'";
 
-const URL_NYC_HOSPITAL_DATA = "https://health.data.ny.gov/resource/jw46-jpb7.json?$select=as_of_date as date,'NYC' as state, sum(total_staffed_acute_care) as inpatient_beds, sum(patients_currently) as inpatient_beds_covid, sum(total_staffed_icu_beds_1) as icu_beds, sum(patients_currently_in_icu) as icu_beds_covid where ny_forward_region = 'NEW YORK CITY' group by date, state order by date desc";
+const URL_NYC_HOSPITAL_DATA = "https://health.data.ny.gov/resource/jw46-jpb7.json?$select=as_of_date as date,'NYC' as state, sum(total_staffed_acute_care) as inpatient_beds, sum(patients_currently) as inpatient_beds_covid, sum(total_staffed_icu_beds_1) as icu_beds, sum(patients_currently_in_icu) as icu_beds_covid where as_of_date < '" + DATASET_CUTOFF_DATE + "' and ny_forward_region = 'NEW YORK CITY' group by date, state order by date desc";
 
 // Vaccinations over time
 //const URL_CDC_VACCINATIONS_BY_AGE = "https://data.cdc.gov/resource/gxj9-t96f.json?$select=cdc_case_earliest_dt as date,'USA' as state,agegroupvacc as age_group,administered_dose1_pct * 100 as first_dose_pct,series_complete_pop_pct * 100 as completed_pct&$order=cdc_case_earliest_dt";
 
 // Excess Deaths by Age Group
 const URL_CDC_EXCESS_DEATHS_BY_AGE = "https://data.cdc.gov/resource/m74n-4hbs.json?$select=weekending as date, 'USA' as state, agegroup as age_group, percent_above_average_weighted, covid19_weighted where RaceEthnicity='All Race/Ethnicity Groups' and Sex='All Sexes' and agegroup not in ('All Ages', 'Not stated') and MMWRyear in ('2020','2021','2022','2023') order by date";
+
+
 
 export const getFreshData = async() => {
     

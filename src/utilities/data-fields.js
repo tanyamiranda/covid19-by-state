@@ -1,4 +1,4 @@
-export const YEARS_DEFAULT = "months-6";
+export const YEARS_DEFAULT = "0";
 export const USA_IDENTIFIER = "USA";
 export const NYC_IDENTIFIER = "NYC";
 
@@ -8,19 +8,21 @@ export const NYC_IDENTIFIER = "NYC";
  the years in ascending order.
 */
 export const YEAR_KEYS = [
-    "months-6",
+    "0",
+/*    "months-6",     // Needed to remove all recent options because CDC and HealthData stopped collecting constant data in May of 2023
     "months-9",
     "months-12",
+*/    "2023",
     "2022",
     "2021", 
-    "2020",
-    "0"
+    "2020"
 ];
 
 export const YEARS = {
     "months-6": "Last 6 months",
     "months-9": "Last 9 months",
     "months-12": "Last 12 months",
+    "2023": "All 2023",
     "2022": "All 2022",
     "2021": "All 2021",
     "2020": "All 2020",

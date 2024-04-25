@@ -41,7 +41,7 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, chartConfig}) => {
         <div className="dashboard">
             <div className="page-header">
                 <div className="page-title"><span>COVID-19 Data Charts</span> <span>For United States</span></div>
-                <div className="page-subtitle">50 U.S. States, D.C. and Puerto Rico</div>
+                <div className="page-subtitle">50 U.S. States, D.C. and Puerto Rico **</div>
             </div>
             <ChartConfiguration />
             { !isDataLoaded ? ( 
@@ -64,10 +64,13 @@ const Covid19UsDashboard =({setCOVID19Data, isDataLoaded, chartConfig}) => {
                 </div>
             )}
             <div className="page-footer">
+                <div className="footer-message"><strong>** As of April & May of 2023, the CDC terminated several Covid19 data collections. This application does not query the CDC site past those termination dates. For more information, click on the chart's data source links.</strong><br/></div>
+                <p>~ ~ ~</p>
                 Data Sources:<br/>
                 <span className="footer-site-link" onClick={()=> window.open("https://data.cdc.gov")}>Center For Disease Control</span><br/>
-                <span className="footer-site-link" onClick={()=> window.open("https://healthdata.gov/")}>Healthdata.gov</span><br/>
-                ~ ~ ~<br/>
+                <span className="footer-site-link" onClick={()=> window.open("https://healthdata.gov/")}>HealthData</span><br/>
+                <span className="footer-site-link" onClick={()=> window.open("https://health.data.ny.gov/")}>NY State Health Data</span>
+                <p>~ ~ ~</p>
                 <span className="footer-site-link" onClick={()=> window.open("https://tanyamiranda.github.io/")}>Contact Developer</span><br/>
             </div>
         </div>

@@ -70,9 +70,7 @@ export const getCDCDataSetByYear = (cdcHistoryByJurisdiction, selectedState, sel
             .filter(stateData => stateData.state === selectedState && stateData.date.substr(0,4) === selectedYear);  
     }
 
-    return dataSet.sort(function (a, b) {
-            return a.date - b.date;
-        });
+    return dataSet;    
 }
 
 // The variables startDate and endDate are numerical format yyyymmdd
